@@ -18,7 +18,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Ingresa tus credenciales para iniciar sesión</p>
 
-      <form action="{{route('login')}}" method="post">
+      <form action="/login" method="post">
         @csrf
         <div class="input-group mb-3">
           <input name="email" type="email" class="form-control" placeholder="Email">
@@ -39,7 +39,7 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember">
+              <input name="remember" type="checkbox" id="remember">
               <label for="remember">
                 Recordarme
               </label>
@@ -47,7 +47,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+            <button name="btnLogin" type="submit" class="btn btn-primary btn-block">Entrar</button>
           </div>
           <!-- /.col -->
         </div>

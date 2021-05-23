@@ -14,12 +14,9 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [LoginController::class, 'index'])->name('Showlogin')->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');;
+/*Route::prefix('admin')->group(function () {
 
-Route::prefix('admin')->group(function () {
-    Route::get('/', [LoginController::class, 'index'])->name('Showlogin')->middleware('guest');
-    Route::Post('/login', [LoginController::class, 'login'])->name('login')->middleware('auth');
-    Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');;
-});
-Route::get('/', function () {
-    return view('index');
-});
+});*/

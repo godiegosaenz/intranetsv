@@ -11,7 +11,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('admin.login');
+        return view('auth.login');
     }
 
     public function login()
@@ -21,9 +21,10 @@ class LoginController extends Controller
         if(Auth::attempt($credenciales))
         {
             request()->session()->regenerate();
-            return redirect('/admin/home');
+            return redirect('/home');
         }
 
         return redirect('/');
     }
+
 }

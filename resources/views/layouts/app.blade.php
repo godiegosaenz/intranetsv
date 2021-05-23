@@ -16,9 +16,9 @@
     <img class="animation__shake" src="/img/logotipo/corazones-01.svg" alt="corazoneslogo" height="60" width="60">
   </div>
 
-  @include('admin.partials.nav')
+  @include('partials.nav')
 
-  @include('admin.partials.aside')
+  @include('partials.aside')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
