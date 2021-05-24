@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\Auth\LoginController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\configuracion\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +16,9 @@ use App\Http\Controllers\HomeController;
 */
 Route::get('/', [LoginController::class, 'index'])->name('Showlogin')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');;
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
+
+Route::get('/users', [UserController::class, 'index'])->name('ShowUsers');
 /*Route::prefix('admin')->group(function () {
 
 });*/
