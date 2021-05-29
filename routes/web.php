@@ -14,11 +14,12 @@ use App\Http\Controllers\configuracion\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [LoginController::class, 'index'])->name('Showlogin')->middleware('guest');
+Route::get('/', [LoginController::class, 'index'])->name('show.login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
-Route::get('/users', [UserController::class, 'index'])->name('ShowUsers');
+Route::get('/users', [UserController::class, 'index'])->name('show.users');
 /*Route::prefix('admin')->group(function () {
 
 });*/
