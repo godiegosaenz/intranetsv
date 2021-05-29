@@ -17,28 +17,19 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Ingresa tus credenciales para iniciar sesión</p>
-      @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
       <form action="/login" method="post">
         @csrf
 
         <div class="form-group">
-          <label for="txtEmail">Correo</label>
-          <input type="email" name="email" class="form-control @error('email')is-invalid @enderror" id="txtEmail" value="{{ old('email') }}" placeholder="Enter email" aria-describedby="txtEmail-error" aria-invalid="true" required autofocus>
+          <label for="txtEmail">Correo :</label>
+          <input type="email" name="email" class="form-control @error('email')is-invalid @enderror" id="txtEmail" value="{{ old('email') }}" placeholder="Correo" aria-describedby="txtEmail-error" aria-invalid="true" required autofocus>
           @error('email')
           <span class="error invalid-feedback">{{ $message }}</span>
           @enderror
         </div>
         <div class="form-group">
-          <label for="txtpassword">Password</label>
-          <input type="password" name="password" class="form-control @error('password')is-invalid @enderror" id="txtpassword" placeholder="Password">
+          <label for="txtpassword">Contraseña :</label>
+          <input type="password" name="password" class="form-control @error('password')is-invalid @enderror" id="txtpassword" placeholder="Clave">
           @error('password')
           <span class="error invalid-feedback">{{ $message }}</span>
           @enderror

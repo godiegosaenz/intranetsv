@@ -33,12 +33,9 @@ class LoginController extends Controller
 
         throw ValidationException::withMessages([
             'email' => __('auth.failed'),
+            'password' => __('auth.failed'),
         ]);
 
-        /*return back()->withErrors([
-            'email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
-            'password' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
-        ]);*/
 
     }
 

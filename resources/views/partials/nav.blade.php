@@ -124,19 +124,19 @@
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
+          <i class="fas fa-cog"></i>
           <span class="">Configuracion</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           @auth
           <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> Perfil
+            <i class="fas fa-user mr-2"></i> Perfil
           </a>
           <div class="dropdown-divider"></div>
           <form action="/logout" method="post">
             @csrf
-            <a onclick="this.closest('form').submit()" class="dropdown-item">
-              <i class="fas fa-users mr-2"></i> Salir
+            <a onclick="this.closest('form').submit()" style="cursor: pointer;" class="dropdown-item">
+              <i class="fas fa-sign-out-alt mr-2"></i> Salir
             </a>
           </form>
           @endauth
