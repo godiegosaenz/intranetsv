@@ -20,6 +20,9 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
 Route::get('/users', [UserController::class, 'index'])->name('show.users');
+Route::get('/users/create', [UserController::class, 'create'])->name('create.users');
+Route::post('/users/store', [UserController::class, 'store'])->name('store.users');
+Route::post('/users/datatables', [UserController::class, 'datatables'])->name('datatables.users');
 /*Route::prefix('admin')->group(function () {
 
 });*/

@@ -17,68 +17,89 @@
     </div><!-- /.container-fluid -->
 </div>
   <!-- /.content-header -->
-
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+            <a class="btn btn-primary float-sm-right" href="{{ route('create.users')}}"><i class="fa fa-plus-square"></i> Crear Usurio</a>
+        </div>
+      </div>
       <div class="row">
-        <div class="col-lg-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-
-              <p class="card-text">
-
-              </p>
-
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-
-          <div class="card card-primary card-outline">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-
-              <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's
-                content.
-              </p>
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div><!-- /.card -->
-        </div>
-        <!-- /.col-md-6 -->
-        <div class="col-lg-6">
-          <div class="card">
+        <div class="col-lg-12">
+          <div class="card card-default">
             <div class="card-header">
-              <h5 class="m-0">Featured</h5>
+                <h4 class="card-title">Lista de usuarios</h4>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
             </div>
             <div class="card-body">
-              <h6 class="card-title">Special title treatment</h6>
+                @csrf
+                <table id="users-table" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                      <th>Nombres</th>
+                      <th>Correo Electronico</th>
+                      <th>Creacion</th>
+                      <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h5 class="m-0">Featured</h5>
-            </div>
-            <div class="card-body">
-              <h6 class="card-title">Special title treatment</h6>
-
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Creacion</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </tfoot>
+                </table>
             </div>
           </div>
         </div>
-        <!-- /.col-md-6 -->
       </div>
       <!-- /.row -->
     </div><!-- /.container-fluid -->
   </div>
   <!-- /.content -->
 @endsection
+@push('scripts')
+    <script>
+    $(function () {
+        $('#users-table').DataTable({
+            "lengthMenu": [ 5, 10],
+            "language" : {
+                "url": '{{ url("/js/spanish.json") }}',
+            },
+            "autoWidth": false,
+            "order": [], //Initial no order
+            "processing" : true,
+            "serverSide": true,
+            "ajax": {
+                "url" : "{{ route('datatables.users') }}",
+                "type": "post",
+                "data": function (d){
+                    d._token = $("input[name=_token]").val();
+                }
+            },
+            "columns": [
+                {data: 'name'},
+                {data: 'email'},
+                {data: 'created_at'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+
+            ]
+        });
+
+    });
+    </script>
+@endpush

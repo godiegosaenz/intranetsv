@@ -40,6 +40,6 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
+@stack('scripts')
 </body>
 </html>
