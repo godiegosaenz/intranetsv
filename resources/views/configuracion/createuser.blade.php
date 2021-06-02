@@ -115,4 +115,24 @@
         </div>
     </div>
   </div>
+  <button type="button" class="btn btn-success toastrDefaultSuccess">
+    Launch Success Toast
+  </button>
 @endsection
+@push('scripts')
+    <script>
+    $(function () {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        $('.toastrDefaultSuccess').click(function() {
+        toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+        });
+    });
+    </script>
+@endpush
+
+
