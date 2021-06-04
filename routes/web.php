@@ -22,6 +22,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(
 Route::get('/users', [UserController::class, 'index'])->name('show.users');
 Route::get('/users/create', [UserController::class, 'create'])->name('create.users');
 Route::post('/users/store', [UserController::class, 'store'])->name('store.users');
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('edit.users');
 Route::post('/users/datatables', [UserController::class, 'datatables'])->name('datatables.users');
 /*Route::prefix('admin')->group(function () {
 

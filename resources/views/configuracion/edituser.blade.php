@@ -52,7 +52,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="dni">Cédula</label>
-                                        <input type="number" class="form-control  @error('dni')is-invalid @enderror" name="dni" id="dni" placeholder="1312151425">
+                                        <input type="number" class="form-control  @error('dni')is-invalid @enderror" name="dni" id="dni" placeholder="1312151425" value="{{$user->dni}}">
                                         @error('dni')
                                         <span class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -116,20 +116,3 @@
     </div>
   </div>
 @endsection
-@push('scripts')
-    <script>
-    $(function () {
-        var Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-        });
-        @if (session('status'))
-            toastr.success('{{session('status')}}');
-        @endisset
-    });
-    </script>
-@endpush
-
-

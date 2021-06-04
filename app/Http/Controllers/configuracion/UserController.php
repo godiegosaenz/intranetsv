@@ -54,7 +54,7 @@ class UserController extends Controller
         $user->status = $status;
         $user->save();
 
-        return redirect()->route('create.users');
+        return redirect('/users/create')->with('status', 'El usuario '.$user->name.' se ha registrado satisfactoriamente');
 
     }
 
@@ -62,8 +62,10 @@ class UserController extends Controller
 
     }
 
-    public function edit(){
-
+    public function edit(User $user){
+        return view('configuracion.edituser',
+                    ['user' => $user
+        ]);
     }
 
     public function update(){
@@ -81,10 +83,10 @@ class UserController extends Controller
 
             return Datatables::of($users)//->make();
             //return Datatables($obtenerObjetivos)
-                    ->addColumn('action', function ($obtenerObjetivos) {
-                        $buttons = '<button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button> ';
-                        $buttons .= '<button class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button> ';
-                        $buttons .= '<button class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></button>';
+                    ->addColumn('action', function ($users) {
+                        $buttons = '<a href="" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a> ';
+                        $buttons .= '<a href="'.route('edit.users',['id' => $users->id]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a> ';
+                        $buttons .= '<a class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></a>';
                         return $buttons;
                     })
                     ->make(true);
