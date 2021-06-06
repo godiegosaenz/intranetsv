@@ -17,13 +17,17 @@ use App\Http\Controllers\configuracion\UserController;
 Route::get('/', [LoginController::class, 'index'])->name('show.login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
-Route::get('/users', [UserController::class, 'index'])->name('show.users');
-Route::get('/users/create', [UserController::class, 'create'])->name('create.users');
-Route::post('/users/store', [UserController::class, 'store'])->name('store.users');
-Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('edit.users');
-Route::post('/users/datatables', [UserController::class, 'datatables'])->name('datatables.users');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'delete'])->name('users.delete');
+Route::post('/users/datatables', [UserController::class, 'datatables'])->name('users.datatables');
 /*Route::prefix('admin')->group(function () {
 
 });*/

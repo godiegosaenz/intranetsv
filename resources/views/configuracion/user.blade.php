@@ -1,28 +1,14 @@
 @extends('layouts.app')
 @section('content')
-<!-- Content Header (Page header) -->
-<div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0">Usuarios</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-            <li class="breadcrumb-item active">Usuarios</li>
-          </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
-  <!-- /.content-header -->
+  <x-header title="Panel de usuarios">
+    <li class="breadcrumb-item active">Usuarios</li>
+  </x-header>
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
-      <div class="row mb-2">
+      <div class="row mb-3">
         <div class="col-sm-12">
-            <a class="btn btn-primary float-sm-right" href="{{ route('create.users')}}"><i class="fa fa-plus-square"></i> Crear Usurio</a>
+            <a class="btn btn-primary float-sm-left" href="{{ route('users.create')}}"><i class="fa fa-plus-square"></i> Crear Usurio</a>
         </div>
       </div>
       <div class="row">
@@ -85,7 +71,7 @@
             "processing" : true,
             "serverSide": true,
             "ajax": {
-                "url" : "{{ route('datatables.users') }}",
+                "url" : "{{ route('users.datatables') }}",
                 "type": "post",
                 "data": function (d){
                     d._token = $("input[name=_token]").val();

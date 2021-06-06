@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DataTables;
+use App\Http\Requests\SaveUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Arr;
+
 //use Yajra\lavarel_datatables_oracle\DataTables;
 
 class UserController extends Controller
@@ -25,37 +29,16 @@ class UserController extends Controller
     }
 
     public function create(){
-        return view('configuracion.createuser');
+        return view('configuracion.createuser',[
+            'user' => new User()
+        ]);
     }
 
-    public function store(Request $request){
+    public function store(SaveUserRequest $request){
 
-
-        $credenciales = $request->validate([
-            'dni' => 'bail|required|numeric|digits:10',
-            'name' => 'bail|required',
-            'lastname' => 'bail|required',
-            'lastname2' => 'bail|required',
-            'email' => 'bail|required',
-            'password' => 'bail|required',
-            'status' => 'bail|nullable'
-        ]);
-
-        $status = $request->filled('status');
-
-        $user = new User();
-
-        $user->dni = $request->dni;
-        $user->name = $request->name;
-        $user->lastname = $request->lastname;
-        $user->lastname2 = $request->lastname2;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->status = $status;
-        $user->save();
-
-        return redirect('/users/create')->with('status', 'El usuario '.$user->name.' se ha registrado satisfactoriamente');
-
+        $registerUser = Arr::add($request->validated(),'password',bcrypt($request->dni.$request->lastname));
+        User::create($registerUser);
+        return redirect('/users/create')->with('status', 'El usuario '.$request->name.' se ha registrado satisfactoriamente');
     }
 
     public function show(){
@@ -68,8 +51,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(){
-
+    public function update(User $user,UpdateUserRequest $request){
+        $user->update($request->validated());
+        return back()->with('status',  'El usuario '.$request->name.' se ha actualizado satisfactoriamente');
     }
 
     public function destroy(){
@@ -85,7 +69,7 @@ class UserController extends Controller
             //return Datatables($obtenerObjetivos)
                     ->addColumn('action', function ($users) {
                         $buttons = '<a href="" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a> ';
-                        $buttons .= '<a href="'.route('edit.users',['id' => $users->id]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a> ';
+                        $buttons .= '<a href="'.route('users.edit',['user' => $users]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a> ';
                         $buttons .= '<a class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></a>';
                         return $buttons;
                     })
