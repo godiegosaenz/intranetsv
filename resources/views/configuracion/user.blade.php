@@ -28,12 +28,14 @@
             </div>
             <div class="card-body">
                 @csrf
-                <table id="users-table" class="table table-bordered table-hover">
+                <table id="users-table" class="table table-sm table-bordered table-hover">
                     <thead>
                     <tr>
                       <th>Nombres</th>
+                      <th>Apellido P.</th>
+                      <th>Apellido M.</th>
                       <th>Correo Electronico</th>
-                      <th>Creacion</th>
+                      <th>Estado</th>
                       <th>Acciones</th>
                     </tr>
                     </thead>
@@ -42,9 +44,11 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Creacion</th>
+                        <th>Nombres</th>
+                        <th>Apellido P.</th>
+                        <th>Apellido M.</th>
+                        <th>Correo Electronico</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                     </tfoot>
@@ -79,8 +83,10 @@
             },
             "columns": [
                 {data: 'name'},
+                {data: 'lastname'},
+                {data: 'lastname2'},
                 {data: 'email'},
-                {data: 'created_at'},
+                {data: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
 
             ]

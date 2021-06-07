@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -45,4 +46,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /*public function scopeShowusers($query){
+        $query->where('status', 1)
+        ->orderBy('name');
+    }*/
+
+    public function getNameAttribute($name){
+        return Str::upper($name);
+    }
+
+    public function getLastnameAttribute($lastname){
+        return Str::upper($lastname);
+    }
+
+    public function getLastname2Attribute($lastname2){
+        return Str::upper($lastname2);
+    }
+
+    public function getStatusAttribute($status){
+        if($status = 1){
+            return 'Activo';
+        }
+
+        return 'Inactivo';
+    }
 }

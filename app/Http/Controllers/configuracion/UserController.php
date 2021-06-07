@@ -29,7 +29,7 @@ class UserController extends Controller
     }
 
     public function create(){
-        return view('configuracion.createuser',[
+        return view('configuracion.userCreate',[
             'user' => new User()
         ]);
     }
@@ -41,12 +41,12 @@ class UserController extends Controller
         return redirect('/users/create')->with('status', 'El usuario '.$request->name.' se ha registrado satisfactoriamente');
     }
 
-    public function show(){
-
+    public function show(User $user){
+        return view('configuracion.userShow',compact('user'));
     }
 
     public function edit(User $user){
-        return view('configuracion.edituser',
+        return view('configuracion.userEdit',
                     ['user' => $user
         ]);
     }
@@ -65,10 +65,9 @@ class UserController extends Controller
 
             $users = $this->users;
 
-            return Datatables::of($users)//->make();
-            //return Datatables($obtenerObjetivos)
+            return Datatables::of($users)
                     ->addColumn('action', function ($users) {
-                        $buttons = '<a href="" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a> ';
+                        $buttons = '<a href="'.route('users.show',['user' => $users]).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a> ';
                         $buttons .= '<a href="'.route('users.edit',['user' => $users]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a> ';
                         $buttons .= '<a class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></a>';
                         return $buttons;

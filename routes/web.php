@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\configuracion\UserController;
+use App\Http\Controllers\configuracion\RolesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +29,15 @@ Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.e
 Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{user}', [UserController::class, 'delete'])->name('users.delete');
 Route::post('/users/datatables', [UserController::class, 'datatables'])->name('users.datatables');
+
+Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
+Route::get('/roles/create', [RolesController::class, 'create'])->name('roles.create');
+Route::post('/roles', [RolesController::class, 'store'])->name('roles.store');
+Route::get('/roles/{user}', [RolesController::class, 'show'])->name('roles.show');
+Route::get('/roles/{user}/edit', [RolesController::class, 'edit'])->name('roles.edit');
+Route::put('/roles/{user}', [RolesController::class, 'update'])->name('roles.update');
+Route::delete('/roles/{user}', [RolesController::class, 'delete'])->name('roles.delete');
+
 /*Route::prefix('admin')->group(function () {
 
 });*/
