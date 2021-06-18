@@ -9,25 +9,62 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card card-default">
-                    <div class="card-header">
-                        <h4 class="card-title">Formulario   </h4>
-
-                        <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        </div>
-                    </div>
+                <div class="card">
+                    <div class="card-header p-2">
+                      <ul class="nav nav-pills">
+                        <li class="nav-item"><a class="nav-link active" href="#formulario" data-toggle="tab"> Formulario de usuarios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#rolesypermisos" data-toggle="tab"> Roles y permiso</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#permissions" data-toggle="tab">Permisos especiales</a></li>
+                      </ul>
+                    </div><!-- /.card-header -->
                     <div class="card-body">
-                        <form action="{{ route('users.store') }}" method="post">
-                            @csrf
-                            @include('configuracion.partials._formusuario')
-                        </form>
-                    </div>
+                      <div class="tab-content">
+                        <div class="active tab-pane" id="formulario">
+                            <form action="{{ route('users.store') }}" method="post">
+                                @csrf
+                                @include('configuracion.partials._formusuario')
+                            </form>
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="rolesypermisos">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="selRoles">Roles</label>
+                                        <select class="form-control" id="role" name="role" onchange="updateTablesPermission(this.value)">
+                                            @isset($roles)
+                                                <option value="">Seleccione un rol</option>
+                                                @foreach ($roles as $id => $rol)
+                                                    <option value="{{$rol}}">{{$rol}}</option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="">Permisos de roles</label>
+                                    <table id="permissions-table" class="table table-sm table-bordered">
+                                        <thead>
+                                          <tr>
+                                            <th>id</th>
+                                            <th>Permisos</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                        <div class="tab-pane" id="permissions">
+
+                        </div>
+                        <!-- /.tab-pane -->
+                      </div>
+                      <!-- /.tab-content -->
+                    </div><!-- /.card-body -->
                 </div>
             </div>
         </div>
@@ -46,7 +83,35 @@
         @if (session('status'))
             toastr.success('{{session('status')}}');
         @endisset
+        tableRolPermission = $('#permissions-table').DataTable({
+            "lengthMenu": [ 5, 10],
+            "language" : {
+                "url": '{{ url("/js/spanish.json") }}',
+            },
+            "autoWidth": false,
+            "order": [], //Initial no order
+            "processing" : true,
+            "serverSide": true,
+            "ajax": {
+                "url" : "{{ route('roles.datatable') }}",
+                "type": "post",
+                "data": function (d){
+                    d.role = $( "#role" ).val();
+                    d._token = $("input[name=_token]").val();
+                }
+            },
+            "columns": [
+                {data: 'id'},
+                {data: 'name'},
+            ],
+            "bLengthChange" : false,
+            "searching": false,
+            "info": false
+        });
     });
+    function updateTablesPermission(value){
+        tableRolPermission.ajax.reload();
+    }
     </script>
 @endpush
 

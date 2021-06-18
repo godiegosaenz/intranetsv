@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -65,7 +65,7 @@ class User extends Authenticatable
     }
 
     public function getStatusAttribute($status){
-        if($status = 1){
+        if($status == 1){
             return 'Activo';
         }
 

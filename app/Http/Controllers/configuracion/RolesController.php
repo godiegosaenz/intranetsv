@@ -4,6 +4,9 @@ namespace App\Http\Controllers\configuracion;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Validation\Rule;
+use DataTables;
 
 class RolesController extends Controller
 {
@@ -25,7 +28,11 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return view('configuracion.roleCreate');
+        return view('configuracion.roleCreate',
+                    [
+                        'roles' => new Role,
+                        'permissions' => Permission::all()
+                    ]);
     }
 
     /**
@@ -36,7 +43,13 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datavalidate = $request->validate([
+            'name' => 'bail|required|unique:Spatie\Permission\Models\Role,name',
+        ]);
+
+        $role = Role::create($datavalidate);
+        $role->syncPermissions($request->permisions);
+        return redirect('/roles/create')->with('status', 'El Rol '.$role->name.' se ha registrado satisfactoriamente');
     }
 
     /**
@@ -47,7 +60,7 @@ class RolesController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -56,9 +69,15 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        //
+        $rolespermission = $role::findByName($role->name)->permissions;
+        $permisos = Permission::pluck('name','id');
+        return view('configuracion.roleEdit',[
+                    'role' => $role,
+                    'permissions' => $permisos,
+                    'rolepermission' => $rolespermission
+                    ]);
     }
 
     /**
@@ -68,9 +87,18 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Role $role,Request $request)
     {
-        //
+        $datavalidate = $request->validate([
+            'name' => [
+                        'bail',
+                        'required',
+                        Rule::unique('roles')->ignore($role->id)]
+        ]);
+
+        $role->update($datavalidate);
+        $role->syncPermissions($request->permisions);
+        return redirect()->route('roles.edit', ['role' => $role])->with('status',  'El Rol '.$request->name.' y sus permisos se ha actualizado satisfactoriamente');
     }
 
     /**
@@ -82,5 +110,18 @@ class RolesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function datatables(Request $request){
+        if ($request->ajax()) {
+            if($request->role == '') {
+                $rolespermission = Permission::all();
+            }else{
+                $rolespermission = Role::findByName($request->role)->permissions;
+            }
+
+            return Datatables($rolespermission)
+                    ->make(true);
+        }
     }
 }

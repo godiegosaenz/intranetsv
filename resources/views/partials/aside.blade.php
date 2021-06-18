@@ -14,7 +14,7 @@
           <img src="/img/perfil-vacio.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"></a>
+          <a href="#" class="d-block">{{ auth()->user()->name.' '.auth()->user()->lastname }}  </a>
         </div>
       </div>
 
@@ -66,7 +66,7 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
+              <i class="nav-icon fas fa-cogs"></i>
               <p>
                 Configuracion
                 <i class="fas fa-angle-left right"></i>

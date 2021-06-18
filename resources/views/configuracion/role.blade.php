@@ -28,7 +28,7 @@
             </div>
             <div class="card-body">
                 @csrf
-                <table id="users-table" class="table table-sm table-bordered table-hover">
+                <table id="roles-table" class="table table-sm table-bordered table-hover">
                     <thead>
                     <tr>
                       <th>Nombre</th>
@@ -46,7 +46,11 @@
                                     <td>{{$r->guard_name}}</td>
                                     <td>{{$r->created_at}}</td>
                                     <td>{{$r->updated_at}}</td>
-                                    <td></td>
+                                    <td>
+                                        <a href="" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></a>
+                                        <a href="{{route('roles.edit',$r)}}" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
+                                        <a class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></a>
+                                    </td>
                                 </tr>
                             @endforeach
                         @endisset
@@ -70,3 +74,21 @@
   </div>
   <!-- /.content -->
 @endsection
+@push('scripts')
+    <script>
+    $(function () {
+        $('#roles-table').DataTable({
+            "lengthMenu": [ 5, 10],
+            "language" : {
+                "url": '{{ url("/js/spanish.json") }}',
+            },
+            "autoWidth": false,
+            "order": [], //Initial no order
+            "processing" : false,
+            "serverSide": false,
+        });
+
+    });
+    </script>
+@endpush
+
