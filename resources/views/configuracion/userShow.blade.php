@@ -54,22 +54,96 @@
           <div class="card">
             <div class="card-header p-2">
               <ul class="nav nav-pills">
-                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Roles</a></li>
-                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Permisos adicionales</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#roles" data-toggle="tab">Roles</a></li>
+                <li class="nav-item"><a class="nav-link" href="#permissions" data-toggle="tab">Permisos adicionales</a></li>
                 <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Configuraciones</a></li>
               </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
               <div class="tab-content">
-                <div class="active tab-pane" id="activity">
-                  <div class="post">
-                    <h4>Administrador</h4>
-                  </div>
+                <div class="active tab-pane" id="roles">
+                    <form action="{{ route('usersroles.store',$user) }}" method="post">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-6">
+
+                                <div class="form-group">
+                                    <label for="selRoles">Roles</label>
+                                    <select class="form-control @if($errors->erolesusers->has('role'))is-invalid @endif" id="role" name="role" onchange="updateTablesPermission(this.value)">
+                                        @isset($roluser)
+                                            @foreach ($roluser as $id => $rol)
+                                                <option value="{{$rol}}" {{ old('role') == $rol ? 'selected' : 'selected' }}>{{$rol}}</option>
+                                            @endforeach
+                                        @endisset
+                                    </select>
+                                </div>
+                                <hr>
+                                <table id="permissions-table" class="table table-sm table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th>Permisos por roles</th>
+                                        <th>Estado</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        @isset($permission)
+                                            @foreach ($permission as $id => $p)
+                                                @if($PermissionRole->contains($p->name))
+                                                    <tr>
+                                                        <td>{{$p->name}}</td>
+                                                        <td style="text-align: center"><i class="far fa-check-square"></i></td>
+                                                    </tr>
+                                                @else
+                                                    <tr>
+                                                        <td>{{$p->name}}</td>
+                                                        <td style="text-align: center"><i class="far fa-square"></i></td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        @endisset
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+
+                            </div>
+                        </div>
+                    </form>
 
 
                 </div>
                 <!-- /.tab-pane -->
-                <div class="tab-pane" id="timeline">
+                <div class="tab-pane" id="permissions">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <table id="permissionspecial" class="table table-sm table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Permisos Especiales</th>
+                            <th>Activos</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @isset($permission)
+                                @foreach ($permission as $id => $p)
+                                    @if($PermissionUser->contains($p->name))
+                                        <tr>
+                                            <td>{{$p->name}}</td>
+                                            <td style="text-align: center"><i class="far fa-check-square"></i></td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>{{$p->name}}</td>
+                                            <td style="text-align: center"><i class="far fa-square"></i></td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endisset
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
 
                 </div>
                 <!-- /.tab-pane -->

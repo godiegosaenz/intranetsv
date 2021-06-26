@@ -13,8 +13,6 @@
                     <div class="card-header p-2">
                       <ul class="nav nav-pills">
                         <li class="nav-item"><a class="nav-link active" href="#formulario" data-toggle="tab"> Formulario de usuarios</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#rolesypermisos" data-toggle="tab"> Roles y permiso</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#permissions" data-toggle="tab">Permisos especiales</a></li>
                       </ul>
                     </div><!-- /.card-header -->
                     <div class="card-body">
@@ -25,43 +23,6 @@
                                 @include('configuracion.partials._formusuario')
                             </form>
                         </div>
-                        <!-- /.tab-pane -->
-                        <div class="tab-pane" id="rolesypermisos">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="selRoles">Roles</label>
-                                        <select class="form-control" id="role" name="role" onchange="updateTablesPermission(this.value)">
-                                            @isset($roles)
-                                                <option value="">Seleccione un rol</option>
-                                                @foreach ($roles as $id => $rol)
-                                                    <option value="{{$rol}}">{{$rol}}</option>
-                                                @endforeach
-                                            @endisset
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="">Permisos de roles</label>
-                                    <table id="permissions-table" class="table table-sm table-bordered">
-                                        <thead>
-                                          <tr>
-                                            <th>id</th>
-                                            <th>Permisos</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.tab-pane -->
-
-                        <div class="tab-pane" id="permissions">
-
-                        </div>
-                        <!-- /.tab-pane -->
                       </div>
                       <!-- /.tab-content -->
                     </div><!-- /.card-body -->

@@ -8,28 +8,17 @@
   <x-content>
     <x-slot name="CardHeader">
         <ul class="nav nav-pills">
-            @if (cache()->has('tabusuario') == true)
-                <li class="nav-item"><a class="nav-link @if(cache()->get('tabusuario') == 1) {{'active'}} @endif" href="#formulario" data-toggle="tab"> Formulario de usuarios</a></li>
-                <li class="nav-item"><a class="nav-link @if(cache()->get('tabusuario') == 2) {{'active'}} @endif" href="#rolesypermisos" data-toggle="tab"> Roles y permiso</a></li>
-                <li class="nav-item"><a class="nav-link @if(cache()->get('tabusuario') == 3) {{'active'}} @endif" href="#permissions" data-toggle="tab">Permisos especiales</a></li>
-            @else
-                <li class="nav-item"><a class="nav-link active" href="#formulario" data-toggle="tab"> Formulario de usuarios</a></li>
-                <li class="nav-item"><a class="nav-link" href="#rolesypermisos" data-toggle="tab"> Roles y permiso</a></li>
-                <li class="nav-item"><a class="nav-link" href="#permissions" data-toggle="tab">Permisos especiales</a></li>
-            @endif
+                <li class="nav-item"><a class="nav-link @if(Cookie::get('tabusuario') == 1) {{'active'}} @endif" href="#formulario" data-toggle="tab"> Formulario de usuarios</a></li>
+                <li class="nav-item"><a class="nav-link @if(Cookie::get('tabusuario') == 2) {{'active'}} @endif" href="#rolesypermisos" data-toggle="tab"> Roles y permiso</a></li>
+                <li class="nav-item"><a class="nav-link @if(Cookie::get('tabusuario') == 3) {{'active'}} @endif" href="#permissions" data-toggle="tab">Permisos especiales</a></li>
         </ul>
     </x-slot>
     <div class="tab-content">
-        @if (cache()->has('tabusuario') == true)
-            @if(cache()->get('tabusuario') == 1)
-                <div class="active tab-pane" id="formulario">
-            @else
-                <div class="tab-pane" id="formulario">
-            @endif
-        @else
+        @if (Cookie::get('tabusuario') == 1)
             <div class="active tab-pane" id="formulario">
+        @else
+            <div class="tab-pane" id="formulario">
         @endif
-
             <form action="{{ route('users.update', $user) }}" method="post">
                 @csrf
                 @method('PUT')
@@ -37,7 +26,7 @@
             </form>
         </div>
         <!-- /.tab-pane -->
-        @if(cache()->has('tabusuario') == true and cache()->get('tabusuario') == 2)
+        @if(Cookie::get('tabusuario') == 2)
             <div class="active tab-pane" id="rolesypermisos">
         @else
             <div class="tab-pane" id="rolesypermisos">
@@ -46,6 +35,9 @@
                 @csrf
                 <div class="row">
                     <div class="col-lg-6">
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i> Asignar Rol</button>
+                        </div>
                         <div class="form-group">
                             <label for="selRoles">Roles</label>
                             <select class="form-control @if($errors->erolesusers->has('role'))is-invalid @endif" id="role" name="role" onchange="updateTablesPermission(this.value)">
@@ -65,9 +57,7 @@
                             <span class="error invalid-feedback">{{ $errors->erolesusers->first('role') }}</span>
                             @endif
                         </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i>Asignar Rol</button>
-                        </div>
+
                         <hr>
                         <label for="">Permisos de rol seleccionado</label>
                         <table id="permissions-table" class="table table-sm table-bordered">
@@ -88,13 +78,17 @@
             </form>
         </div>
         <!-- /.tab-pane -->
-        @if(cache()->has('tabusuario') == true and cache()->get('tabusuario') == 3)
+        @if(Cookie::get('tabusuario') == 3)
         <div class="active tab-pane" id="permissions">
         @else
         <div class="tab-pane" id="permissions">
         @endif
         <form action="{{route('userpermissions.store',$user)}}" method="post">
             @csrf
+            <div class="form-group">
+                <button class="btn btn-primary" name="btnAsignarPermisos" type="submit"><i class="fa fa-plus-square"></i> Asignar Permisos</button>
+                <button class="btn btn-danger" name="btnEliminarPermisos" type="submit"><i class="fa fa-plus-square"></i> Borrar Permisos especiales</button>
+            </div>
             <label for="">Selecione los permisos</label>
             @isset($Permission)
                 @foreach ($Permission as $id => $p)
@@ -115,10 +109,6 @@
                 </div>
                 @endforeach
             @endisset
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i> Asignar Permisos</button>
-                <button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i> Borrar Permisos especiales</button>
-            </div>
         </form>
         </div>
         <!-- /.tab-pane -->

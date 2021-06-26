@@ -1,4 +1,10 @@
 <div class="row">
+    <div class="col-lg-12">
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i> Guardar</button>
+        </div>
+
+    </div>
     <div class="col-lg-6">
         <div class="form-group">
             <label for="name">*Nombres</label>
@@ -45,7 +51,5 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
-        <button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i> Guardar</button>
-    </div>
+
 </div>

@@ -20,7 +20,7 @@ Route::post('/users', [UserController::class, 'store'])->name('users.store');
 Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [UserController::class, 'delete'])->name('users.delete');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.delete');
 Route::post('/users/datatables', [UserController::class, 'datatables'])->name('users.datatables');
 
 Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');

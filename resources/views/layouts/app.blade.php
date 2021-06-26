@@ -40,6 +40,7 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+@yield('modals')
 @stack('scripts')
 </body>
 </html>

@@ -62,6 +62,31 @@
   </div>
   <!-- /.content -->
 @endsection
+@section('modals')
+<div class="modal fade" id="modal-delete">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Esta seguro de eliminar el registro</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form id="formDeleteUser" action="" method="POST">
+                @method('DELETE')
+                @csrf
+                <button type="submit" class="btn btn-primary">Aceptar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </form>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+@endsection
 @push('scripts')
     <script>
     $(function () {
@@ -91,7 +116,14 @@
 
             ]
         });
-
+        @if (session('status'))
+            toastr.success('{{session('status')}}');
+        @endisset
     });
+    function deleteMessage(id) {
+        $("#modal-delete").modal("show");
+        var urlDelete = "/users/"+id;
+        $("#formDeleteUser").attr("action",urlDelete);
+    }
     </script>
 @endpush
