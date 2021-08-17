@@ -17,9 +17,8 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Ingresa tus credenciales para iniciar sesión</p>
-      <form action="/login" method="post">
+      <form action="{{route('login')}}" method="post">
         @csrf
-
         <div class="form-group">
           <label for="txtEmail">Correo :</label>
           <input type="email" name="email" class="form-control @error('email')is-invalid @enderror" id="txtEmail" value="{{ old('email') }}" placeholder="Correo" aria-describedby="txtEmail-error" aria-invalid="true" required autofocus>

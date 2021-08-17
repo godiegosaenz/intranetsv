@@ -13,6 +13,11 @@ try {
     require('admin-lte');
     require('datatables.net-bs4');
     require('datatables.net-buttons-bs4');
+    window.moment = require('moment');
+    window.moment.locale('es');
+    require('admin-lte/plugins/inputmask/jquery.inputmask.min.js');
+    require('admin-lte/plugins/daterangepicker');
+
     window.Swal = swal = require('sweetalert2');
     window.toastr = toastr = require('toastr');
 } catch (e) {

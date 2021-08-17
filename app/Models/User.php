@@ -20,13 +20,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'dni',
         'name',
-        'lastname',
-        'lastname2',
         'email',
         'password',
         'status',
+        'people_entities_id'
     ];
 
     /**
@@ -48,22 +46,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /*public function scopeShowusers($query){
+    public function scopeShowusers($query){
         $query->where('status', 1)
         ->orderBy('name');
-    }*/
+    }
 
     public function getNameAttribute($name){
         return Str::upper($name);
     }
 
-    public function getLastnameAttribute($lastname){
+    /*public function getLastnameAttribute($lastname){
         return Str::upper($lastname);
     }
 
     public function getLastname2Attribute($lastname2){
         return Str::upper($lastname2);
-    }
+    }*/
 
     public function getStatusAttribute($status){
         if($status == 1){

@@ -2,7 +2,7 @@
 @section('content')
     <x-header title="Panel de roles">
         <li class="breadcrumb-item active">Roles</li>
-     </x-header>
+    </x-header>
      <!-- Main content -->
   <div class="content">
     <div class="container-fluid">

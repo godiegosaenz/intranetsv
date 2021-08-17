@@ -32,8 +32,6 @@
                     <thead>
                     <tr>
                       <th>Nombres</th>
-                      <th>Apellido P.</th>
-                      <th>Apellido M.</th>
                       <th>Correo Electronico</th>
                       <th>Estado</th>
                       <th>Acciones</th>
@@ -45,8 +43,6 @@
                     <tfoot>
                     <tr>
                         <th>Nombres</th>
-                        <th>Apellido P.</th>
-                        <th>Apellido M.</th>
                         <th>Correo Electronico</th>
                         <th>Estado</th>
                         <th>Acciones</th>
@@ -108,8 +104,6 @@
             },
             "columns": [
                 {data: 'name'},
-                {data: 'lastname'},
-                {data: 'lastname2'},
                 {data: 'email'},
                 {data: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},

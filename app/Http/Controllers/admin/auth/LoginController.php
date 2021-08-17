@@ -28,7 +28,7 @@ class LoginController extends Controller
         if(Auth::attempt($credenciales, $remember))
         {
             $request->session()->regenerate();
-            return redirect()->intended('home');
+            return redirect()->intended('admin/home');
         }
 
         throw ValidationException::withMessages([
@@ -47,7 +47,7 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('index');
     }
 
 }

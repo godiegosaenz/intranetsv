@@ -5,6 +5,8 @@ namespace App\Listeners;
 use App\Events\UserWasCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LoginCrendencialsMail;
 
 class SendMailCredentials
 {
@@ -16,6 +18,8 @@ class SendMailCredentials
      */
     public function handle(UserWasCreated $event)
     {
-        dd($event->user->toArray(), $event->password);
+        Mail::to($event->user)->queue(
+            new LoginCrendencialsMail($event->user,$event->password)
+        );
     }
 }
