@@ -8,7 +8,11 @@ use App\Http\Controllers\admin\configuracion\RolesController;
 use App\Http\Controllers\admin\configuracion\UserRolesController;
 use App\Http\Controllers\admin\configuracion\UserPermissionsController;
 use App\Http\Controllers\admin\administracion\PeopleEntitiesController;
-
+use App\Http\Controllers\admin\gestorcultural\CulturalManagerController;
+use App\Http\Controllers\admin\configuracion\ProvincesController;
+use App\Http\Controllers\admin\configuracion\CantonController;
+use App\Http\Controllers\admin\configuracion\ParishController;
+use App\Models\CulturalManager;
 
 Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('guest');
 
@@ -47,4 +51,21 @@ Route::prefix('admin')->group(function (){
     Route::get('/peopleentities/{PersonEntity}/edit', [PeopleEntitiesController::class, 'edit'])->name('peopleentities.edit')->middleware('auth');
     Route::post('/peopleentities/datatables', [PeopleEntitiesController::class, 'datatables'])->name('peopleentities.datatables');
     Route::post('/peopleentities', [PeopleEntitiesController::class, 'store'])->name('peopleentities.store');
+    Route::put('/peopleentities/{PersonEntity}', [PeopleEntitiesController::class, 'update'])->name('peopleentities.update');
+    Route::post('/peopleentities/{id}/get', [PeopleEntitiesController::class, 'getPersonEntity'])->name('peopleentities.get');
+
+    Route::post('/provinces/{id}', [ProvincesController::class, 'show'])->name('provinces.show')->middleware('auth');
+    Route::post('/cantons/{id}', [CantonController::class, 'show'])->name('cantons.show')->middleware('auth');
+    Route::post('/parishes/{id}', [ParishController::class, 'show'])->name('parishes.show')->middleware('auth');
+
+    Route::get('/culturalmanagers', [CulturalManagerController::class, 'index'])->name('culturalmanagers.index')->middleware('auth');
+    Route::get('/culturalmanagers/create/{id?}', [CulturalManagerController::class, 'create'])->name('culturalmanagers.create')->middleware('auth');
+    Route::get('/culturalmanagers/{CulturalManager}', [CulturalManagerController::class, 'show'])->name('culturalmanagers.show')->middleware('auth');
+    Route::get('/culturalmanagers/{CulturalManager}/edit', [CulturalManagerController::class, 'edit'])->name('culturalmanagers.edit')->middleware('auth');
+    Route::post('/culturalmanagers/datatablesPersonas', [CulturalManagerController::class, 'datatablesPersonas'])->name('culturalmanagers.datatablesPersonas');
+    Route::post('/culturalmanagers', [CulturalManagerController::class, 'store'])->name('culturalmanagers.store')->middleware('auth');
+
+    Route::get('/countries', function(){
+        return CulturalManager::with(['people_entities'])->get();
+    });
 });

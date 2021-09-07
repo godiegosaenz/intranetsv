@@ -99,8 +99,8 @@
                 </li>
                 </ul>
             </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ url()->current() == route('culturalmanagers.index') ? 'menu-open' : '' }} ">
+            <a href="#" class="nav-link {{ (url()->current() == route('culturalmanagers.index')) ? 'active' : '' }}">
               <i class="nav-icon fas fa-book-open"></i>
               <p>
                 Modulo Cultura
@@ -109,7 +109,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('culturalmanagers.index') }}" class="nav-link {{ (url()->current() == route('culturalmanagers.index')) ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Gestores culturales</p>
                 </a>

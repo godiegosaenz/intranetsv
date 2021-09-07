@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Country;
-use App\Models\PersonEntity;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,8 +19,11 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             ProvinceSeeder::class,
             CantonSeeder::class,
+            ParishSeeder::class,
             PersonEntitySeeder::class,
             UserSeeder::class,
+            TypeActivitySeeder::class,
+            ScopeActivitySeeder::class,
         ]);
     }
 }

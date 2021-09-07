@@ -18,7 +18,7 @@ class CreatePeopleEntitiesTable extends Migration
             $table->char('cc_ruc',13)->unique();
             $table->char('name', 150);
             $table->char('last_name', 150);
-            $table->char('maternal_last_name', 150);
+            $table->char('maternal_last_name', 150)->nullable();
             $table->boolean('is_person');
             $table->date('date_birth');
             $table->char('status',1);
@@ -33,13 +33,13 @@ class CreatePeopleEntitiesTable extends Migration
             $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('province_id');
             $table->unsignedBigInteger('canton_id');
-           // $table->unsignedBigInteger('parish_id');
+            $table->unsignedBigInteger('parish_id');
             $table->timestamps();
-            $table->index(['country_id','province_id','canton_id']);
+            $table->index(['country_id','province_id','canton_id','parish_id']);
             $table->foreign('country_id')->references('id')->on('countries');
             $table->foreign('province_id')->references('id')->on('provinces');
             $table->foreign('canton_id')->references('id')->on('cantons');
-            //$table->foreign('parish_id')->references('id')->on('parishes');
+            $table->foreign('parish_id')->references('id')->on('parishes');
         });
     }
 

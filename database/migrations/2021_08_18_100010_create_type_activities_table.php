@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCulturalManagersTable extends Migration
+class CreateTypeActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateCulturalManagersTable extends Migration
      */
     public function up()
     {
-        Schema::create('cultural_managers', function (Blueprint $table) {
+        Schema::create('type_activities', function (Blueprint $table) {
             $table->id();
             $table->char('name', 150);
+            $table->boolean('status');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateCulturalManagersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cultural_managers');
+        Schema::dropIfExists('type_activities');
     }
 }

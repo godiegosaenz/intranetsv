@@ -17,6 +17,7 @@ class CreateParishesTable extends Migration
             $table->id();
             $table->string('name', 150);
             $table->char('code',4)->nullable();
+            $table->char('type',1);
             $table->unsignedBigInteger('canton_id');
             $table->timestamps();
             $table->index('canton_id','parishes_canton_id_index');
