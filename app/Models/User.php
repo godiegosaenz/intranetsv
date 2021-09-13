@@ -78,4 +78,8 @@ class User extends Authenticatable
     public function scopeisAdministrator($query){
         return Auth()->user()->hasRole('Super Administrador');
     }
+
+    public function person_entity(){
+        return $this->belongsTo(PersonEntity::class,'people_entities_id');
+    }
 }

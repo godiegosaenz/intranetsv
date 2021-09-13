@@ -46,7 +46,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="cc_ruc">*Cédula/Ruc</label>
-                                            <input type="number" class="form-control  @error('cc_ruc')is-invalid @enderror" name="cc_ruc" id="cc_ruc" placeholder="1312......." value="{{ old('cc_ruc',$PersonEntity->cc_ruc) }}">
+                                            <input type="number" class="form-control  @error('cc_ruc')is-invalid @enderror" name="cc_ruc" id="cc_ruc" placeholder="1312......." value="{{ old('cc_ruc',$PersonEntity->cc_ruc) }}" required>
                                             @error('cc_ruc')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -54,21 +54,21 @@
 
                                         <div class="form-group">
                                             <label for="name">*Nombres/Nombre Comercial</label>
-                                            <input type="text" class="form-control @error('name')is-invalid @enderror" name="name" id="name" placeholder="Die...." value="{{ old('name',$PersonEntity->name) }}">
+                                            <input type="text" class="form-control @error('name')is-invalid @enderror" name="name" id="name" placeholder="Die...." value="{{ old('name',$PersonEntity->name) }}" required>
                                             @error('name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="last_name">*Apellido Paterno/Razon Social</label>
-                                            <input type="text" class="form-control @error('last_name')is-invalid @enderror" name="last_name" id="last_name" placeholder="Rodr..." value="{{ old('last_name',$PersonEntity->last_name) }}">
+                                            <input type="text" class="form-control @error('last_name')is-invalid @enderror" name="last_name" id="last_name" placeholder="Rodr..." value="{{ old('last_name',$PersonEntity->last_name) }}" required>
                                             @error('last_name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="maternal_last_name">Apellido Materno</label>
-                                            <input type="text" class="form-control @error('maternal_last_name')is-invalid @enderror" name="maternal_last_name" id="maternal_last_name" placeholder="Zambr..." value="{{ old('maternal_last_name',$PersonEntity->maternal_last_name) }}">
+                                            <input type="text" class="form-control @error('maternal_last_name')is-invalid @enderror" name="maternal_last_name" id="maternal_last_name" placeholder="Zambr..." value="{{ old('maternal_last_name',$PersonEntity->maternal_last_name) }}" required>
                                             @error('maternal_last_name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -80,20 +80,20 @@
                                               <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                               </div>
-                                              <input type="text" class="form-control" id="date_birth" name="date_birth" value="{{ old('date_birth',$PersonEntity->date_birth) }}" />
+                                              <input type="text" class="form-control" id="date_birth" name="date_birth" value="{{ old('date_birth',$PersonEntity->date_birth) }}" required />
                                             </div>
                                             <!-- /.input group -->
                                         </div>
                                         <div class="form-group">
                                             <label for="email">*Correo Electronico</label>
-                                            <input type="email" class="form-control @error('email')is-invalid @enderror" name="email" id="email" placeholder="abcd....@gmail.com" value="{{ old('email',$PersonEntity->email) }}">
+                                            <input type="email" class="form-control @error('email')is-invalid @enderror" name="email" id="email" placeholder="abcd....@gmail.com" value="{{ old('email',$PersonEntity->email) }}" required>
                                             @error('email')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label>*Estado</label>
-                                            <select id="status" name="status" class="custom-select">
+                                            <select id="status" name="status" class="custom-select" required>
                                                 <option value="">Seleccione estado</option>
                                                 @if ($PersonEntity->status == 1)
                                                     <option value="1" selected>Activo</option>
@@ -113,14 +113,14 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="number_phone1">*Telefono</label>
-                                            <input type="text" class="form-control @error('number_phone1')is-invalid @enderror" name="number_phone1" id="number_phone1" placeholder="0995....." value="{{ old('number_phone1',$PersonEntity->number_phone1) }}">
+                                            <input type="text" class="form-control @error('number_phone1')is-invalid @enderror" name="number_phone1" id="number_phone1" placeholder="0995....." value="{{ old('number_phone1',$PersonEntity->number_phone1) }}" required>
                                             @error('number_phone1')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label>*Pais</label>
-                                            <select id="country_id" name="country_id" class="custom-select  @error('country_id') is-invalid @enderror">
+                                            <select id="country_id" name="country_id" class="custom-select  @error('country_id') is-invalid @enderror" required>
                                                 <option value="">Seleccione pais</option>
                                                 @isset($CountryData)
                                                     @foreach ($CountryData as $cd)
@@ -147,7 +147,7 @@
                                         <div class="form-group">
                                             <label>*Provincia</label>
 
-                                            <select id="province_id" name="province_id" class="custom-select @error('province_id') is-invalid @enderror">
+                                            <select id="province_id" name="province_id" class="custom-select @error('province_id') is-invalid @enderror" required>
                                                 <option value="">Seleccione provincia</option>
                                                 @if($ProvinceData)
                                                     @foreach ($ProvinceData as $p)
@@ -175,7 +175,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>*Canton</label>
-                                            <select id="canton_id" name="canton_id" class="custom-select @error('canton_id') is-invalid @enderror">
+                                            <select id="canton_id" name="canton_id" class="custom-select @error('canton_id') is-invalid @enderror" required>
                                                 <option value="">Seleccione canton</option>
                                                 @if ($CantonData)
                                                     @foreach ($CantonData as $c)
@@ -203,7 +203,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>*Parroquia</label>
-                                            <select id="parish_id" name="parish_id" class="custom-select @error('parish_id') is-invalid @enderror">
+                                            <select id="parish_id" name="parish_id" class="custom-select @error('parish_id') is-invalid @enderror" required>
                                                 <option value="">Seleccione canton</option>
                                                 @if ($ParishData)
                                                     @foreach ($ParishData as $pa)
@@ -231,7 +231,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="address">*Direccion</label>
-                                            <input type="text" class="form-control @error('address')is-invalid @enderror" name="address" id="address" placeholder="Calle ..." value="{{ old('address',$PersonEntity->address) }}">
+                                            <input type="text" class="form-control @error('address')is-invalid @enderror" name="address" id="address" placeholder="Calle ..." value="{{ old('address',$PersonEntity->address) }}" required>
                                             @error('address')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror

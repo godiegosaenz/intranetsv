@@ -25,7 +25,7 @@ class UpdatePersonEntityRequest extends FormRequest
     public function rules()
     {
         return [
-            'cc_ruc' => ['bail','required','numeric',Rule::unique('App\Models\PersonEntity')->ignore($this->route('peopleentities.edit'))],
+            'cc_ruc' => ['bail','required','numeric',Rule::unique('App\Models\PersonEntity')->ignore($this->route('PersonEntity'))],
             'name' => 'bail|required',
             'last_name' => 'bail|required',
             'maternal_last_name' => 'bail|required',
@@ -36,7 +36,7 @@ class UpdatePersonEntityRequest extends FormRequest
             //'legal_representative' => 'bail|required',
             'type' => 'bail|required',
             'number_phone1' => 'bail|required',
-            'email' => 'bail|required|unique:App\Models\User,email',
+            'email' => ['bail','required',Rule::unique('App\Models\PersonEntity')->ignore($this->route('PersonEntity'))],
             'country_id' => 'bail|required',
             'province_id' => 'bail|required',
             'canton_id' => 'bail|required',
@@ -68,10 +68,6 @@ class UpdatePersonEntityRequest extends FormRequest
 
     public function withValidator($validator)
     {
-        $validator->after(function ($validator) {
-            if ($this->somethingElseIsInvalid()) {
-                $validator->errors()->add('field', 'Something is wrong with this field!');
-            }
-        });
+
     }
 }

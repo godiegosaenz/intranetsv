@@ -72,7 +72,7 @@
             "language" : {
                 "url": '{{ url("/js/spanish.json") }}',
             },
-            "autoWidth": false,
+            "scrollX": true,
             "order": [], //Initial no order
             "processing" : true,
             "serverSide": true,
@@ -84,13 +84,13 @@
                 }
             },
             "columns": [
-                {data: 'cc_ruc'},
-                {data: 'name'},
-                {data: 'last_name'},
-                {data: 'maternal_last_name'},
-                {data: 'status'},
-                {data: 'email'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
+                {data: 'cc_ruc', width: "100px"},
+                {data: 'name', width: "150"},
+                {data: 'last_name', width: "150"},
+                {data: 'maternal_last_name',width: "150"},
+                {data: 'status',width: "100"},
+                {data: 'email', width: "200px"},
+                {data: 'action', width: "250px", name: 'action', orderable: false, searchable: false},
 
             ]
         });

@@ -3,9 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class SaveUserRequest extends FormRequest
 {
+    protected $redirect = 'admin/user/create';
+    public $person_id = null;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,32 +28,42 @@ class SaveUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'dni' => 'bail|required|numeric|digits:10|unique:App\Models\User,dni',
-            'name' => 'bail|required',
-            'lastname' => 'bail|required',
-            'lastname2' => 'bail|required',
+            'name' => 'bail|required|alpha_dash|unique:App\Models\User,name',
             'email' => 'bail|required|unique:App\Models\User,email',
-            'status' => 'bail|nullable'
+            'status' => 'bail|required',
+            'password' => ['required', 'confirmed', Password::min(8)
+            ->letters()
+            ->mixedCase()
+            ->numbers()
+            ->symbols()
+            ->uncompromised()],
+            'people_entities_id' => 'bail|required|unique:App\Models\User,people_entities_id'
         ];
     }
 
     public function attributes()
     {
         return [
-            'dni' => 'Cedula',
             'email' => 'Correo electrónico',
-            'name' => 'Nombres',
-            'lastname' => 'Apellido paterno',
-            'lastname2' => 'Apellido materno',
+            'name' => 'Nombre de usuario',
             'status' => 'Estado',
+            'password' => 'Contraseña',
+            'people_entities_id' => 'Persona'
         ];
     }
 
     protected function prepareForValidation()
     {
-        $this->merge([
+        if($this->people_entities_id != null){
+            $this->person_id = $this->people_entities_id;
+            $this->redirect = url('admin/users/create/'.$this->person_id);
+        }else{
+            $this->redirect = url('admin/users/create');
+        }
+
+        /*$this->merge([
             'status' => filled($this->status),
-        ]);
+        ]);*/
     }
 
 }

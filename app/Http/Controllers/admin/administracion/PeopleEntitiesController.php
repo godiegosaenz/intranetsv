@@ -10,6 +10,7 @@ use App\Models\Province;
 use App\Models\Canton;
 use App\Models\Parish;
 use App\Http\Requests\StorePersonEntityRequest;
+use App\Http\Requests\UpdatePersonEntityRequest;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Arr;
 
@@ -71,7 +72,7 @@ class PeopleEntitiesController extends Controller
         }
         //dd($validationComplete);
         $personcreate = PersonEntity::create($validationComplete);
-        return redirect('admin/peopleentities/create')->with('status', 'Profile updated!');
+        return redirect()->route('peopleentities.create')->with('status', 'El registro fue exitoso');
     }
 
     /**
@@ -82,7 +83,8 @@ class PeopleEntitiesController extends Controller
      */
     public function show($id)
     {
-        //
+        $PersonEntity = PersonEntity::with(['countries','provinces','cantons','parishes'])->find($id);
+        return view('admin/peopleentitiesShow',compact('PersonEntity'));
     }
 
     /**
@@ -107,9 +109,15 @@ class PeopleEntitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePersonEntityRequest $request, PersonEntity $PersonEntity)
     {
-        //
+        if($request->type == "1"){
+            $validationComplete = Arr::add($request->validated(),'is_person','1') ;
+        }else{
+            $validationComplete = Arr::add($request->validated(),'is_person','0') ;
+        }
+        $PersonEntity->update($validationComplete);
+        return back()->with('status',  'El usuario '.$request->name.' se ha actualizado satisfactoriamente');
     }
 
     /**
@@ -132,9 +140,9 @@ class PeopleEntitiesController extends Controller
             //$PersonEntityData = Arr::add($PersonEntityDataTemp,'formRequestPeople', '1');
             return Datatables($PersonEntityData)
                     ->addColumn('action', function ($PersonEntityData) {
-                        $buttons = '<a href="'.route('peopleentities.show',['PersonEntity' => $PersonEntityData]).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a> ';
-                        $buttons .= '<a href="'.route('peopleentities.edit',['PersonEntity' => $PersonEntityData]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a> ';
-                        $buttons .= '<a onclick="deleteMessage('.$PersonEntityData->id.')" class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></a>';
+                        $buttons = '<a href="'.route('peopleentities.show',['PersonEntity' => $PersonEntityData]).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Ver</a> ';
+                        $buttons .= '<a href="'.route('peopleentities.edit',['PersonEntity' => $PersonEntityData]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Editar</a> ';
+                        $buttons .= '<a onclick="deleteMessage('.$PersonEntityData->id.')" class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i> Eliminar</a>';
                         return $buttons;
                     })
                     ->make(true);

@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\PersonEntity;
 use Illuminate\Support\Facades\Cookie;
 use App\Events\UserWasCreated;
 use Illuminate\Support\Facades\Auth;
@@ -34,16 +35,21 @@ class UserController extends Controller
         ]);
     }
 
-    public function create(){
-        return view('configuracion.userCreate',[
-            'user' => new User(),
-            'roles' => Role::pluck('name','id')
-        ]);
+    public function create($id = null){
+        if($id != null){
+            $PersonEntityData = PersonEntity::with(['Countries','provinces','cantons','parishes'])->where('id', $id)->first();
+        }else{
+            $PersonEntityData = new PersonEntity();
+        }
+        //dd($PersonEntityData);
+        $user = new User();
+        $roles = Role::pluck('name','id');
+        return view('configuracion.userCreate',compact('user','roles','PersonEntityData'));
     }
 
     public function store(SaveUserRequest $request){
-        $registerUser = Arr::add($request->validated(),'password',bcrypt($request->dni.$request->lastname));
-        $usercreate = User::create($registerUser);
+        //$registerUser = Arr::add($request->validated(),'password',bcrypt($request->dni.$request->lastname));
+        $usercreate = User::create($request->validated());
         //UserWasCreated::dispatch($usercreate,$usercreate->password);
         return redirect()->route('users.edit', ['user' => $usercreate])->with('status', 'El usuario '.$request->name.' se ha registrado satisfactoriamente');
     }
@@ -65,7 +71,8 @@ class UserController extends Controller
     }
 
     public function edit(User $user, Request $request){
-        $this->authorize('edit', $user);
+        //$this->authorize('edit', $user);
+        $PersonEntityData = PersonEntity::with(['Countries','provinces','cantons','parishes'])->where('id', $user->people_entities_id)->first();
         $roles = Role::all()->pluck('name','id');
         $rolPermissionuser = $user->getPermissionsViaRoles()->pluck('name','id');
         $roluser = $user->getRoleNames();
@@ -76,13 +83,14 @@ class UserController extends Controller
                     'roles' => $roles,
                     'Permission' => Permission::all(),
                     'PermissionRole' => $rolPermissionuser,
-                    'PermissionUser' => $permissionsuser
+                    'PermissionUser' => $permissionsuser,
+                    'PersonEntityData' => $PersonEntityData
         ]);
     }
 
     public function update(User $user,UpdateUserRequest $request){
         $user->update($request->validated());
-        $tabusuario =cookie('tabusuario', '1');
+        $tabusuario = cookie('tabusuario', '1');
         //Cache::put('tabusuario', 1);
         return back()->with('status',  'El usuario '.$request->name.' se ha actualizado satisfactoriamente')->cookie($tabusuario);
     }
@@ -95,13 +103,13 @@ class UserController extends Controller
 
     public function datatables(Request $request){
         if ($request->ajax()) {
-            $userAutenticado = User::find(auth()->user()->id);
+            //$userAutenticado = User::find(auth()->user()->id);
             //dd($userAutenticado);
-            if($userAutenticado->isAdministrator()){
-                $users = User::all();
-            }else{
-                $users = User::where('id', auth()->user()->id)->get();
-            }
+            //if($userAutenticado->isAdministrator()){
+                $users = User::with(['person_entity'])->get();
+            //}else{
+            //    $users = User::where('id', auth()->user()->id)->get();
+            //}
 
             return Datatables($users)
                     ->addColumn('action', function ($users) {

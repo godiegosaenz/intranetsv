@@ -49,7 +49,7 @@ class ParishController extends Controller
     {
         $cookie_parish = $request->cookie('parish_id');
         $ParishData = Parish::where('canton_id',$id)->get();
-        $ParishOption = '<option>Seleccione Parroquia</option>';
+        $ParishOption = '<option value="">Seleccione Parroquia</option>';
         foreach($ParishData as $Parish){
             if($cookie_parish != null){
                 if($cookie_parish == $Parish->id){

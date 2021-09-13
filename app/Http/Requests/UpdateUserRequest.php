@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -25,37 +26,40 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'dni' => ['bail',
+            'name' => ['bail',
                         'required',
-                        'numeric',
-                        'digits:10',
                         Rule::unique('users')->ignore($this->route('user'))],
-            'name' => 'bail|required',
-            'lastname' => 'bail|required',
-            'lastname2' => 'bail|required',
             'email' => ['bail',
                         'required',
                         Rule::unique('users')->ignore($this->route('user'))],
-            'status' => 'bail|nullable'
+            'password' => ['required', 'confirmed', Password::min(8)
+            ->letters()
+            ->mixedCase()
+            ->numbers()
+            ->symbols()
+            ->uncompromised()],
+            'status' => 'bail|required',
+            'people_entities_id' => ['bail',
+                        'required',
+                        Rule::unique('users')->ignore($this->route('user'))],
         ];
     }
 
     public function attributes()
     {
         return [
-            'dni' => 'Cedula',
             'email' => 'Correo electrónico',
             'name' => 'Nombres',
-            'lastname' => 'Apellido paterno',
-            'lastname2' => 'Apellido materno',
+            'password' => 'Contraseña',
             'status' => 'Estado',
+            'people_entities_id' => 'Persona/empresa',
         ];
     }
 
     protected function prepareForValidation()
     {
-        $this->merge([
+        /*$this->merge([
             'status' => filled($this->status),
-        ]);
+        ]);*/
     }
 }

@@ -49,7 +49,7 @@ class CantonController extends Controller
     {
         $cookie_canton = $request->cookie('canton_id');
         $CantonData = Canton::where('province_id',$id)->get();
-        $CantonOption = '<option>Seleccione Canton</option>';
+        $CantonOption = '<option value="">Seleccione Canton</option>';
         foreach($CantonData as $Canton){
             if($cookie_canton != null){
                 if($cookie_canton == $Canton->id){

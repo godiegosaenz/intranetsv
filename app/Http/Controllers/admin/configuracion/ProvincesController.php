@@ -50,7 +50,7 @@ class ProvincesController extends Controller
     {
         $cookie_province = Cookie::get('province_id');//Cookie::get('province_id');
         $ProvinceData = Province::where('country_id',$id)->get();
-        $ProvinceOption = '<option>Seleccione Provincia</option>';
+        $ProvinceOption = '<option value="">Seleccione Provincia</option>';
         foreach($ProvinceData as $Province){
             if($cookie_province != null){
                 if($cookie_province == $Province->id){

@@ -31,7 +31,10 @@
                 <table id="users-table" class="table table-sm table-bordered table-hover">
                     <thead>
                     <tr>
+                      <th>Nombre de usuario</th>
                       <th>Nombres</th>
+                      <th>Apellido paterno</th>
+                      <th>Apellido materno</th>
                       <th>Correo Electronico</th>
                       <th>Estado</th>
                       <th>Acciones</th>
@@ -41,12 +44,7 @@
 
                     </tbody>
                     <tfoot>
-                    <tr>
-                        <th>Nombres</th>
-                        <th>Correo Electronico</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
+
                     </tfoot>
                 </table>
             </div>
@@ -104,6 +102,9 @@
             },
             "columns": [
                 {data: 'name'},
+                {data: 'person_entity.name'},
+                {data: 'person_entity.last_name'},
+                {data: 'person_entity.maternal_last_name'},
                 {data: 'email'},
                 {data: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},

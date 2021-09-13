@@ -56,7 +56,8 @@ class UserPolicy
      * @return mixed
      */
     public function edit(User $user, User $model){
-        return Auth()->id() === $model->id;
+        //return Auth()->id() === $model->id;
+        return true;
     }
     /**
      * Determine whether the user can update the model.
