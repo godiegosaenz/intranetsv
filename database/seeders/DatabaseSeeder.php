@@ -24,6 +24,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TypeActivitySeeder::class,
             ScopeActivitySeeder::class,
+            TouristActivitySeeder::class,
+            AccommodationClassificationSeeder::class,
+            AccommodationCategorySeeder::class,
+            TypeRoomSeeder::class,
         ]);
     }
 }

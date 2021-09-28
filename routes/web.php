@@ -12,7 +12,9 @@ use App\Http\Controllers\admin\gestorcultural\CulturalManagerController;
 use App\Http\Controllers\admin\configuracion\ProvincesController;
 use App\Http\Controllers\admin\configuracion\CantonController;
 use App\Http\Controllers\admin\configuracion\ParishController;
-use App\Models\CulturalManager;
+use App\Http\Controllers\admin\alojamiento\AccommodationController;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('guest');
 
@@ -65,7 +67,10 @@ Route::prefix('admin')->group(function (){
     Route::post('/culturalmanagers/datatablesPersonas', [CulturalManagerController::class, 'datatablesPersonas'])->name('culturalmanagers.datatablesPersonas');
     Route::post('/culturalmanagers', [CulturalManagerController::class, 'store'])->name('culturalmanagers.store')->middleware('auth');
 
+    Route::get('/accommodations', [AccommodationController::class, 'index'])->name('accommodations.index')->middleware('auth');
+    Route::get('/accommodations/create/{id?}', [AccommodationController::class, 'create'])->name('accommodations.create')->middleware('auth');
+    Route::post('/accommodations', [AccommodationController::class, 'store'])->name('accommodations.store');
     Route::get('/countries', function(){
-        return CulturalManager::with(['people_entities'])->get();
+        return DB::table('public.users')->where('id',1)->get();
     });
 });

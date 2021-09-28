@@ -122,37 +122,11 @@
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Level 2</p>
-                </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ url()->current() == route('accommodations.index') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (url()->current() == route('accommodations.index')) ? 'active' : '' }}">
               <i class="nav-icon fas fa-globe"></i>
               <p>
                 Modulo Turismo
@@ -160,12 +134,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Gestores culturales</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                    <a href="{{ route('accommodations.index') }}" class="nav-link {{ (url()->current() == route('accommodations.index')) ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Alojamientos turisticos</p>
+                      </a>
+                </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
