@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\admin\alojamiento;
+namespace App\Http\Controllers\admin\establecimientosturisticos;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\models\PersonEntity;
 
-class AccommodationController extends Controller
+class ClassificationCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class AccommodationController extends Controller
      */
     public function index()
     {
-        return view('travel.accommodation');
+        //
     }
 
     /**
@@ -25,9 +24,7 @@ class AccommodationController extends Controller
      */
     public function create()
     {
-        $PersonEntityData = new PersonEntity();
-        //dd($PersonEntityData);
-        return view('travel.accommodationCreate', compact('PersonEntityData'));
+        //
     }
 
     /**
@@ -49,7 +46,7 @@ class AccommodationController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**

@@ -125,8 +125,8 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item {{ url()->current() == route('accommodations.index') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ (url()->current() == route('accommodations.index')) ? 'active' : '' }}">
+          <li class="nav-item {{ url()->current() == route('establishments.index') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (url()->current() == route('establishments.index')) ? 'active' : '' }}">
               <i class="nav-icon fas fa-globe"></i>
               <p>
                 Modulo Turismo
@@ -135,9 +135,9 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route('accommodations.index') }}" class="nav-link {{ (url()->current() == route('accommodations.index')) ? 'active' : '' }}">
+                    <a href="{{ route('establishments.index') }}" class="nav-link {{ (url()->current() == route('establishments.index')) ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Alojamientos turisticos</p>
+                        <p>Establecimientos</p>
                       </a>
                 </li>
               <li class="nav-item">

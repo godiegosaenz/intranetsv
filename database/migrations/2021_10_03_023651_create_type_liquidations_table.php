@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccommodationCategoriesTable extends Migration
+class CreateTypeLiquidationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateAccommodationCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('accommodation_categories', function (Blueprint $table) {
+        Schema::create('type_liquidations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('accommodation_classification_id');
-            $table->index('accommodation_classification_id');
-            $table->foreign('accommodation_classification_id')->references('id')->on('accommodation_classifications');
+            $table->boolean('status');
+            $table->boolean('pref')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateAccommodationCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accommodation_categories');
+        Schema::dropIfExists('type_liquidations');
     }
 }

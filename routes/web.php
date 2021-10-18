@@ -12,8 +12,11 @@ use App\Http\Controllers\admin\gestorcultural\CulturalManagerController;
 use App\Http\Controllers\admin\configuracion\ProvincesController;
 use App\Http\Controllers\admin\configuracion\CantonController;
 use App\Http\Controllers\admin\configuracion\ParishController;
-use App\Http\Controllers\admin\alojamiento\AccommodationController;
-use App\Models\User;
+use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentController;
+use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentClassificationController;
+use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentCategoryController;
+use App\Models\EstablishmentCategory;
+use App\Models\EstablishmentClassification;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('guest');
@@ -67,10 +70,16 @@ Route::prefix('admin')->group(function (){
     Route::post('/culturalmanagers/datatablesPersonas', [CulturalManagerController::class, 'datatablesPersonas'])->name('culturalmanagers.datatablesPersonas');
     Route::post('/culturalmanagers', [CulturalManagerController::class, 'store'])->name('culturalmanagers.store')->middleware('auth');
 
-    Route::get('/accommodations', [AccommodationController::class, 'index'])->name('accommodations.index')->middleware('auth');
-    Route::get('/accommodations/create/{id?}', [AccommodationController::class, 'create'])->name('accommodations.create')->middleware('auth');
-    Route::post('/accommodations', [AccommodationController::class, 'store'])->name('accommodations.store');
+    Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index')->middleware('auth');
+    Route::get('/establishments/create/{id?}', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
+    Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
+
+    Route::post('/establishmentclassification/{id}', [EstablishmentClassificationController::class, 'show'])->name('establishmentclassification.show')->middleware('auth');
+    Route::post('/establishmentcategory/{id}', [EstablishmentCategoryController::class, 'show'])->name('establishmentcategory.show')->middleware('auth');
+
+
     Route::get('/countries', function(){
-        return DB::table('public.users')->where('id',1)->get();
+        //return EstablishmentCategory::find(2)->establishments_classifications()->orderBy('id')->get();
+        return EstablishmentClassification::find(1)->establishments_categories()->orderBy('id')->get();
     });
 });

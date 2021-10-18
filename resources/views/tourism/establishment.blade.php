@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @section('content')
-    <x-header title="Panel Alojamiento">
-        <li class="breadcrumb-item active">Alojamiento</li>
+    <x-header title="Panel de establecimientos turisticos">
+        <li class="breadcrumb-item active">Establecimientos turisticos</li>
     </x-header>
      <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
       <div class="row mb-3">
         <div class="col-sm-12">
-            <a class="btn btn-primary float-sm-left" href="{{ route('accommodations.create')}}"><i class="fa fa-plus-square"></i> Crear Gestor cultural</a>
+            <a class="btn btn-primary float-sm-left" href="{{ route('establishments.create')}}"><i class="fa fa-plus-square"></i> Registrar</a>
         </div>
       </div>
       <div class="row">

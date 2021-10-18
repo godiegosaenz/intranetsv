@@ -20,6 +20,13 @@ class CreateTravelsHotelsDetailsTable extends Migration
             $table->integer('total');
             $table->integer('bed');
             $table->integer('plazas');
+            $table->unsignedBigInteger('type_room_id');
+            $table->index('type_room_id');
+            $table->foreign('type_room_id')->references('id')->on('type_rooms');
+            $table->unsignedBigInteger('estableshment_id');
+            $table->index('estableshment_id');
+            $table->foreign('estableshment_id')->references('id')->on('estableshments');
+            $table->char('username');
             $table->timestamps();
         });
     }
