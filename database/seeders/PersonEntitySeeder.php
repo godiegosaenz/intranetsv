@@ -16,6 +16,7 @@ class PersonEntitySeeder extends Seeder
     {
         PersonEntity::create([
             'cc_ruc' => '1314801349',
+            'type_document' => 'c',
             'name' => 'Diego Andres',
             'last_name' => 'Bermudez',
             'maternal_last_name' => 'Saenz',
@@ -26,7 +27,7 @@ class PersonEntitySeeder extends Seeder
             'legal_representative' => null,
             'tradename' => null,
             'bussines_name' => null,
-            'type' => 'natural',
+            'type' => 'n',
             'number_phone1' => '0939120904',
             'number_phone2' => null,
             'email' => 'dbermudez1349@hotmail.com',
@@ -38,6 +39,7 @@ class PersonEntitySeeder extends Seeder
 
         PersonEntity::create([
             'cc_ruc' => '1314801465',
+            'type_document' => '1',
             'name' => 'Juan',
             'last_name' => 'Parraga',
             'maternal_last_name' => 'Saenz',
@@ -48,7 +50,7 @@ class PersonEntitySeeder extends Seeder
             'legal_representative' => null,
             'tradename' => null,
             'bussines_name' => null,
-            'type' => 'natural',
+            'type' => 'n',
             'number_phone1' => '0939120904',
             'number_phone2' => null,
             'email' => 'juanjesusparraga@hotmail.com',
@@ -59,7 +61,8 @@ class PersonEntitySeeder extends Seeder
         ]);
 
         PersonEntity::create([
-            'cc_ruc' => '1314676725',
+            'cc_ruc' => '1314676725001',
+            'type_document' => 'r',
             'name' => 'Gabriela',
             'last_name' => 'Loor',
             'maternal_last_name' => 'Cano',
@@ -70,7 +73,7 @@ class PersonEntitySeeder extends Seeder
             'legal_representative' => null,
             'tradename' => null,
             'bussines_name' => null,
-            'type' => 'natural',
+            'type' => 'j',
             'number_phone1' => '0939120945',
             'number_phone2' => null,
             'email' => 'gabyloorcano@gmail.com',

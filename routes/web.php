@@ -16,7 +16,9 @@ use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentControlle
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentClassificationController;
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentCategoryController;
 use App\Models\EstablishmentCategory;
-use App\Models\EstablishmentClassification;
+use App\Models\Requirement;
+use App\Models\Establishments;
+use App\Models\TouristActivity;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('guest');
@@ -73,6 +75,7 @@ Route::prefix('admin')->group(function (){
     Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index')->middleware('auth');
     Route::get('/establishments/create/{id?}', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
+    Route::post('/establishments/datatablesPersonas', [EstablishmentController::class, 'datatablesPersonas'])->name('establishments.datatablesPersonas');
 
     Route::post('/establishmentclassification/{id}', [EstablishmentClassificationController::class, 'show'])->name('establishmentclassification.show')->middleware('auth');
     Route::post('/establishmentcategory/{id}', [EstablishmentCategoryController::class, 'show'])->name('establishmentcategory.show')->middleware('auth');
@@ -80,6 +83,11 @@ Route::prefix('admin')->group(function (){
 
     Route::get('/countries', function(){
         //return EstablishmentCategory::find(2)->establishments_classifications()->orderBy('id')->get();
-        return EstablishmentClassification::find(1)->establishments_categories()->orderBy('id')->get();
+        //return Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative'])->get();
+        //return TouristActivity::with(['requirements'])->get();
+        return Requirement::with(['tourist_activities'])->get();
+        //return EstablishmentCategory::with(['establishments_classifications'])->find(1)->get();
+        //return EstablishmentClassification::find(2)->establishments_categories;
+
     });
 });

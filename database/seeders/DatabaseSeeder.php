@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             EstablishmentCategorySeeder::class,
             TypeRoomSeeder::class,
             ClassificationCategorySeeder::class,
+            RequirementSeeder::class,
+            TouristActivityRequirementSeeder::class,
         ]);
     }
 }

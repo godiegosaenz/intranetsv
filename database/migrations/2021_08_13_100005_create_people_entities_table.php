@@ -16,6 +16,7 @@ class CreatePeopleEntitiesTable extends Migration
         Schema::create('people_entities', function (Blueprint $table) {
             $table->id();
             $table->char('cc_ruc',13)->unique();
+            $table->char('type_document',1);
             $table->char('name', 150);
             $table->char('last_name', 150);
             $table->char('maternal_last_name', 150)->nullable();

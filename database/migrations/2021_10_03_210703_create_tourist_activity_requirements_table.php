@@ -15,6 +15,12 @@ class CreateTouristActivityRequirementsTable extends Migration
     {
         Schema::create('tourist_activity_requirements', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('requirement_id');
+            $table->index('requirement_id');
+            $table->foreign('requirement_id')->references('id')->on('requirements');
+            $table->unsignedBigInteger('tourist_activity_id');
+            $table->index('tourist_activity_id');
+            $table->foreign('tourist_activity_id')->references('id')->on('tourist_activities');
             $table->timestamps();
         });
     }

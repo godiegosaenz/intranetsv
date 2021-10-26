@@ -22,4 +22,5 @@ class EstablishmentClassification extends Model
     {
         return $this->belongsToMany(EstablishmentCategory::class,'classification_categories','category_id','classification_id');
     }
+
 }

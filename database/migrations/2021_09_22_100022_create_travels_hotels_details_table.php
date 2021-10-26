@@ -23,9 +23,9 @@ class CreateTravelsHotelsDetailsTable extends Migration
             $table->unsignedBigInteger('type_room_id');
             $table->index('type_room_id');
             $table->foreign('type_room_id')->references('id')->on('type_rooms');
-            $table->unsignedBigInteger('estableshment_id');
-            $table->index('estableshment_id');
-            $table->foreign('estableshment_id')->references('id')->on('estableshments');
+            $table->unsignedBigInteger('establishment_id');
+            $table->index('establishment_id');
+            $table->foreign('establishment_id')->references('id')->on('establishments');
             $table->char('username');
             $table->timestamps();
         });

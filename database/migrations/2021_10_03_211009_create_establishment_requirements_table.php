@@ -15,6 +15,15 @@ class CreateEstablishmentRequirementsTable extends Migration
     {
         Schema::create('establishment_requirements', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('requirement_id');
+            $table->index('requirement_id');
+            $table->foreign('requirement_id')->references('id')->on('requirements');
+            $table->unsignedBigInteger('establishment_id');
+            $table->index('establishment_id');
+            $table->foreign('establishment_id')->references('id')->on('establishments');
+            $table->boolean('upload')->nullable();
+            $table->string('name')->nullable();
+            $table->string('file_path')->nullable();
             $table->timestamps();
         });
     }

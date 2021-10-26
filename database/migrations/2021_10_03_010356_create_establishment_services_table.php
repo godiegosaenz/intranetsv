@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEstableshmentServicesTable extends Migration
+class CreateEstablishmentServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateEstableshmentServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('estableshment_services', function (Blueprint $table) {
+        Schema::create('establishment_services', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('service_id');
             $table->index('service_id');
             $table->foreign('service_id')->references('id')->on('services');
-            $table->unsignedBigInteger('estableshment_id');
-            $table->index('estableshment_id');
-            $table->foreign('estableshment_id')->references('id')->on('estableshments');
+            $table->unsignedBigInteger('establishment_id');
+            $table->index('establishment_id');
+            $table->foreign('establishment_id')->references('id')->on('establishments');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateEstableshmentServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estableshment_services');
+        Schema::dropIfExists('establishment_services');
     }
 }

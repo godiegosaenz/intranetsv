@@ -12,14 +12,15 @@
                 <div class="card">
                     <div class="card-header p-2">
                       <ul class="nav nav-pills">
-                        <li class="nav-item"><a class="nav-link active" href="#formulario" data-toggle="tab"> Formulario de alojamientos turisticos</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#formulario" data-toggle="tab"> Formulario de establecimientos turisticos</a></li>
+                        @if($register == 'yes')
                         <li class="nav-item"><a class="nav-link" href="#uploadfile" data-toggle="tab"> Requerimientos</a></li>
+                        @endif
                       </ul>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                       <div class="tab-content">
                         <div class="active tab-pane" id="formulario">
-
                             <form id="formEstablisment" action="{{ route('establishments.store') }}" method="post">
                                 @csrf
                                 <div class="row">
@@ -30,50 +31,54 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <label for="cc_ruc"> Selecciona Persona / empresa</label>
+                                        <label for="cc_ruc"> Selecciona Persona / empresa *</label>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Buscar</button>
+                                              <button id="modalempresa" type="button" class="btn btn-primary">Buscar</button>
                                             </div>
                                             <!-- /btn-group -->
-                                            <input id="establishment_id" name="establishment_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                            <input id="establishment_id" name="establishment_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('cc_ruc',isset($establishmentData->people_entities_establishment->cc_ruc) ? $establishmentData->people_entities_establishment->cc_ruc : '') }}">
 
                                             @error('people_entities_id')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <input id="establishment_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                        <input id="numbermodal" type="hidden" class="form-control" value="1">
                                     </div>
                                     <div class="col-lg-12">
+                                        <br>
+                                        <h5>Datos de personas/empresas</h5>
                                         <hr>
+
                                     </div>
                                     <div class="col-lg-6">
 
                                         <div class="form-group">
                                             <label for="name2">Nombres/Nombre Comercial</label>
-                                            <input type="text" class="form-control" id="name2" value="{{ old('name',$PersonEntityData->name) }}" disabled>
+                                            <input type="text" class="form-control" id="name2" value="{{ old('name',isset($establishmentData->people_entities_establishment->name) ? $establishmentData->people_entities_establishment->name : '') }}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="last_name">Apellido Paterno/Razon Social</label>
-                                            <input type="text" class="form-control" id="last_name" value="{{ old('last_name',$PersonEntityData->last_name) }}" disabled>
+                                            <input type="text" class="form-control" id="last_name" value="{{ old('last_name',isset($establishmentData->people_entities_establishment->last_name) ? $establishmentData->people_entities_establishment->last_name : '') }}" disabled>
 
                                         </div>
 
 
                                         <div class="form-group">
                                             <label for="email2">Correo Electronico</label>
-                                            <input type="text" class="form-control" id="email2" value="{{ old('email2',$PersonEntityData->email) }}" disabled>
+                                            <input type="text" class="form-control" id="email2" value="{{ old('email2',isset($establishmentData->people_entities_establishment->email) ? $establishmentData->people_entities_establishment->email : '') }}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="status2">Estado</label>
-                                            <input type="text" class="form-control" id="status2" value="{{ old('status',$PersonEntityData->status) }}" disabled>
+                                            <input type="text" class="form-control" id="status2" value="{{ old('status',isset($establishmentData->people_entities_establishment->status) ? $establishmentData->people_entities_establishment->status : '') }}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="number_phone1">Telefono</label>
-                                            <input type="number" class="form-control" id="number_phone1" value="{{ old('number_phone1',$PersonEntityData->number_phone1) }}" disabled>
+                                            <input type="number" class="form-control" id="number_phone1" value="{{ old('number_phone1',isset($establishmentData->people_entities_establishment->number_phone1) ? $establishmentData->people_entities_establishment->number_phone1 : '') }}" disabled>
 
                                         </div>
 
@@ -81,72 +86,74 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="country_id">Pais</label>
-                                            <input type="text" class="form-control" id="country_id" value="{{ isset($PersonEntityData->countries->name) ? $PersonEntityData->countries->name : '' }}" disabled>
+                                            <input type="text" class="form-control" id="country_id" value="{{isset($establishmentData->people_entities_owner->countries->name) ? $establishmentData->people_entities_owner->countries->name : ''}}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="province_id">Provincia</label>
-                                            <input type="text" class="form-control" id="province_id" value="{{ isset($PersonEntityData->provinces->name) ? $PersonEntityData->provinces->name : ''}}" disabled>
+                                            <input type="text" class="form-control" id="province_id" value="{{ isset($establishmentData->people_entities_owner->provinces->name) ? $establishmentData->people_entities_owner->provinces->name : ''}}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="canton_id">Canton</label>
-                                            <input type="text" class="form-control" id="canton_id" value="{{ isset($PersonEntityData->provinces->name) ? $PersonEntityData->cantons->name : '' }}" disabled>
+                                            <input type="text" class="form-control" id="canton_id" value="{{ isset($establishmentData->people_entities_owner->cantons->name) ? $establishmentData->people_entities_owner->cantons->name : '' }}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="parish_id">Parroquia</label>
-                                            <input type="text" class="form-control" id="parish_id" value="{{ isset($PersonEntityData->provinces->name) ? $PersonEntityData->parishes->name : '' }}" disabled>
+                                            <input type="text" class="form-control" id="parish_id" value="{{ isset($establishmentData->people_entities_owner->parishes->name) ? $establishmentData->people_entities_owner->parishes->name : '' }}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="address">Direccion</label>
-                                            <input type="text" class="form-control" id="address" value="{{ old('address',$PersonEntityData->address) }}" disabled>
+                                            <input type="text" class="form-control" id="address" value="{{ old('address',isset($establishmentData->people_entities_establishment->address) ? $establishmentData->people_entities_establishment->address : '') }}" disabled>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
+                                        <br>
+                                        <h5>Datos de establesimiento</h5>
                                         <hr>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="name">Nombre de establecimiento *</label>
-                                            <input type="text" class="form-control @error('name')is-invalid @enderror" id="name" name="name" value="{{ old('name',$PersonEntityData->name) }}" >
+                                            <input type="text" class="form-control @error('name')is-invalid @enderror" id="name" name="name" value="{{ old('name',$establishmentData->name) }}" >
                                             @error('name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="organization_type">tipo de organizacion *</label>
-                                            <input type="text" class="form-control @error('organization_type')is-invalid @enderror" id="organization_type" name="organization_type" value="{{ old('organization_type',$PersonEntityData->name) }}" >
+                                            <input type="text" class="form-control @error('organization_type')is-invalid @enderror" id="organization_type" name="organization_type" value="{{ old('organization_type',$establishmentData->organization_type) }}" >
                                             @error('organization_type')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="registry_number">Numero de registro *</label>
-                                            <input type="text" class="form-control @error('registry_number')is-invalid @enderror" id="registry_number" name="registry_number" value="{{ old('name',$PersonEntityData->name) }}" >
+                                            <input type="text" class="form-control @error('registry_number')is-invalid @enderror" id="registry_number" name="registry_number" value="{{ old('registry_number',$establishmentData->registry_number) }}" >
                                             @error('registry_number')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="cadastral_registry">registro Catastral</label>
-                                            <input type="text" class="form-control @error('cadastral_registry')is-invalid @enderror" id="cadastral_registry" name="cadastral_registry" value="{{ old('name',$PersonEntityData->name) }}" >
+                                            <input type="text" class="form-control @error('cadastral_registry')is-invalid @enderror" id="cadastral_registry" name="cadastral_registry" value="{{ old('cadastral_registry',$establishmentData->cadastral_registry) }}" >
                                             @error('cadastral_registry')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="web_page">Pagina web</label>
-                                            <input type="text" class="form-control @error('web_page')is-invalid @enderror" id="web_page" name="web_page" value="{{ old('name',$PersonEntityData->name) }}" >
+                                            <input type="text" class="form-control @error('web_page')is-invalid @enderror" id="web_page" name="web_page" value="{{ old('web_page',$establishmentData->web_page) }}" >
                                             @error('web_page')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="phone">Telefono *</label>
-                                            <input type="text" class="form-control @error('phone')is-invalid @enderror" id="phone" name="phone" value="{{ old('phone',$PersonEntityData->name) }}" >
+                                            <input type="text" class="form-control @error('phone')is-invalid @enderror" id="phone" name="phone" value="{{ old('phone',$establishmentData->phone) }}" >
                                             @error('phone')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -160,16 +167,16 @@
                                                 @isset($touristActivity)
                                                     <option value="">Seleccione Actividad</option>
                                                     @foreach ($touristActivity as $ta)
-                                                        @if(Cookie::get('touristActivity_id'))
-                                                            @if($cd->id == Cookie::get('touristActivity_id'))
+                                                        @if(isset($establishmentData->tourist_activity_id))
+                                                            @if($ta->id == $establishmentData->tourist_activity_id)
                                                                 <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
                                                             @else
                                                                 <option value="{{ $ta->id }}">{{ $ta->name }}</option>
                                                             @endif
-
                                                         @else
                                                             <option value="{{ $ta->id }}">{{ $ta->name }}</option>
                                                         @endif
+
                                                     @endforeach
                                                 @endisset
                                             </select>
@@ -177,35 +184,75 @@
                                         <div class="form-group">
                                             <label>Clasificacion *</label>
                                             <select id="classification_id" name="classification_id" class="custom-select @error('classification_id') is-invalid @enderror">
-                                                <option value="">Seleccione Clasificacion</option>
-
+                                                @isset($establishmentClassification)
+                                                    <option value="">Seleccione Clasificacion</option>
+                                                    @foreach ($establishmentClassification as $ec)
+                                                        @isset($establishmentData->classification_id)
+                                                            @if($ec->id == $establishmentData->classification_id)
+                                                                <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
+                                                            @else
+                                                                <option value="{{ $ec->id }}">{{ $ec->name }}</option>
+                                                            @endif
+                                                        @endisset
+                                                    @endforeach
+                                                @endisset
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Categoria *</label>
                                             <select id="category_id" name="category_id" class="custom-select @error('category_id') is-invalid @enderror">
-                                                <option value="">Seleccione Clasificacion</option>
+                                                @isset($establishmentCategory)
+                                                    <option value="">Seleccione Categoria</option>
+                                                    @foreach ($establishmentCategory as $eca)
+                                                        @isset($establishmentData->category_id)
+                                                            @if($eca->id == $establishmentData->category_id)
+                                                                <option value="{{ $eca->id }}" selected>{{ $eca->name }}</option>
+                                                            @else
+                                                                <option value="{{ $eca->id }}">{{ $eca->name }}</option>
+                                                            @endif
+                                                        @endisset
+                                                    @endforeach
+                                                @endisset
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Lugar de funcionamiento *</label>
                                             <select id="local" name="local" class="custom-select @error('local') is-invalid @enderror">
                                                 <option value="">Seleccione Tipo</option>
-                                                <option value="1">propio</option>
-                                                <option value="2">arrendado</option>
-                                                <option value="3">cedido</option>
+                                                @if ($establishmentData->local == 1)
+                                                    <option value="1" selected>propio</option>
+                                                    <option value="2">arrendado</option>
+                                                    <option value="3">cedido</option>
+                                                @elseif($establishmentData->local == 2)
+                                                    <option value="1">propio</option>
+                                                    <option value="2" selected>arrendado</option>
+                                                    <option value="3">cedido</option>
+                                                @elseif($establishmentData->local == 3)
+                                                    <option value="1">propio</option>
+                                                    <option value="2" >arrendado</option>
+                                                    <option value="3" selected>cedido</option>
+                                                @else
+                                                    <option value="1">propio</option>
+                                                    <option value="2">arrendado</option>
+                                                    <option value="3">cedido</option>
+                                                @endif
+
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="start_date">Fecha de inicio *</label>
-                                            <input type="text" class="form-control" id="start_date" name="start_date" value="{{ old('start_date',$PersonEntityData->name) }}">
-                                            @error('start_date')
-                                            <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
+                                            <label for="start_date">Fecha Nacimiento:</label>
+
+                                            <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                              </div>
+                                              <input type="text" class="form-control" id="start_date" name="start_date" value="{{ old('start_date',$establishmentData->start_date) }}" required/>
+                                            </div>
+                                            <!-- /.input group -->
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Correo electronico *</label>
-                                            <input type="text" class="form-control" id="email" name="email" value="{{ old('email',$PersonEntityData->name) }}">
+                                            <input type="text" class="form-control" id="email" name="email" value="{{ old('email',$establishmentData->email) }}">
                                             @error('email')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -216,34 +263,47 @@
                                         <hr>
                                     </div>
                                     <div class="col-lg-6">
-                                        <label for="cc_ruc"> Propietario</label>
+                                        <label for="cc_ruc"> Propietario *</label>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Buscar</button>
+                                              <button id="modalpropietario" type="button" class="btn btn-primary">Buscar</button>
                                             </div>
                                             <!-- /btn-group -->
-                                            <input id="owner_id" name="owner_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
-
-                                            @error('people_entities_id')
-                                            <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
+                                            <input id="owner_id" name="owner_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('name',isset($establishmentData->people_entities_owner->cc_ruc) ? $establishmentData->people_entities_owner->cc_ruc : '') }}">
                                         </div>
-                                        <input id="owner_id_2" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                        <input id="owner_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                        <div class="form-group">
+                                            <label for="name_p">Nombres/Nombre Comercial</label>
+                                            <input type="text" class="form-control" id="name_p" value="{{ old('name',isset($establishmentData->people_entities_owner->name) ? $establishmentData->people_entities_owner->name : '') }}" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last_name_p">Apellido Paterno/Razon Social</label>
+                                            <input type="text" class="form-control" id="last_name_p" value="{{ old('name',isset($establishmentData->people_entities_owner->last_name) ? $establishmentData->people_entities_owner->last_name : '') }}" disabled>
+                                        </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <label for="cc_ruc"> Representante legal</label>
+                                        <label for="cc_ruc"> Representante legal *</label>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Buscar</button>
+                                              <button id="modalrepresentante" type="button" class="btn btn-primary">Buscar</button>
                                             </div>
                                             <!-- /btn-group -->
-                                            <input id="legal_representative_id" name="legal_representative_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                            <input id="legal_representative_id" name="legal_representative_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('name',isset($establishmentData->people_entities_legal_representative->cc_ruc) ? $establishmentData->people_entities_legal_representative->cc_ruc : '') }}">
 
                                             @error('legal_representative_id')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <input id="legal_representative_id_2" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                        <input id="legal_representative_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                        <div class="form-group">
+                                            <label for="name_r">Nombres/Nombre Comercial</label>
+                                            <input type="text" class="form-control" id="name_r" value="{{ old('name',isset($establishmentData->people_entities_legal_representative->name) ? $establishmentData->people_entities_legal_representative->name : '') }}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last_name_r">Apellido Paterno/Razon Social</label>
+                                            <input type="text" class="form-control" id="last_name_r" value="{{ old('name',isset($establishmentData->people_entities_legal_representative->last_name) ? $establishmentData->people_entities_legal_representative->last_name : '') }}" disabled>
+                                        </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <hr>
@@ -251,19 +311,19 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <div class="form-check">
-                                              <input id="has_sewer" name="has_sewer" class="form-check-input" type="checkbox">
+                                              <input id="has_sewer" name="has_sewer" class="form-check-input" type="checkbox" {{ $establishmentData->has_sewer == true ? 'checked' : '' }}>
                                               <label class="form-check-label">Tiene alcantarillado</label>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-check">
-                                              <input id="has_septic_tank" name="has_septic_tank" class="form-check-input" type="checkbox">
+                                              <input id="has_septic_tank" name="has_septic_tank" class="form-check-input" type="checkbox" {{ $establishmentData->has_septic_tank == true ? 'checked' : '' }}>
                                               <label class="form-check-label">Tiene pozo septico</label>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-check">
-                                              <input id="has_sewage_treatment_system" name="has_sewage_treatment_system" class="form-check-input" type="checkbox">
+                                              <input id="has_sewage_treatment_system" name="has_sewage_treatment_system" class="form-check-input" type="checkbox" {{ $establishmentData->has_sewage_treatment_system == true ? 'checked' : '' }}>
                                               <label class="form-check-label">Tiene sistema de tratamiento de aguas servidas</label>
                                             </div>
                                         </div>
@@ -274,17 +334,21 @@
                                         <div class="form-group">
                                             <label for="">El establecimiento es</label>
                                             <div class="form-check">
-                                              <input class="form-check-input" type="radio" name="radio1">
-                                              <label class="form-check-label">Matriz</label>
+                                                @if($register == 'yes')
+                                                <input class="form-check-input" type="radio" name="is_main" value="m" {{ $establishmentData->is_main == true ? 'checked' : '' }}>
+                                                @else
+                                                <input class="form-check-input" type="radio" name="is_main" value="m" checked>
+                                                @endif
+                                                <label class="form-check-label">Matriz</label>
                                             </div>
                                             <div class="form-check">
-                                              <input class="form-check-input" type="radio" name="radio1" checked="">
+                                              <input class="form-check-input" type="radio" name="is_main" value="s" {{ $establishmentData->is_branch == true ? 'checked' : '' }}>
                                               <label class="form-check-label">Sucursal</label>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-check">
-                                              <input id="is_patrimonial" name="is_patrimonial" class="form-check-input" type="checkbox">
+                                              <input id="is_patrimonial" name="is_patrimonial" class="form-check-input" type="checkbox" {{ $establishmentData->is_patrimonial == true ? 'checked' : '' }}>
                                               <label class="form-check-label">Es patrimonio</label>
                                             </div>
                                         </div>
@@ -292,236 +356,58 @@
                                 </div>
                             </form>
                         </div>
+                        @if($register == 'yes')
                         <div class="tab-pane" id="uploadfile">
-                            <div class="card card-primary card-outline">
-                                <div class="card-header">
-                                  <h3 class="card-title">Inbox</h3>
+                            <div class="card">
 
-                                  <div class="card-tools">
-                                    <div class="input-group input-group-sm">
-                                      <input type="text" class="form-control" placeholder="Search Mail">
-                                      <div class="input-group-append">
-                                        <div class="btn btn-primary">
-                                          <i class="fas fa-search"></i>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- /.card-tools -->
-                                </div>
                                 <!-- /.card-header -->
                                 <div class="card-body p-0">
-                                  <div class="mailbox-controls">
-                                    <!-- Check all button -->
-                                    <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
-                                    </button>
-                                    <div class="btn-group">
-                                      <button type="button" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></button>
-                                      <button type="button" class="btn btn-default btn-sm"><i class="fas fa-reply"></i></button>
-                                      <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i></button>
-                                    </div>
-                                    <!-- /.btn-group -->
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-sync-alt"></i></button>
-                                    <div class="float-right">
-                                      1-50/200
-                                      <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></button>
-                                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></button>
-                                      </div>
-                                      <!-- /.btn-group -->
-                                    </div>
-                                    <!-- /.float-right -->
-                                  </div>
-                                  <div class="table-responsive mailbox-messages">
-                                    <table class="table table-hover table-striped">
-                                      <tbody>
+                                  <table id="requirements-table" class="table table-sm table-bordered table-hover">
+                                    <thead>
                                       <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check1">
-                                            <label for="check1"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"></td>
-                                        <td class="mailbox-date">5 mins ago</td>
+                                        <th style="width: 10px">#</th>
+                                        <th>Requerimi ento</th>
+                                        <th>Descripcion</th>
+                                        <th>Tipo de Archivo</th>
+                                        <th style="width: 40px">Estado</th>
+                                        <th>Accion</th>
                                       </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check2">
-                                            <label for="check2"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                                        <td class="mailbox-date">28 mins ago</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check3">
-                                            <label for="check3"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                                        <td class="mailbox-date">11 hours ago</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check4">
-                                            <label for="check4"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"></td>
-                                        <td class="mailbox-date">15 hours ago</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check5">
-                                            <label for="check5"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                                        <td class="mailbox-date">Yesterday</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check6">
-                                            <label for="check6"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                                        <td class="mailbox-date">2 days ago</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check7">
-                                            <label for="check7"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                                        <td class="mailbox-date">2 days ago</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check8">
-                                            <label for="check8"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"></td>
-                                        <td class="mailbox-date">2 days ago</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check9">
-                                            <label for="check9"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"></td>
-                                        <td class="mailbox-date">2 days ago</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check10">
-                                            <label for="check10"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"></td>
-                                        <td class="mailbox-date">2 days ago</td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="icheck-primary">
-                                            <input type="checkbox" value="" id="check11">
-                                            <label for="check11"></label>
-                                          </div>
-                                        </td>
-                                        <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                                        <td class="mailbox-date">4 days ago</td>
-                                      </tr>
+                                    </thead>
+                                    <tbody>
 
-                                      </tbody>
-                                    </table>
-                                    <!-- /.table -->
-                                  </div>
-                                  <!-- /.mail-box-messages -->
+                                        @if($register == 'yes')
+                                            @foreach ($requirementEstablishment as $rta)
+                                            <tr>
+                                                <td>
+                                                <div class="icheck-primary">
+                                                    <input type="checkbox" value="" id="check1">
+                                                    <label for="check1"></label>
+                                                </div>
+                                                </td>
+
+                                                <td><a href="read-mail.html">{{ $rta->pivot->name }}</a></td>
+                                                <td>{{ $rta->Description }}</td>
+                                                <td>pdf</td>
+
+                                                <td><span class="badge bg-danger">Pendiente</span></td>
+                                                <td>
+                                                    <button type="button" id="btnModal{{$rta->id}}" class="btn btn-primary"><i class="fas fa-paperclip"></i></button>
+                                                    <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                    <button type="button" class="btn btn-secondary"><i class="fas fa-info"></i></button>
+
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                  </table>
                                 </div>
                                 <!-- /.card-body -->
-                                <div class="card-footer p-0">
-                                  <div class="mailbox-controls">
-                                    <!-- Check all button -->
-                                    <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
-                                    </button>
-                                    <div class="btn-group">
-                                      <button type="button" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></button>
-                                      <button type="button" class="btn btn-default btn-sm"><i class="fas fa-reply"></i></button>
-                                      <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i></button>
-                                    </div>
-                                    <!-- /.btn-group -->
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-sync-alt"></i></button>
-                                    <div class="float-right">
-                                      1-50/200
-                                      <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></button>
-                                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></button>
-                                      </div>
-                                      <!-- /.btn-group -->
-                                    </div>
-                                    <!-- /.float-right -->
-                                  </div>
-                                </div>
-                              </div>
+                            </div>
+
+
                         </div>
+                        @endif
                       </div>
                       <!-- /.tab-content -->
                     </div><!-- /.card-body -->
@@ -571,9 +457,7 @@
                     </tr>
                     </tfoot>
                 </table>
-                <div id="loading" class="overlay dark" style="display: none">
-                    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-                </div>
+
             </div>
 
         </div>
@@ -584,6 +468,45 @@
     <!-- /.modal-dialog -->
   </div>
   <!-- /.modal -->
+    @if($register == 'yes')
+        @foreach ($requirementEstablishment as $rta)
+        <div class="modal fade" id="modal-{{$rta->id}}">
+            <div class="modal-dialog modal-md">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Cargar {{$rta->name}}</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="exampleInputFile">Subir archivo</label>
+                            <div class="input-group">
+                              <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile">
+                                <label class="custom-file-label" for="exampleInputFile">Elija el archivo</label>
+                              </div>
+                              <div class="input-group-append">
+                                <span class="input-group-text" id="">Subir</span>
+                              </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        @endforeach
+    @endif
 @endsection
 @push('scripts')
     <script>
@@ -603,26 +526,63 @@
         let token = "{{csrf_token()}}";
         let loading = document.getElementById('loading');
 
+        let name_p = document.getElementById('name_p');
+        let last_name_p = document.getElementById('last_name_p');
+        let name_r = document.getElementById('name_r');
+        let last_name_r = document.getElementById('last_name_r');
+        let legal_representative_id_2 = document.getElementById('legal_representative_id_2');
+        let legal_representative_id = document.getElementById('legal_representative_id');
+        let owner_id_2 = document.getElementById('owner_id_2');
+        let owner_id = document.getElementById('owner_id');
+
+        @if($register == 'yes')
+            @foreach ($requirementEstablishment as $rta)
+                function viewmodal{{$rta->id}}(){
+                    $('#modal-{{$rta->id}}').modal('show');
+                }
+                var modal{{$rta->id}} = document.getElementById('btnModal{{$rta->id}}');
+                modal{{$rta->id}}.addEventListener('click', function(e) {
+                    $('#modal-{{$rta->id}}').modal('show');
+                });
+            @endforeach
+        @endif
+
         function selectedPersonEntity(id){
+            let modal = document.getElementById("numbermodal").value;
             axios.post('/admin/peopleentities/'+id+'/get', {
             data: {
             _token: token
             }
             }).then(function(res) {
                 if(res.status==200) {
-                    console.log("cargando personas...");
-                    establishment_id.value = res.data.cc_ruc;
-                    name2.value = res.data.name;
-                    email2.value = res.data.email;
-                    number_phone1.value = res.data.number_phone1;
-                    last_name.value = res.data.last_name+' '+res.data.maternal_last_name;
-                    status.value = res.data.status;
-                    address.value = res.data.address;
-                    country_id.value = res.data.countries.name;
-                    province_id.value = res.data.provinces.name;
-                    canton_id.value = res.data.cantons.name;
-                    parish_id.value = res.data.parishes.name;
-                    establishment_id_2.value = res.data.id;
+                    console.log("cargando personas..."+modal);
+                    //let modal = document.getElementById("numbermodal");
+                    if(modal == 1){
+                        console.log(modal);
+                        establishment_id.value = res.data.cc_ruc;
+                        name2.value = res.data.name;
+                        email2.value = res.data.email;
+                        number_phone1.value = res.data.number_phone1;
+                        last_name.value = res.data.last_name+' '+res.data.maternal_last_name;
+                        status.value = res.data.status;
+                        address.value = res.data.address;
+                        country_id.value = res.data.countries.name;
+                        province_id.value = res.data.provinces.name;
+                        canton_id.value = res.data.cantons.name;
+                        parish_id.value = res.data.parishes.name;
+                        establishment_id_2.value = res.data.id;
+                    }else if(modal == 2){
+                        name_p.value = res.data.name;
+                        last_name_p.value = res.data.last_name;
+                        owner_id.value = res.data.cc_ruc;
+                        owner_id_2.value = res.data.id;
+                    }else{
+                        name_r.value = res.data.name;
+                        last_name_r.value = res.data.last_name;
+                        legal_representative_id.value = res.data.cc_ruc;
+                        legal_representative_id_2.value = res.data.id;
+                    }
+
 
                     loading.style.display = 'none';
                     $('#modal-lg').modal('hide');
@@ -633,6 +593,27 @@
                     loading.style.display = 'none';
             });
         }
+        var modalempresa = document.getElementById('modalempresa');
+        var modalpropietario = document.getElementById('modalpropietario');
+        var modalrepresentante = document.getElementById('modalrepresentante');
+        //cargar modal persona
+        modalempresa.addEventListener('click', function(e) {
+            document.getElementById('numbermodal').value = 1;
+            $('#modal-lg').modal('show');
+
+        });
+        //cargar modal propietario
+        modalpropietario.addEventListener('click', function(e) {
+            document.getElementById('numbermodal').value = 2;
+            $('#modal-lg').modal('show');
+
+        });
+        //cargar modal representante legal
+        modalrepresentante.addEventListener('click', function(e) {
+            document.getElementById('numbermodal').value = 3;
+            $('#modal-lg').modal('show');
+
+        })
 
         var selectTouristActivity = document.getElementById('tourist_activity_id');
         var selectclassification = document.getElementById('classification_id');
@@ -644,6 +625,8 @@
             var loading = document.getElementById('loading');
             loading.style.display = '';
             loadClassifications(selectedOption.value);
+            selectcategory.innerHTML = '<option value="">Seleccione Categoria</option>';
+
         });
         // funcion para cargar clasificacion
         selectclassification.addEventListener('change', function() {
@@ -664,7 +647,15 @@
                     loading.style.display = 'none';
                 }
             }).catch(function(err) {
-                    console.log(err);
+                if(err.response.status == 500){
+                    toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
+                    console.log('error al consultar al servidor');
+                }
+
+                if(err.response.status == 419){
+                    toastr.error('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+                    console.log('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+                }
             }).then(function() {
                     loading.style.display = 'none';
             });
@@ -677,18 +668,25 @@
             }).then(function(res) {
                 if(res.status==200) {
                     console.log("cargando categorias");
-                    console.log(res.data);
                     selectcategory.innerHTML = res.data;
                     loading.style.display = 'none';
                 }
             }).catch(function(err) {
-                    console.log(err);
+                if(err.response.status == 500){
+                    toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
+                    console.log('error al consultar al servidor');
+                }
+
+                if(err.response.status == 419){
+                    toastr.error('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+                    console.log('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+                }
             }).then(function() {
                     loading.style.display = 'none';
             });
         }
 
-        let fieldsArray = ["name","start_date","registry_number","cadastral_registry","organization_type","local","web_page","phone","email","tourist_activity_id","classification_id","category_id","establishment_id"];
+        let fieldsArray = ["name","start_date","registry_number","cadastral_registry","organization_type","local","web_page","phone","email","tourist_activity_id","classification_id","category_id","establishment_id","owner_id","legal_representative_id"];
 
         function clearValidation(fieldsArray){
             fieldsArray.forEach(function(key, indice, array) {
@@ -736,15 +734,17 @@
             let has_sewage_treatment_system = document.getElementById("has_sewage_treatment_system").checked;
             let has_septic_tank = document.getElementById("has_septic_tank").checked;
             let is_patrimonial = document.getElementById("is_patrimonial").checked;
-            let establishment_id = document.getElementById("establishment_id").value;
-
-           /* if(yes.checked == true){
-                let has_sewer = 1;
-            }else{
-                let has_sewer = 1;
-            }*/
-
-
+            let establishment_id = document.getElementById("establishment_id_2").value;
+            let owner_id = document.getElementById("owner_id_2").value;
+            let legal_representative_id = document.getElementById("legal_representative_id_2").value;
+            const rbs = document.querySelectorAll('input[name="is_main"]');
+            let selectedValue;
+            for (const rb of rbs) {
+                if (rb.checked) {
+                    selectedValue = rb.value;
+                    break;
+                }
+            }
 
             //envio de formulario
             axios.post('/admin/establishments', {
@@ -766,13 +766,19 @@
             has_sewage_treatment_system:has_sewage_treatment_system,
             has_septic_tank:has_septic_tank,
             is_patrimonial:is_patrimonial,
-            establishment_id:establishment_id
+            establishment_id:establishment_id,
+            owner_id:owner_id,
+            legal_representative_id:legal_representative_id,
+            selectedValue:selectedValue
             }).then(function(res) {
                 clearValidation(fieldsArray);
                 if(res.status==200) {
                     console.log("Guardando..");
-                    loading.style.display = 'none';
 
+                    loading.style.display = 'none';
+                    if(res.data.saved == 'ok'){
+                        window.location.href = '/admin/establishments/create/'+res.data.id;
+                    }
                 }
             }).catch(function(err) {
                 console.log(err);
@@ -811,6 +817,17 @@
                 }
                 loading.style.display = 'none';
               }
+
+              if(err.response.status == 500){
+                toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
+                console.log('error al consultar al servidor');
+              }
+
+              if(err.response.status == 419){
+                toastr.error('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+                console.log('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+              }
+
             }).then(function(err) {
                 console.log(err);
               loading.style.display = 'none';
@@ -829,10 +846,10 @@
         @error('people_entities_id')
             toastr.error('{{$message}}');
         @enderror
-        @if (session('status'))
-            toastr.success('{{session('status')}}');
-        @endisset
-        $('#entities-table').DataTable({
+        @if ($register == 'yes')
+            toastr.success('El establecimiento ha sido registrado con exito');
+        @endif
+        let tableentities = $('#entities-table').DataTable({
             "lengthMenu": [ 5, 10],
             "language" : {
                 "url": '{{ url("/js/spanish.json") }}',
@@ -842,7 +859,7 @@
             "processing" : true,
             "serverSide": true,
             "ajax": {
-                "url" : "{{ route('culturalmanagers.datatablesPersonas') }}",
+                "url" : "{{ route('establishments.datatablesPersonas') }}",
                 "type": "post",
                 "data": function (d){
                     d._token = $("input[name=_token]").val();
@@ -858,6 +875,23 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false},
 
             ]
+        });
+        $('input[name="start_date"]').daterangepicker({
+            locale: {
+                format: "YYYY/MM/DD",
+            },
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: 1901,
+            maxYear: parseInt(moment().format('YYYY'),10)
+        });
+
+        let tableRequirement = $('#requirements-table').DataTable({
+            "lengthMenu": [ 5, 10],
+            "language" : {
+                "url": '{{ url("/js/spanish.json") }}',
+            },
+            "order": [], //Initial no order
         });
     });
 

@@ -31,18 +31,22 @@
                                         <div class="form-group">
                                             <label>Tipo</label>
                                             <select id="type" name="type"class="custom-select">
-                                              <option value="1">Persona</option>
-                                              <option value="2">Empresa</option>
-                                              <option value="3">Institucion</option>
-                                              <option value="4">Asociacion</option>
-                                              <option value="5">Organizacion sin fines de lucro</option>
+                                              <option value="1">natural</option>
+                                              <option value="2">Juridica</option>
                                             </select>
-                                          </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <hr>
                                     </div>
                                     <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Tipo de documento</label>
+                                            <select id="type" name="type"class="custom-select">
+                                              <option value="1">cedula</option>
+                                              <option value="2">ruc</option>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <label for="cc_ruc">*Cédula/Ruc</label>
                                             <input type="number" class="form-control  @error('cc_ruc')is-invalid @enderror" name="cc_ruc" id="cc_ruc" placeholder="1312......." value="{{ old('cc_ruc',$PersonEntityData->cc_ruc) }}" required>

@@ -37,6 +37,8 @@ class StoreEstablishmentRequest extends FormRequest
             'classification_id'=> 'required',
             'category_id'=> 'required',
             'establishment_id'=> 'required',
+            'owner_id'=> 'required',
+            'legal_representative_id'=> 'required',
         ];
     }
 
@@ -56,6 +58,8 @@ class StoreEstablishmentRequest extends FormRequest
             'classification_id'=> 'clasificacion',
             'category_id'=> 'categoria',
             'establishment_id'=> 'Persona / empresa',
+            'owner_id'=> 'Propietario',
+            'legal_representative_id'=> 'Representante legal',
         ];
     }
 

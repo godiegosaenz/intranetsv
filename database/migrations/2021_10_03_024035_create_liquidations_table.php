@@ -26,9 +26,9 @@ class CreateLiquidationsTable extends Migration
             $table->unsignedBigInteger('type_liquidation_id');
             $table->index('type_liquidation_id');
             $table->foreign('type_liquidation_id')->references('id')->on('type_liquidations');
-            $table->unsignedBigInteger('estableshment_id');
-            $table->index('estableshment_id');
-            $table->foreign('estableshment_id')->references('id')->on('estableshments');
+            $table->unsignedBigInteger('establishment_id');
+            $table->index('establishment_id');
+            $table->foreign('establishment_id')->references('id')->on('establishments');
             $table->boolean('is_coercive');
             $table->timestamps();
         });

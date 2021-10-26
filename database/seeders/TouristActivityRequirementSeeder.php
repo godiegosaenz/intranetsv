@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\models\TouristActivityRequirement;
 
 class TouristActivityRequirementSeeder extends Seeder
 {
@@ -13,6 +14,6 @@ class TouristActivityRequirementSeeder extends Seeder
      */
     public function run()
     {
-        //
+        TouristActivityRequirement::create(['requirement_id' => 1,'tourist_activity_id' => 1]);
     }
 }
