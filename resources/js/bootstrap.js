@@ -9,7 +9,7 @@ window._ = require('lodash');
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
-    require('bootstrap');
+    require('admin-lte/plugins/bootstrap/js/bootstrap.bundle');
     require('admin-lte');
     require('datatables.net-bs4');
     require('datatables.net-buttons-bs4');
@@ -18,8 +18,13 @@ try {
     require('admin-lte/plugins/inputmask/jquery.inputmask.min.js');
     require('admin-lte/plugins/daterangepicker');
 
+
     window.Swal = swal = require('sweetalert2');
     window.toastr = toastr = require('toastr');
+    window.bsCustomFileInput = bsCustomFileInput = require('bs-custom-file-input/dist/bs-custom-file-input');
+
+    //require('bs-custom-file-input/dist/bs-custom-file-input');
+    require('admin-lte/dist/js/demo');
 } catch (e) {
 
 }

@@ -23,10 +23,11 @@ class CreateEstablishmentsTable extends Migration
             $table->boolean('is_branch');
             $table->char('organization_type');
             $table->char('local');
-            $table->char('status');
+            $table->boolean('status')->default(false);;
             $table->string('web_page')->nullable();
             $table->string('email');
             $table->char('phone');
+            $table->boolean('has_requeriment')->default(false);
             $table->boolean('has_sewer');
             $table->boolean('has_sewage_treatment_system');
             $table->boolean('has_septic_tank');

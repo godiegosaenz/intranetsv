@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\configuracion\ParishController;
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentController;
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentClassificationController;
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentCategoryController;
+use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentRequirementController;
 use App\Models\EstablishmentCategory;
 use App\Models\Requirement;
 use App\Models\Establishments;
@@ -76,10 +77,13 @@ Route::prefix('admin')->group(function (){
     Route::get('/establishments/create/{id?}', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
     Route::post('/establishments/datatablesPersonas', [EstablishmentController::class, 'datatablesPersonas'])->name('establishments.datatablesPersonas');
+    Route::post('/establishments/datatables', [EstablishmentController::class, 'datatables'])->name('establishments.datatables');
 
     Route::post('/establishmentclassification/{id}', [EstablishmentClassificationController::class, 'show'])->name('establishmentclassification.show')->middleware('auth');
     Route::post('/establishmentcategory/{id}', [EstablishmentCategoryController::class, 'show'])->name('establishmentcategory.show')->middleware('auth');
 
+    Route::post('/establishmentrequirement', [EstablishmentRequirementController::class, 'store'])->name('establishmentrequirement.store');
+    Route::post('/establishmentrequirement/datatables/{id?}', [EstablishmentRequirementController::class, 'datatables'])->name('establishmentrequirement.datatables');
 
     Route::get('/countries', function(){
         //return EstablishmentCategory::find(2)->establishments_classifications()->orderBy('id')->get();

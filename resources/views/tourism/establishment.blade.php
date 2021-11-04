@@ -29,18 +29,17 @@
             </div>
             <div class="card-body">
                 @csrf
-                <table id="cultural-table" class="table table-sm table-bordered table-hover">
+                <table id="establishment-table" class="table table-sm table-bordered table-hover">
                     <thead>
                     <tr>
-                      <th>Nombres</th>
-                      <th>Actividad</th>
-                      <th>Ambito</th>
-                      <th>Estado</th>
-                      <th>Telefono</th>
-                      <th>Pais</th>
-                      <th>Provincia</th>
-                      <th>Cantxon</th>
-                      <th>Parroquia</th>
+                      <th>Nombre</th>
+                      <th>estado</th>
+                      <th>Tipo de actividad</th>
+                      <th>Clasificacion</th>
+                      <th>Categoria</th>
+                      <th>Fecha de inicio</th>
+                      <th>Numero de registro</th>
+                      <th>Requerimientos</th>
                       <th>Acciones</th>
                     </tr>
                     </thead>
@@ -58,3 +57,55 @@
   </div>
   <!-- /.content -->
 @endsection
+@push('scripts')
+    <script>
+    $(function () {
+        let establishmenttable = $('#establishment-table').DataTable({
+            "lengthMenu": [ 5, 10],
+            "language" : {
+                "url": '{{ url("/js/spanish.json") }}',
+            },
+            "scrollX": true,
+            "autoWidth": false,
+            "order": [], //Initial no order
+            "processing" : true,
+            "serverSide": true,
+            "ajax": {
+                "url" : "{{ route('establishments.datatables') }}",
+                "type": "post",
+                "data": function (d){
+                    d._token = $("input[name=_token]").val();
+                }
+            },
+            "columns": [
+                {data: 'name'},
+                {data: 'status'},
+                {data: 'tourist_activity'},
+                {data: 'classification'},
+                {data: 'category'},
+                {data: 'registry_number'},
+                {data: 'registry_number'},
+                {data: 'registry_number'},
+                {data: 'registry_number'},
+                {data: 'registry_number'},
+                {data: 'registry_number'},
+                {data: 'email'},
+                {data: 'email'},
+                {data: 'email'},
+                {data: 'email'},
+                {data: 'email'},
+                {data: 'email'},
+                {data: 'email'},
+                {data: 'email'},
+                {data: 'email'},
+                {data: 'phone'},
+
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+
+            ]
+        });
+    });
+
+    </script>
+@endpush
+

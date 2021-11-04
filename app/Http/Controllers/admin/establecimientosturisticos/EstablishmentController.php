@@ -40,10 +40,7 @@ class EstablishmentController extends Controller
         $establishmentCategory = new EstablishmentCategory();
         $register = 'no';
         $requirementEstablishment = '';
-        /*$countriesData = new Country();
-        $ProvinceData = new Province();
-        $CantonData = new Canton();
-        $ParishData = new Parish();*/
+
         if($id != null){
             $register = 'yes';
             $establishmentData = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative'])->where('id', $id)->first();
@@ -51,7 +48,7 @@ class EstablishmentController extends Controller
             $establishmentCategory = EstablishmentClassification::find($establishmentData->classification_id)->establishments_categories;
             $requirementEstablishment = Establishments::find($establishmentData->id)->requirements;
         }
-        //return $requirementEstablishment;
+
         return view('tourism.establishmentCreate', compact('establishmentData','touristActivity','establishmentClassification','PersonEntityData','establishmentCategory','register','requirementEstablishment'));
     }
 
@@ -78,7 +75,8 @@ class EstablishmentController extends Controller
         $establishmentData->classification_id= $request->classification_id;
         $establishmentData->category_id= $request->category_id;
         //no validados
-        $establishmentData->status = "2";
+        $establishmentData->status = true;
+        $establishmentData->has_requeriment = false;
         if($request->has_sewer != null){
             $establishmentData->has_sewer = true;
         }else{
@@ -174,6 +172,35 @@ class EstablishmentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function datatables(){
+        $Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements'])->get();
+        return Datatables($Establishments)
+                ->editColumn('status', function ($Establishments) {
+                    if($Establishments->status == true){
+                        return '<span class="badge bg-success">Activo</span>';
+                    }else{
+                        return '<span class="badge bg-success">Inactivo</span>';
+                    }
+                })
+                ->addColumn('tourist_activity', function ($Establishments) {
+                    return $Establishments->tourist_activities->name;
+                })
+                ->addColumn('classification', function ($Establishments) {
+                    return $Establishments->establishments_classifications->name;
+                })
+                ->addColumn('category', function ($Establishments) {
+                    $establishmentCategory = EstablishmentCategory::find($Establishments->classification_id);
+                    return $establishmentCategory->name;
+                })
+                ->addColumn('action', function ($Establishments) {
+                    //$id = $PersonEntityDataTemp->get('id');
+                    $buttons = '<a onclick="" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i></a>';
+                    return $buttons;
+                })
+                ->rawColumns(['status','action'])
+                ->make(true);
     }
 
     public function datatablesPersonas(Request $request){

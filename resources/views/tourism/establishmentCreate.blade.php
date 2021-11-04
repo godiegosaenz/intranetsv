@@ -9,14 +9,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header p-2">
+                <div class="card card-outline">
+                    <div class="card-header">
                       <ul class="nav nav-pills">
                         <li class="nav-item"><a class="nav-link active" href="#formulario" data-toggle="tab"> Formulario de establecimientos turisticos</a></li>
                         @if($register == 'yes')
                         <li class="nav-item"><a class="nav-link" href="#uploadfile" data-toggle="tab"> Requerimientos</a></li>
                         @endif
                       </ul>
+
                     </div><!-- /.card-header -->
                     <div class="card-body">
                       <div class="tab-content">
@@ -358,54 +359,19 @@
                         </div>
                         @if($register == 'yes')
                         <div class="tab-pane" id="uploadfile">
-                            <div class="card">
-
-                                <!-- /.card-header -->
-                                <div class="card-body p-0">
-                                  <table id="requirements-table" class="table table-sm table-bordered table-hover">
-                                    <thead>
-                                      <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Requerimi ento</th>
-                                        <th>Descripcion</th>
-                                        <th>Tipo de Archivo</th>
-                                        <th style="width: 40px">Estado</th>
-                                        <th>Accion</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @if($register == 'yes')
-                                            @foreach ($requirementEstablishment as $rta)
-                                            <tr>
-                                                <td>
-                                                <div class="icheck-primary">
-                                                    <input type="checkbox" value="" id="check1">
-                                                    <label for="check1"></label>
-                                                </div>
-                                                </td>
-
-                                                <td><a href="read-mail.html">{{ $rta->pivot->name }}</a></td>
-                                                <td>{{ $rta->Description }}</td>
-                                                <td>pdf</td>
-
-                                                <td><span class="badge bg-danger">Pendiente</span></td>
-                                                <td>
-                                                    <button type="button" id="btnModal{{$rta->id}}" class="btn btn-primary"><i class="fas fa-paperclip"></i></button>
-                                                    <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                                                    <button type="button" class="btn btn-secondary"><i class="fas fa-info"></i></button>
-
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        @endif
-                                    </tbody>
-                                  </table>
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
-
-
+                            <table id="requirements-table" class="table table-sm table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                    <th>Requerimiento</th>
+                                    <th>Descripcion</th>
+                                    <th>Tipo de Archivo</th>
+                                    <th style="width: 40px">Estado</th>
+                                    <th>Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                         @endif
                       </div>
@@ -480,21 +446,23 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="" enctype="multipart/form-data">
-                        @csrf
+                    <form method="post" id="form{{$rta->id}}" action="{{ route('establishmentrequirement.store') }}" enctype="multipart/form-data">
+
                         <div class="form-group">
-                            <label for="exampleInputFile">Subir archivo</label>
+                            <label for="InputFile{{$rta->id}}">Subir archivo</label>
                             <div class="input-group">
                               <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="exampleInputFile">
-                                <label class="custom-file-label" for="exampleInputFile">Elija el archivo</label>
+                                <input type="file" class="custom-file-input" id="InputFile{{$rta->id}}" lang="es">
+                                <label class="custom-file-label" for="InputFile{{$rta->id}}">Elija el archivo</label>
                               </div>
                               <div class="input-group-append">
                                 <span class="input-group-text" id="">Subir</span>
                               </div>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <button type="submit" id="btnFile-{{$rta->id}}" class="btn btn-primary">Guardar Archivo</button>
+                        </div>
                     </form>
 
                 </div>
@@ -510,6 +478,7 @@
 @endsection
 @push('scripts')
     <script>
+
         //datos organizacion
         let establishment_id = document.getElementById('establishment_id');
         let name2 = document.getElementById('name2');
@@ -540,11 +509,84 @@
                 function viewmodal{{$rta->id}}(){
                     $('#modal-{{$rta->id}}').modal('show');
                 }
-                var modal{{$rta->id}} = document.getElementById('btnModal{{$rta->id}}');
+
+                /*var modal{{$rta->id}} = document.getElementById('btnModal{{$rta->id}}');
                 modal{{$rta->id}}.addEventListener('click', function(e) {
                     $('#modal-{{$rta->id}}').modal('show');
+                });*/
+
+                var btnFile{{$rta->id}} = document.getElementById('btnFile-{{$rta->id}}');
+                var form{{$rta->id}} = document.getElementById('form{{$rta->id}}');
+                //cargar modal persona
+                form{{$rta->id}}.addEventListener('submit', function(e) {
+                    var loading = document.getElementById('loading');
+                    loading.style.display = '';
+                    e.preventDefault()
+                    let InputFile= document.getElementById('InputFile{{$rta->id}}').files[0];
+                    let formData = new FormData(this);
+                    formData.append('_token',token);
+                    formData.append('requirement_id',{{$rta->pivot->requirement_id}});
+                    formData.append('establishment_id',{{$rta->pivot->establishment_id}});
+                    formData.append('InputFile',InputFile);
+                    axios.post('/admin/establishmentrequirement',formData).then(function(res) {
+                        if(res.status==200) {
+                            if(res.data.success == true){
+                                console.log("guardando ..");
+                                requirementstable.ajax.reload();
+                                toastr.success('Archivo cargado con exito');
+                                loading.style.display = 'none';
+                                $('#modal-{{$rta->id}}').modal('hide');
+                            }else{
+                                toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
+                                console.log('error al consultar al servidor');
+                            }
+
+                        }
+                    }).catch(function(err) {
+                        if(err.response.status == 500){
+                            toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
+                            console.log('error al consultar al servidor');
+                        }
+
+                        if(err.response.status == 419){
+                            toastr.error('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+                            console.log('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+                        }
+                        if(err.response.status == 422){
+                            toastr.error('Revise la validacion del archivo');
+
+                        }
+                    }).then(function() {
+                            loading.style.display = 'none';
+                    });
                 });
             @endforeach
+
+            var requirementstable = $('#requirements-table').DataTable({
+                    "lengthMenu": [ 5, 10],
+                    "language" : {
+                        "url": '{{ url("/js/spanish.json") }}',
+                    },
+                    "autoWidth": false,
+                    "order": [], //Initial no order
+                    "processing" : true,
+                    "serverSide": true,
+                    "ajax": {
+                        "url" : "{{ route('establishmentrequirement.datatables', ['id' => $establishmentData->id]) }}",
+                        "type": "post",
+                        "data": function (d){
+                            d._token = $("input[name=_token]").val();
+                        }
+                    },
+                    "columns": [
+                        {data: 'name'},
+                        {data: 'Description'},
+                        {data: 'type_document'},
+                        {data: 'status'},
+                        {data: 'action', name: 'action', orderable: false, searchable: false},
+
+                    ]
+                });
         @endif
 
         function selectedPersonEntity(id){
@@ -709,6 +751,36 @@
                 }
             })
         }
+
+        function viewValidacion(errorsValidations){
+            for(let key in errorsValidations){
+
+                if (errorsValidations.hasOwnProperty(key)){
+                let elementValidation = document.getElementById(key);
+
+                    if(!!elementValidation == true){
+
+                        let elementValidation = document.getElementById(key);
+
+                        let divElementParent = document.getElementById(key).parentNode;
+                        elementValidation.setAttribute("class", "form-control is-invalid");
+
+                        let spanValidation = document.createElement("span");
+                        spanValidation.textContent = errorsValidations[key];
+                        spanValidation.setAttribute("class", "error invalid-feedback");
+
+                        let contDivElementParent = divElementParent.childElementCount;
+                        if(contDivElementParent < 3){
+                        divElementParent.appendChild(spanValidation);
+                        }
+
+
+                    }
+
+                }
+            }
+        }
+
         const getLengthOfObject = (obj) => {
           let lengthOfObject = Object.keys(obj).length;
           return lengthOfObject;
@@ -834,6 +906,7 @@
             });
         })
     $(function () {
+        bsCustomFileInput.init()
         var Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -876,6 +949,9 @@
 
             ]
         });
+        @if($register == 'yes')
+        cargardatatablesRequerimientos();
+        @endif
         $('input[name="start_date"]').daterangepicker({
             locale: {
                 format: "YYYY/MM/DD",
@@ -884,14 +960,6 @@
             showDropdowns: true,
             minYear: 1901,
             maxYear: parseInt(moment().format('YYYY'),10)
-        });
-
-        let tableRequirement = $('#requirements-table').DataTable({
-            "lengthMenu": [ 5, 10],
-            "language" : {
-                "url": '{{ url("/js/spanish.json") }}',
-            },
-            "order": [], //Initial no order
         });
     });
 

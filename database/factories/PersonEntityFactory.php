@@ -22,7 +22,13 @@ class PersonEntityFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'cc_ruc' => $this->faker->randomNumber(10, true),
+            'name' => $this->faker->name(),
+            'last_name' => $this->faker->lastName(),
+            'maternal_last_name' => $this->faker->lastName(),
+            'is_person' => 1,
+            'status' => '1',
+            'people_entities_id' => 1,
         ];
     }
 }

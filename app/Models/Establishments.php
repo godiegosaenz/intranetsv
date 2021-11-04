@@ -21,6 +21,8 @@ class Establishments extends Model
         'local',
         'web_page',
         'email',
+        'phone',
+        'has_requeriment',
         'has_sewer',
         'has_sewage_treatment_system',
         'has_septic_tank',
@@ -55,7 +57,7 @@ class Establishments extends Model
 
     public function requirements()
     {
-        return $this->belongsToMany(Requirement::class,'establishment_requirements','establishment_id','requirement_id');
+        return $this->belongsToMany(Requirement::class,'establishment_requirements','establishment_id','requirement_id')->withPivot('upload', 'name','file_path');;
     }
 
 }
