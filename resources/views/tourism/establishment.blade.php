@@ -37,7 +37,7 @@
                       <th>Tipo de actividad</th>
                       <th>Clasificacion</th>
                       <th>Categoria</th>
-                      <th>Fecha de inicio</th>
+                      <th>Inicio de actividad</th>
                       <th>Numero de registro</th>
                       <th>Requerimientos</th>
                       <th>Acciones</th>
@@ -83,22 +83,10 @@
                 {data: 'tourist_activity'},
                 {data: 'classification'},
                 {data: 'category'},
+                {data: 'start_date'},
                 {data: 'registry_number'},
-                {data: 'registry_number'},
-                {data: 'registry_number'},
-                {data: 'registry_number'},
-                {data: 'registry_number'},
-                {data: 'registry_number'},
-                {data: 'email'},
-                {data: 'email'},
-                {data: 'email'},
-                {data: 'email'},
-                {data: 'email'},
-                {data: 'email'},
-                {data: 'email'},
-                {data: 'email'},
-                {data: 'email'},
-                {data: 'phone'},
+                {data: 'has_requeriment'},
+
 
                 {data: 'action', name: 'action', orderable: false, searchable: false},
 

@@ -184,6 +184,13 @@ class EstablishmentController extends Controller
                         return '<span class="badge bg-success">Inactivo</span>';
                     }
                 })
+                ->editColumn('has_requeriment', function ($Establishments) {
+                    if($Establishments->has_requeriment == true){
+                        return '<span class="badge bg-success">Completos</span>';
+                    }else{
+                        return '<span class="badge bg-danger">Pendientes</span>';
+                    }
+                })
                 ->addColumn('tourist_activity', function ($Establishments) {
                     return $Establishments->tourist_activities->name;
                 })
@@ -199,7 +206,7 @@ class EstablishmentController extends Controller
                     $buttons = '<a onclick="" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i></a>';
                     return $buttons;
                 })
-                ->rawColumns(['status','action'])
+                ->rawColumns(['status','has_requeriment','action'])
                 ->make(true);
     }
 

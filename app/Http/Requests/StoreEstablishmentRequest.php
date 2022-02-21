@@ -24,21 +24,21 @@ class StoreEstablishmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'start_date' => 'required',
-            'registry_number' => 'required',
+            'name' => 'bail|required|string',
+            'start_date' => 'bail|required|date',
+            'registry_number' => 'bail|required|numeric',
             'cadastral_registry' => '',
-            'organization_type'=> 'required',
-            'local'=> 'required',
+            'organization_type'=> 'bail|required',
+            'local'=> 'bail|required',
             'web_page'=> '',
-            'email'=> 'required',
-            'phone'=> 'required',
-            'tourist_activity_id'=> 'required',
-            'classification_id'=> 'required',
-            'category_id'=> 'required',
-            'establishment_id'=> 'required',
-            'owner_id'=> 'required',
-            'legal_representative_id'=> 'required',
+            'email'=> 'bail|required|email|unique:App\Models\Establishments,email',
+            'phone'=> 'bail|required|numeric|digits:10',
+            'tourist_activity_id'=> 'required|numeric',
+            'classification_id'=> 'required|numeric',
+            'category_id'=> 'required|numeric',
+            'establishment_id'=> 'bail|required|numeric|unique:App\Models\Establishments,establishment_id',
+            'owner_id'=> 'required|numeric',
+            'legal_representative_id'=> 'required|numeric',
         ];
     }
 

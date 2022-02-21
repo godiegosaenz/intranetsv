@@ -148,16 +148,12 @@
                                         <div class="form-group">
                                             <label for="web_page">Pagina web</label>
                                             <input type="text" class="form-control @error('web_page')is-invalid @enderror" id="web_page" name="web_page" value="{{ old('web_page',$establishmentData->web_page) }}" >
-                                            @error('web_page')
-                                            <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
+
                                         </div>
                                         <div class="form-group">
                                             <label for="phone">Telefono *</label>
                                             <input type="text" class="form-control @error('phone')is-invalid @enderror" id="phone" name="phone" value="{{ old('phone',$establishmentData->phone) }}" >
-                                            @error('phone')
-                                            <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
+
                                         </div>
 
                                     </div>
@@ -732,7 +728,6 @@
 
         function clearValidation(fieldsArray){
             fieldsArray.forEach(function(key, indice, array) {
-
                 let elementValidation = document.getElementById(key);
                 //si existe elemento
                 if(!!elementValidation == true){
@@ -745,7 +740,8 @@
                     let divElementLastChild = divElementParent.lastChild;
 
                     if(divElementLastChild.nodeName.toLowerCase() == true){
-                        divElementParent.removeChild(divElementLastChild);
+                       // divElementParent.removeChild(divElementLastChild);
+                        //console.log(divElementLastChild);
                     }
 
                 }
@@ -862,9 +858,9 @@
                 clearValidation(fieldsArray);
 
                 for(let key in errorsValidations){
-
                   if (errorsValidations.hasOwnProperty(key)){
                     let elementValidation = document.getElementById(key);
+                    console.log('regla + '+ errorsValidations[key])
 
                     if(!!elementValidation == true){
 
