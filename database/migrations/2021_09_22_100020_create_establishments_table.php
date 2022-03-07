@@ -23,10 +23,12 @@ class CreateEstablishmentsTable extends Migration
             $table->boolean('is_branch');
             $table->char('organization_type');
             $table->char('local');
-            $table->boolean('status')->default(false);;
+            $table->boolean('status')->default(false);
             $table->string('web_page')->nullable();
             $table->string('email');
             $table->char('phone');
+            $table->text('observation')->nullable();
+            $table->char('register')->default('0');
             $table->boolean('has_requeriment')->default(false);
             $table->boolean('has_sewer');
             $table->boolean('has_sewage_treatment_system');
@@ -35,12 +37,12 @@ class CreateEstablishmentsTable extends Migration
             $table->unsignedBigInteger('establishment_id');
             $table->index('establishment_id');
             $table->foreign('establishment_id')->references('id')->on('people_entities');
-            $table->unsignedBigInteger('owner_id');
-            $table->index('owner_id');
-            $table->foreign('owner_id')->references('id')->on('people_entities');
-            $table->unsignedBigInteger('legal_representative_id');
-            $table->index('legal_representative_id');
-            $table->foreign('legal_representative_id')->references('id')->on('people_entities');
+            $table->unsignedBigInteger('owner_id')->nullable();
+            /*$table->index('owner_id');
+            $table->foreign('owner_id')->references('id')->on('people_entities');*/
+            $table->unsignedBigInteger('legal_representative_id')->nullable();
+            /*$table->index('legal_representative_id');
+            $table->foreign('legal_representative_id')->references('id')->on('people_entities');*/
             $table->unsignedBigInteger('tourist_activity_id');
             $table->index('tourist_activity_id');
             $table->foreign('tourist_activity_id')->references('id')->on('tourist_activities');

@@ -76,6 +76,7 @@ Route::prefix('admin')->group(function (){
     Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index')->middleware('auth');
     Route::get('/establishments/create/{id?}', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
+    Route::post('/establishment/storestep2/{id?}', [EstablishmentController::class, 'storeStep2'])->name('establishments.storestep2');
     Route::post('/establishments/datatablesPersonas', [EstablishmentController::class, 'datatablesPersonas'])->name('establishments.datatablesPersonas');
     Route::post('/establishments/datatables', [EstablishmentController::class, 'datatables'])->name('establishments.datatables');
 

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Cookie;
 
 class StoreEstablishmentRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class StoreEstablishmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'bail|required|string',
+            'name' => 'bail|required|string|min:2|max:190',
             'start_date' => 'bail|required|date',
             'registry_number' => 'bail|required|numeric',
             'cadastral_registry' => '',
@@ -36,9 +37,9 @@ class StoreEstablishmentRequest extends FormRequest
             'tourist_activity_id'=> 'required|numeric',
             'classification_id'=> 'required|numeric',
             'category_id'=> 'required|numeric',
-            'establishment_id'=> 'bail|required|numeric|unique:App\Models\Establishments,establishment_id',
-            'owner_id'=> 'required|numeric',
-            'legal_representative_id'=> 'required|numeric',
+            'establishment_id_2'=> 'bail|required|numeric|unique:App\Models\Establishments,establishment_id',
+            'owner_id'=> '',
+            'legal_representative_id'=> '',
         ];
     }
 
@@ -57,10 +58,17 @@ class StoreEstablishmentRequest extends FormRequest
             'tourist_activity_id'=> 'tipo de actividad',
             'classification_id'=> 'clasificacion',
             'category_id'=> 'categoria',
-            'establishment_id'=> 'Persona / empresa',
+            'establishment_id_2'=> 'Persona / empresa',
             'owner_id'=> 'Propietario',
             'legal_representative_id'=> 'Representante legal',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        Cookie::queue('tourist_activity_id', $this->tourist_activity_id);
+        Cookie::queue('classification_id', $this->classification_id);
+        Cookie::queue('category_id', $this->category_id);
     }
 
 }

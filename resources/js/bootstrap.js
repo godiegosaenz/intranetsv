@@ -17,8 +17,9 @@ try {
     window.moment.locale('es');
     require('admin-lte/plugins/inputmask/jquery.inputmask.min.js');
     require('admin-lte/plugins/daterangepicker');
+    window.Stepper = Stepper = require('admin-lte/plugins/bs-stepper/js/bs-stepper');
 
-
+    require('jquery-validation/dist/jquery.validate');
     window.Swal = swal = require('sweetalert2');
     window.toastr = toastr = require('toastr');
     window.bsCustomFileInput = bsCustomFileInput = require('bs-custom-file-input/dist/bs-custom-file-input');

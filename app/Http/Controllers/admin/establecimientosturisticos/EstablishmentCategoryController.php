@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\EstablishmentCategory;
 use App\Models\EstablishmentClassification;
+use App\Models\ClassificationCategory;
 
 class EstablishmentCategoryController extends Controller
 {
@@ -48,20 +49,14 @@ class EstablishmentCategoryController extends Controller
      */
     public function show($id, Request $request)
     {
-        $cookie_Category = $request->cookie('establishment_category_id');
-        $EstablishmentCategoryData = EstablishmentClassification::find($id)->establishments_categories()->orderBy('id')->get();
+        //se obtiene las categorias que tienen el id classificacion, se valida en la tabla classificationcategory
         $EstablishmentCategoryDataOption = '<option value="">Seleccione Categoria</option>';
-        foreach($EstablishmentCategoryData as $Category){
-            if($cookie_Category != null){
-                if($cookie_Category == $Category->id){
-                    $EstablishmentCategoryDataOption .= '<option value="'.$Category->id.'" selected>'.$Category->name.'</option>';
-                }else{
-                    $EstablishmentCategoryDataOption .= '<option value="'.$Category->id.'">'.$Category->name.'</option>';
-                }
-            }else{
+        $classificationcategory = ClassificationCategory::select('category_id')->where('classification_id',$id)->get()->toArray();
+        $EstablishmentCategoryData = EstablishmentCategory::whereIn('id',$classificationcategory)->get();
+        if(isset($EstablishmentCategoryData)){
+            foreach($EstablishmentCategoryData as $Category){
                 $EstablishmentCategoryDataOption .= '<option value="'.$Category->id.'">'.$Category->name.'</option>';
             }
-
         }
         return $EstablishmentCategoryDataOption;
     }

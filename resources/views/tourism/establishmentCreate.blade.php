@@ -724,182 +724,8 @@
             });
         }
 
-        let fieldsArray = ["name","start_date","registry_number","cadastral_registry","organization_type","local","web_page","phone","email","tourist_activity_id","classification_id","category_id","establishment_id","owner_id","legal_representative_id"];
-
-        function clearValidation(fieldsArray){
-            fieldsArray.forEach(function(key, indice, array) {
-                let elementValidation = document.getElementById(key);
-                //si existe elemento
-                if(!!elementValidation == true){
-
-                    let elementValidation = document.getElementById(key);
-
-                    let divElementParent = document.getElementById(key).parentNode;
-                    elementValidation.setAttribute("class", "form-control");
-
-                    let divElementLastChild = divElementParent.lastChild;
-
-                    if(divElementLastChild.nodeName.toLowerCase() == true){
-                       // divElementParent.removeChild(divElementLastChild);
-                        //console.log(divElementLastChild);
-                    }
-
-                }
-            })
-        }
-
-        function viewValidacion(errorsValidations){
-            for(let key in errorsValidations){
-
-                if (errorsValidations.hasOwnProperty(key)){
-                let elementValidation = document.getElementById(key);
-
-                    if(!!elementValidation == true){
-
-                        let elementValidation = document.getElementById(key);
-
-                        let divElementParent = document.getElementById(key).parentNode;
-                        elementValidation.setAttribute("class", "form-control is-invalid");
-
-                        let spanValidation = document.createElement("span");
-                        spanValidation.textContent = errorsValidations[key];
-                        spanValidation.setAttribute("class", "error invalid-feedback");
-
-                        let contDivElementParent = divElementParent.childElementCount;
-                        if(contDivElementParent < 3){
-                        divElementParent.appendChild(spanValidation);
-                        }
-
-
-                    }
-
-                }
-            }
-        }
-
-        const getLengthOfObject = (obj) => {
-          let lengthOfObject = Object.keys(obj).length;
-          return lengthOfObject;
-          //console.log(lengthOfObject);
-        }
         btnGuardar.addEventListener('click', function(e) {
-            loading.style.display = '';
-            //datos de formulario
-            let btnGuardar = document.getElementById('btnGuardar');
-            let name = document.getElementById('name').value;
-            let start_date = document.getElementById('start_date').value;
-            let registry_number = document.getElementById('registry_number').value;
-            let cadastral_registry = document.getElementById('cadastral_registry').value;
-            let organization_type = document.getElementById('organization_type').value;
-            let web_page = document.getElementById('web_page').value;
-            let email = document.getElementById('email').value;
-            let phone = document.getElementById('phone').value;
-            let local = document.getElementById('local').value;
-            let tourist_activity_id = document.getElementById('tourist_activity_id').value;
-            let classification_id = document.getElementById('classification_id').value;
-            let category_id = document.getElementById('category_id').value;
-            let has_sewer = document.getElementById("has_sewer").checked;
-            let has_sewage_treatment_system = document.getElementById("has_sewage_treatment_system").checked;
-            let has_septic_tank = document.getElementById("has_septic_tank").checked;
-            let is_patrimonial = document.getElementById("is_patrimonial").checked;
-            let establishment_id = document.getElementById("establishment_id_2").value;
-            let owner_id = document.getElementById("owner_id_2").value;
-            let legal_representative_id = document.getElementById("legal_representative_id_2").value;
-            const rbs = document.querySelectorAll('input[name="is_main"]');
-            let selectedValue;
-            for (const rb of rbs) {
-                if (rb.checked) {
-                    selectedValue = rb.value;
-                    break;
-                }
-            }
-
-            //envio de formulario
-            axios.post('/admin/establishments', {
-            name:name,
-            start_date:start_date,
-            registry_number:registry_number,
-            cadastral_registry:cadastral_registry,
-            organization_type:organization_type,
-            web_page:web_page,
-            email:email,
-            local:local,
-            phone:phone,
-            organization_type:organization_type,
-            tourist_activity_id:tourist_activity_id,
-            classification_id:classification_id,
-            category_id:category_id,
-            _token:token,
-            has_sewer:has_sewer,
-            has_sewage_treatment_system:has_sewage_treatment_system,
-            has_septic_tank:has_septic_tank,
-            is_patrimonial:is_patrimonial,
-            establishment_id:establishment_id,
-            owner_id:owner_id,
-            legal_representative_id:legal_representative_id,
-            selectedValue:selectedValue
-            }).then(function(res) {
-                clearValidation(fieldsArray);
-                if(res.status==200) {
-                    console.log("Guardando..");
-
-                    loading.style.display = 'none';
-                    if(res.data.saved == 'ok'){
-                        window.location.href = '/admin/establishments/create/'+res.data.id;
-                    }
-                }
-            }).catch(function(err) {
-                console.log(err);
-              if(err.response.status == 422) {
-                  console.log('validacion');
-                  toastr.error('Revise los campos que son obligatorios');
-                let errorsValidations = err.response.data.errors;
-                let contador = getLengthOfObject(errorsValidations);
-                clearValidation(fieldsArray);
-
-                for(let key in errorsValidations){
-                  if (errorsValidations.hasOwnProperty(key)){
-                    let elementValidation = document.getElementById(key);
-                    console.log('regla + '+ errorsValidations[key])
-
-                    if(!!elementValidation == true){
-
-                      let elementValidation = document.getElementById(key);
-
-                      let divElementParent = document.getElementById(key).parentNode;
-                      elementValidation.setAttribute("class", "form-control is-invalid");
-
-                      let spanValidation = document.createElement("span");
-                      spanValidation.textContent = errorsValidations[key];
-                      spanValidation.setAttribute("class", "error invalid-feedback");
-
-                      let contDivElementParent = divElementParent.childElementCount;
-                      if(contDivElementParent < 3){
-                        divElementParent.appendChild(spanValidation);
-                      }
-
-
-                    }
-
-                  }
-                }
-                loading.style.display = 'none';
-              }
-
-              if(err.response.status == 500){
-                toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
-                console.log('error al consultar al servidor');
-              }
-
-              if(err.response.status == 419){
-                toastr.error('Es posible que tu session haya caducado, vuelve a iniciar sesion');
-                console.log('Es posible que tu session haya caducado, vuelve a iniciar sesion');
-              }
-
-            }).then(function(err) {
-                console.log(err);
-              loading.style.display = 'none';
-            });
+            $('#formEstablisment').submit();
         })
     $(function () {
         bsCustomFileInput.init()
@@ -908,6 +734,112 @@
             position: 'top-end',
             showConfirmButton: false,
             timer: 3000
+        });
+
+        $('#formEstablisment').validate({
+            rules: {
+                    name: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 150
+                    },
+                    start_date: {
+                        required: true,
+                        dateISO: true
+                    },
+                    registry_number: {
+                        required: true,
+                        number: true
+                    },
+                    organization_type: {
+                        required: true,
+                    },
+                    local: {
+                        required: true,
+                    },
+                    organization_type: {
+                        required: true,
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                    },
+                    phone: {
+                        required: true,
+                        number: true,
+                        minlength: 8,
+                        maxlength: 10
+                    },
+                    tourist_activity_id: {
+                        required: true
+                    },
+                    classification_id: {
+                        required: true
+                    },
+                    category_id: {
+                        required: true
+                    },
+                    establishment_id: {
+                        required: true
+                    },
+                },
+            messages: {
+                name: {
+                    required: "El campo nombre es requerido.",
+                    minlength: "Please enter a valid email address",
+                    maxlength: "Please enter a valid email address",
+                },
+                start_date: {
+                        required: "El campo nombre es requerido.",
+                        dateISO: "El campo Fecha de nacimiento no es una fecha válida."
+                    },
+                    registry_number: {
+                        required: "El campo numero de registro es requerido.",
+                        number: "El campo numero de registro debe ser un numero valido."
+                    },
+                    organization_type: {
+                        required: "El campo numero de registro es requerido.",
+                    },
+                    local: {
+                        required: "El campo local es requerido.",
+                    },
+                    organization_type: {
+                        required: "El campo local es requerido.",
+                    },
+                    email: {
+                        required: "El campo correo electronico es requerido.",
+                        email: true,
+                    },
+                    phone: {
+                        required: "El campo telefono es requerido.",
+                        number: "El campo telefono debe ser un numero valido.",
+                        minlength: "El campo telefono debe tener al menos 2 numeros.",
+                        maxlength: "El campo telefono debe ser menor que 10 numeros.",
+                    },
+                    tourist_activity_id: {
+                        required: "El campo actividad turistica es requerido.",
+                    },
+                    classification_id: {
+                        required: "El campo clasificacion es requerido.",
+                    },
+                    category_id: {
+                        required: "El campo categoria es requerido.",
+                    },
+                    establishment_id: {
+                        required: "El campo Persona/empresa es requerido.",
+                    },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+            }
         });
         @if ($errors->any())
             toastr.error('Revise los campos que son obligatorios');
@@ -946,7 +878,7 @@
             ]
         });
         @if($register == 'yes')
-        cargardatatablesRequerimientos();
+
         @endif
         $('input[name="start_date"]').daterangepicker({
             locale: {

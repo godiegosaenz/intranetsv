@@ -13,6 +13,8 @@ use App\models\Country;
 use App\models\EstablishmentCategory;
 use App\Models\Requirement;
 use App\Models\EstablishmentRequirement;
+use App\Models\ClassificationCategory;
+use Illuminate\Support\Facades\Cookie;
 
 class EstablishmentController extends Controller
 {
@@ -45,11 +47,26 @@ class EstablishmentController extends Controller
             $register = 'yes';
             $establishmentData = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative'])->where('id', $id)->first();
             $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',$establishmentData->tourist_activity_id)->get();
-            $establishmentCategory = EstablishmentClassification::find($establishmentData->classification_id)->establishments_categories;
             $requirementEstablishment = Establishments::find($establishmentData->id)->requirements;
-        }
+            $classificationcategory = ClassificationCategory::select('category_id')->where('classification_id',$establishmentData->classification_id)->get()->toArray();
+            $establishmentCategory = EstablishmentCategory::whereIn('id',$classificationcategory)->get();
+        }else{
+            if(Cookie::get('tourist_activity_id') !== null){
+                $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',Cookie::get('tourist_activity_id'))->get();
+            }
+            if(Cookie::get('classification_id') !== null){
+                //$establishmentCategory = EstablishmentCategory::with('establishments_classifications')->find(Cookie::get('classification_id'));
+                //dd($establishmentCategory);
+                $classificationcategory = ClassificationCategory::select('category_id')->where('classification_id',Cookie::get('classification_id'))->get()->toArray();
+                $establishmentCategory = EstablishmentCategory::whereIn('id',$classificationcategory)->get();
 
-        return view('tourism.establishmentCreate', compact('establishmentData','touristActivity','establishmentClassification','PersonEntityData','establishmentCategory','register','requirementEstablishment'));
+            }
+        }
+        Cookie::queue('tourist_activity_id', '');
+        Cookie::queue('classification_id', '');
+        Cookie::queue('category_id', '');
+
+        return view('tourism.establishmentCreate2', compact('establishmentData','touristActivity','establishmentClassification','PersonEntityData','establishmentCategory','register','requirementEstablishment'));
     }
 
     /**
@@ -65,10 +82,15 @@ class EstablishmentController extends Controller
         $establishmentData->name = $request->name;
         $establishmentData->start_date = $request->start_date;
         $establishmentData->registry_number = $request->registry_number;
-        $establishmentData->cadastral_registry = $request->cadastral_registry;
+        if($request->cadastral_registry != null){
+            $establishmentData->cadastral_registry = $request->cadastral_registry;
+        }
+
         $establishmentData->organization_type= $request->organization_type;
         $establishmentData->local= $request->local;
-        $establishmentData->web_page= $request->web_page;
+        if($request->cadastral_registry != null){
+            $establishmentData->web_page= $request->web_page;
+        }
         $establishmentData->email= $request->email;
         $establishmentData->phone= $request->phone;
         $establishmentData->tourist_activity_id= $request->tourist_activity_id;
@@ -99,8 +121,15 @@ class EstablishmentController extends Controller
             $establishmentData->is_patrimonial = false;
         }
 
-        $establishmentData->owner_id = $request->owner_id;
-        $establishmentData->legal_representative_id = $request->legal_representative_id;
+        if($request->owner_id != null){
+            $establishmentData->owner_id = $request->owner_id;
+        }
+
+        if($request->legal_representative_id != null){
+            $establishmentData->legal_representative_id = $request->legal_representative_id;
+        }
+
+
         if($request->selectedValue == 'm'){
             $establishmentData->is_main = true;
             $establishmentData->is_branch = false;
@@ -108,8 +137,9 @@ class EstablishmentController extends Controller
             $establishmentData->is_branch = true;
             $establishmentData->is_main = false;
         }
-        $establishmentData->establishment_id = $request->establishment_id;
+        $establishmentData->establishment_id = $request->establishment_id_2;
         $establishmentData->username = auth()->user()->email;
+        $establishmentData->register = '1';
         $establishmentData->save();
 
         $requirementTouristActivity = TouristActivity::find($establishmentData->tourist_activity_id)->requirements;
@@ -122,11 +152,44 @@ class EstablishmentController extends Controller
             }
         }
 
+        return redirect()->route('establishments.create',['id' => $establishmentData->id])->with(['register' => $establishmentData->register,'status' => 'El registro fue exitoso']);
 
-        $respuesta = ["saved" => "ok", "id" => $establishmentData->id];
+    }
 
-        return json_encode($respuesta);
+    public function storeStep2(Request $request, $id = null){
+        $establishmentData = Establishments::find($id);
+        $establishmentData->has_requeriment = false;
+        if($request->has_sewer != null){
+            $establishmentData->has_sewer = true;
+        }else{
+            $establishmentData->has_sewer = false;
+        }
+        if($request->has_sewage_treatment_system != null){
+            $establishmentData->has_sewage_treatment_system = true;
+        }else{
+            $establishmentData->has_sewage_treatment_system = false;
+        }
 
+        if($request->has_septic_tank != null){
+            $establishmentData->has_septic_tank = true;
+        }else{
+            $establishmentData->has_septic_tank = false;
+        }
+        if($request->is_patrimonial != null){
+            $establishmentData->is_patrimonial = true;
+        }else{
+            $establishmentData->is_patrimonial = false;
+        }
+        if($request->is_main == 'm'){
+            $establishmentData->is_main = true;
+            $establishmentData->is_branch = false;
+        }else{
+            $establishmentData->is_branch = true;
+            $establishmentData->is_main = false;
+        }
+        $establishmentData->register = '2';
+        $establishmentData->save();
+        return redirect()->route('establishments.create',['id' => $id])->with('status', 'El registro fue exitoso');
     }
 
     /**
