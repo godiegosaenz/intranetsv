@@ -13,10 +13,6 @@
                 <div class="card-header">
                   <h3 class="card-title">Establecimiento</h3>
 
-    @foreach ($errors->all() as $error)
-        <div>{{ $error }}</div>
-    @endforeach
-
                 </div>
                 <div class="card-body p-0">
                   <div id="stepper1" class="bs-stepper">
@@ -54,7 +50,9 @@
                                     <br>
                                     <div class="form-group">
                                         <button id="btnGuardar" class="btn btn-primary" type="button"><i class="fa fa-plus-square"></i> Guardar </button>
-                                        <button id="btnSiguiente" class="btn btn-primary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                        @if($establishmentData->register >= 1)
+                                        <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -70,7 +68,7 @@
                                         <span class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <input id="establishment_id_2" name="establishment_id_2" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id_2',isset($establishmentData->people_entities_establishment->id) ? $establishmentData->people_entities_establishment->id : '') }}">
+                                    <input id="establishment_id_2" name="establishment_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id_2',isset($establishmentData->people_entities_establishment->id) ? $establishmentData->people_entities_establishment->id : '') }}">
                                     <input id="numbermodal" type="hidden" class="form-control" value="1">
                                 </div>
                                 <div class="col-lg-12">
@@ -379,8 +377,8 @@
                                     <br>
                                     <div class="form-group">
                                         <button id="btnGuardarstep2" class="btn btn-primary" type="button"><i class="fa fa-plus-square"></i> Guardar </button>
-                                        <button id="btnstep2" class="btn btn-primary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
-                                        <button id="btnstepnext3" class="btn btn-primary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                        <button id="btnstep2" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
+                                        <button id="btnstepnext3" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -455,19 +453,64 @@
                         </form>
                       </div>
                         <div id="requirement-part" class="content" role="tabpanel" aria-labelledby="requirement-part-trigger">
-                            <table id="requirements-table" class="table table-sm table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                    <th>Requerimiento</th>
-                                    <th>Descripcion</th>
-                                    <th>Tipo de Archivo</th>
-                                    <th style="width: 40px">Estado</th>
-                                    <th>Accion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <br>
+                                    <div class="form-group">
+
+                                        <button id="btnstep3" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr>
+                                </div>
+                                <div class="col-lg-12">
+                                    <table id="requirements-table" class="table table-sm table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                            <th>Requerimiento</th>
+                                            <th>Descripcion</th>
+                                            <th>Tipo de Archivo</th>
+                                            <th style="width: 40px">Estado</th>
+                                            <th>Accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @isset($requirementEstablishment)
+                                                @if($register == 'yes')
+                                                    @foreach ($requirementEstablishment as $re)
+                                                        <tr>
+                                                            <td>{{$re->name}}</td>
+                                                            <td>{{$re->Description}}</td>
+                                                            <td>{{$re->type_document}}</td>
+                                                            <td>
+                                                                @if($re->pivot->upload == true)
+                                                                    <span class="badge bg-success">Completado</span>
+                                                                @else
+                                                                    <span class="badge bg-danger">Pendiente</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if($re->pivot->upload == false)
+                                                                    <button type="button" id="btnModal{{$re->id}}" class="btn btn-primary" onclick="viewmodal{{$re->id}}()"><i class="fas fa-paperclip"></i></button>
+                                                                @endif
+                                                                <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                                @if($re->pivot->upload == true)
+
+                                                                    <a href="{{ url('/admin/establishmentrequirement/downloadfile/'.$re->pivot->requirement_id.'/'.$re->pivot->establishment_id) }}" target="_blank" class="btn btn-secondary"><i class="fas fa-download"></i></a>
+                                                                @endif
+
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            @endisset
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                   </div>
@@ -584,13 +627,18 @@
 @push('scripts')
     <script>
         var stepper = new Stepper(document.querySelector('#stepper1'))
-        @if ($register == 'yes')
+        @if ($establishmentData->register == 1)
+        stepper.to(1);
+        @elseif ($establishmentData->register == 2)
         stepper.to(2);
+        @elseif ($establishmentData->register == 3)
+        stepper.to(3);
+        @else
+        stepper.to(1);
         @endif
         function stepnext(){
             stepper.next()
         }
-
         function stepprevious(){
             stepper.previous()
         }
@@ -853,10 +901,8 @@
                         if(res.status==200) {
                             if(res.data.success == true){
                                 console.log("guardando ..");
-                                requirementstable.ajax.reload();
-                                toastr.success('Archivo cargado con exito');
                                 loading.style.display = 'none';
-                                $('#modal-{{$rta->id}}').modal('hide');
+                                window.location.href = '{{route("establishments.create",["id" => $establishmentData->id])}}';
                             }else{
                                 toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
                                 console.log('error al consultar al servidor');
@@ -890,23 +936,6 @@
                     },
                     "autoWidth": false,
                     "order": [], //Initial no order
-                    "processing" : true,
-                    "serverSide": true,
-                    "ajax": {
-                        "url" : "{{ route('establishmentrequirement.datatables', ['id' => $establishmentData->id]) }}",
-                        "type": "post",
-                        "data": function (d){
-                            d._token = $("input[name=_token]").val();
-                        }
-                    },
-                    "columns": [
-                        {data: 'name'},
-                        {data: 'Description'},
-                        {data: 'type_document'},
-                        {data: 'status'},
-                        {data: 'action', name: 'action', orderable: false, searchable: false},
-
-                    ]
                 });
         @endif
 
@@ -1032,9 +1061,13 @@
             @error('people_entities_id')
                 toastr.error('{{$message}}');
             @enderror
-            @if ($register == 'yes')
+            @if ($establishmentData->register == 1)
                 toastr.success('El establecimiento ha sido registrado con exito');
                 //cargardatatablesRequerimientos();
+            @elseif ($establishmentData->register == 2)
+                toastr.success('El establecimiento se ha actualizado');
+            @elseif ($establishmentData->register == 3)
+                toastr.success('Los requerimientos se actualizaron con exito');
             @endif
             $('input[name="start_date"]').daterangepicker({
                 locale: {

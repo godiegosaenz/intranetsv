@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\EstablishmentRequirement;
 use App\Models\Establishments;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cookie;
 
 class EstablishmentRequirementController extends Controller
 {
@@ -52,7 +54,15 @@ class EstablishmentRequirementController extends Controller
                 "file" => $file
             ]);
         }
-
+        $countestablishmentrequirement = EstablishmentRequirement::where('establishment_id',$request->establishment_id)->count();
+        $countestablishmentrequirementupload = EstablishmentRequirement::where('establishment_id',$request->establishment_id)->where('upload',true)->count();
+        if($countestablishmentrequirement == $countestablishmentrequirementupload){
+            $establishment = Establishments::find($request->establishment_id);
+            $establishment->has_requeriment = true;
+            $establishment->register = 3;
+            $establishment->save();
+        }
+        Cookie::queue('step', 3);
         return Response()->json([
             "success" => false,
             "file" => ''
@@ -105,6 +115,16 @@ class EstablishmentRequirementController extends Controller
         //
     }
 
+    public function downloadFile($requeriment_id,$establishment_id){
+        $esre = EstablishmentRequirement::where('requirement_id',$requeriment_id)
+                                        ->where('establishment_id',$establishment_id)
+                                        ->get();
+        foreach($esre as $er){
+            return Storage::download($er->file_path);
+        }
+
+    }
+
     public function datatables(Request $request, $id = null){
         //$PersonEntityData = PersonEntity::all();
         $requirementEstablishment = Establishments::find($id)->requirements;
@@ -124,7 +144,7 @@ class EstablishmentRequirementController extends Controller
                     $buttons = '<button type="button" id="btnModal'.$requirementEstablishment->id.'" class="btn btn-primary" onclick="viewmodal'.$requirementEstablishment->id.'()"><i class="fas fa-paperclip"></i></button>';
                     $buttons .= '<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>';
                     if($requirementEstablishment->pivot->upload == true){
-                        $buttons .= '<a href="'.$requirementEstablishment->file_path.'" class="btn btn-secondary"><i class="fas fa-info"></i></a>';
+                        $buttons .= '<a href="'.route('establishmentrequirement.downloadfile',['id' =>$requirementEstablishment->id ]).'" target="_blank" class="btn btn-secondary"><i class="fas fa-info"></i></a>';
                     }
                     return $buttons;
                 })

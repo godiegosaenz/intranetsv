@@ -75,7 +75,9 @@ Route::prefix('admin')->group(function (){
 
     Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index')->middleware('auth');
     Route::get('/establishments/create/{id?}', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
+    Route::get('/establishments/{id}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit')->middleware('auth');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
+    Route::put('/establishments/{Establishments}', [EstablishmentController::class, 'update'])->name('establishments.update');
     Route::post('/establishment/storestep2/{id?}', [EstablishmentController::class, 'storeStep2'])->name('establishments.storestep2');
     Route::post('/establishments/datatablesPersonas', [EstablishmentController::class, 'datatablesPersonas'])->name('establishments.datatablesPersonas');
     Route::post('/establishments/datatables', [EstablishmentController::class, 'datatables'])->name('establishments.datatables');
@@ -86,6 +88,7 @@ Route::prefix('admin')->group(function (){
     Route::post('/establishmentrequirement', [EstablishmentRequirementController::class, 'store'])->name('establishmentrequirement.store');
     Route::post('/establishmentrequirement/datatables/{id?}', [EstablishmentRequirementController::class, 'datatables'])->name('establishmentrequirement.datatables');
 
+    Route::get('/establishmentrequirement/downloadfile/{requeriment_id}/{establishment_id}', [EstablishmentRequirementController::class, 'downloadFile'])->name('establishmentrequirement.downloadfile');
     Route::get('/countries', function(){
         //return EstablishmentCategory::find(2)->establishments_classifications()->orderBy('id')->get();
         //return Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative'])->get();

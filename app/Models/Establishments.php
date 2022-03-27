@@ -60,4 +60,8 @@ class Establishments extends Model
         return $this->belongsToMany(Requirement::class,'establishment_requirements','establishment_id','requirement_id')->withPivot('upload', 'name','file_path');;
     }
 
+    public function validation_requeriments_establishment($id){
+
+    }
+
 }
