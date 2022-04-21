@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\PersonEntity;
 
-class UserTest extends TestCase
+class PersonEntityTest extends TestCase
 {
     /**
      * A basic feature test example.
@@ -16,6 +16,7 @@ class UserTest extends TestCase
      */
     public function test_example()
     {
-        //$user = User::factory()->times(5)->create();
+        //$PersonEntity = PersonEntity::factory()->times(10)->create();
+        $PersonEntity = PersonEntity::factory()->enterprise()->create();
     }
 }

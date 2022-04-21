@@ -43,7 +43,7 @@
                 <p>Tablero</p>
                 </a>
             </li>
-            <li class="nav-item {{ (url()->current() == route('users.index') || url()->current() == route('peopleentities.index')) ? 'menu-open' : '' }}">
+            <li class="nav-item {{ (url()->current() == route('users.index') || url()->current() == route('peopleentities.index') || url()->current() == route('luaf.index')) ? 'menu-open' : '' }}">
                 @auth
                 <a href="#" class="nav-link {{ (url()->current() == route('peopleentities.index') || url()->current() == route('users.index')) ? 'active' : '' }}">
                 @endauth
@@ -67,9 +67,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
+                    <a href="{{ route('luaf.index')}}" class="nav-link {{ (url()->current() == route('luaf.index')) ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Dashboard v3</p>
+                    <p>Tabla Luaf</p>
                     </a>
                 </li>
                 </ul>
@@ -140,39 +140,23 @@
                         <p>Establecimientos</p>
                       </a>
                 </li>
+
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>
-                    Inventario Patrimonial
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
+                  <p>Recaudacion</p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('emision.index') }}" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Emisión</p>
+                </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Level 2</p>
+                  <p>Rubros</p>
                 </a>
               </li>
             </ul>

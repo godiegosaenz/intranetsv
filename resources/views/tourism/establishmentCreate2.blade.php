@@ -18,357 +18,515 @@
                   <div id="stepper1" class="bs-stepper">
                     <div class="bs-stepper-header" role="tablist">
                       <!-- your steps here -->
+                      <div class="step" data-target="#step1-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="step1-part" id="step1-part-trigger">
+                          <span class="bs-stepper-circle">1</span>
+                          <span class="bs-stepper-label"></span>
+                        </button>
+                      </div>
+                      <div class="line"></div>
                       <div class="step" data-target="#logins-part">
                         <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
-                          <span @php if($establishmentData->register >= 1) { @endphp style="background-color: #4CAF50" @php } @endphp class="bs-stepper-circle">1</span>
-                          <span class="bs-stepper-label">Informacion</span>
+                          <span class="bs-stepper-circle">2</span>
+                          <span class="bs-stepper-label"></span>
                         </button>
                       </div>
                       <div class="line"></div>
                       <div class="step" data-target="#information-part">
                         <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
-                          <span @php if($establishmentData->register >= 2) { @endphp style="background-color: #4CAF50" @php } @endphp class="bs-stepper-circle">2</span>
-                          <span class="bs-stepper-label">adicional</span>
+                          <span class="bs-stepper-circle">3</span>
+                          <span class="bs-stepper-label"></span>
                         </button>
                       </div>
                       <div class="line"></div>
                       <div class="step" data-target="#requirement-part">
                         <button type="button" class="step-trigger" role="tab" aria-controls="requirement-part" id="requirement-part-trigger">
-                          <span @php if($establishmentData->register >= 3) { @endphp style="background-color: #4CAF50" @php } @endphp class="bs-stepper-circle">3</span>
+                          <span class="bs-stepper-circle">4</span>
                           <span class="bs-stepper-label">Requerimientos</span>
                         </button>
                       </div>
                     </div>
                     <div class="bs-stepper-content">
-                      <!-- your steps content here -->
-                      <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
-                        <!-- formulario de informacion -->
-                        <form id="formEstablisment" action="{{ route('establishments.store') }}" method="post">
-                            @csrf
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <br>
-                                    <div class="form-group">
-                                        <button id="btnGuardar" class="btn btn-primary" type="button"><i class="fa fa-plus-square"></i> Guardar </button>
-                                        @if($establishmentData->register >= 1)
-                                        <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
-                                        @endif
+                        <div id="step1-part" class="content" role="tabpanel" aria-labelledby="step1-part-trigger">
+                            <form id="formEstablisment" action="{{ route('establishments.store') }}" method="post">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-12">
+                                        <br>
+                                            <h4>Informacion de la Persona natural / Jurídica</h4>
+                                        <hr>
                                     </div>
+
                                 </div>
-                                <div class="col-lg-6">
-                                    <label for="cc_ruc"> Selecciona Persona / empresa *</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                          <button id="modalempresa" type="button" class="btn btn-primary">Buscar</button>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <br>
+                                        <div class="form-group">
+                                            <button id="btnGuardar" class="btn btn-primary" type="button"><i class="fa fa-plus-square"></i> Guardar </button>
+                                            @if($establishmentData->register >= 1)
+                                            <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                            @endif
                                         </div>
-                                        <!-- /btn-group -->
-                                        <input id="establishment_id" name="establishment_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id',isset($establishmentData->people_entities_establishment->cc_ruc) ? $establishmentData->people_entities_establishment->cc_ruc : '') }}" disabled>
-
-                                        @error('people_entities_id')
-                                        <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
                                     </div>
-                                    <input id="establishment_id_2" name="establishment_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id_2',isset($establishmentData->people_entities_establishment->id) ? $establishmentData->people_entities_establishment->id : '') }}">
-                                    <input id="numbermodal" type="hidden" class="form-control" value="1">
+                                    <div class="col-lg-6">
+                                        <label for="cc_ruc"> Selecciona cedula/Ruc</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                            <button id="modalempresa" type="button" class="btn btn-primary">Buscar</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <input id="establishment_id" name="establishment_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id',isset($establishmentData->people_entities_establishment->cc_ruc) ? $establishmentData->people_entities_establishment->cc_ruc : '') }}" disabled>
+
+                                            @error('people_entities_id')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <input id="establishment_id_2" name="establishment_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id_2',isset($establishmentData->people_entities_establishment->id) ? $establishmentData->people_entities_establishment->id : '') }}">
+                                        <input id="numbermodal" type="hidden" class="form-control" value="1">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <br>
+                                        <h5>Datos de personas/empresas</h5>
+                                        <hr>
+
+                                    </div>
+                                    <div class="col-lg-6">
+
+                                        <div class="form-group">
+                                            <label for="name2">Nombres/Nombre Comercial</label>
+                                            <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($establishmentData->people_entities_establishment->name) ? $establishmentData->people_entities_establishment->name : '') }}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last_name">Apellido Paterno/Razon Social</label>
+                                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ old('last_name',isset($establishmentData->people_entities_establishment->last_name) ? $establishmentData->people_entities_establishment->last_name : '') }}" disabled>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="email2">Correo Electronico</label>
+                                            <input type="text" class="form-control" id="email2" name="email2" value="{{ old('email2',isset($establishmentData->people_entities_establishment->email) ? $establishmentData->people_entities_establishment->email : '') }}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status2">Estado</label>
+                                            <input type="text" class="form-control" id="status2" name="status2" value="{{ old('status',isset($establishmentData->people_entities_establishment->status) ? $establishmentData->people_entities_establishment->status : '') }}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="number_phone1">Telefono</label>
+                                            <input type="number" class="form-control" id="number_phone1" name="number_phone1"  value="{{ old('number_phone1',isset($establishmentData->people_entities_establishment->number_phone1) ? $establishmentData->people_entities_establishment->number_phone1 : '') }}" disabled>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="country_id">Pais</label>
+                                            <input type="text" class="form-control" id="country_id" name="country_id" value="{{old('country_id',isset($establishmentData->people_entities_establishment->countries->name) ? $establishmentData->people_entities_establishment->countries->name : '')}}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="province_id">Provincia</label>
+                                            <input type="text" class="form-control" id="province_id" name="province_id" value="{{old('province_id', isset($establishmentData->people_entities_establishment->provinces->name) ? $establishmentData->people_entities_establishment->provinces->name : '')}}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="canton_id">Canton</label>
+                                            <input type="text" class="form-control" id="canton_id" name="canton_id" value="{{ old('canton_id',isset($establishmentData->people_entities_establishment->cantons->name) ? $establishmentData->people_entities_establishment->cantons->name : '')}}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="parish_id">Parroquia</label>
+                                            <input type="text" class="form-control" id="parish_id" name="parish_id" value="{{ old('parish_id',isset($establishmentData->people_entities_establishment->parishes->name) ? $establishmentData->people_entities_establishment->parishes->name : '')}}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Direccion</label>
+                                            <input type="text" class="form-control" id="address" name="address" value="{{ old('address',isset($establishmentData->people_entities_establishment->address) ? $establishmentData->people_entities_establishment->address : '') }}" disabled>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <hr>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="cc_ruc"> Propietario </label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                            <button id="modalpropietario" type="button" class="btn btn-primary">Buscar</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <input id="owner_id" name="owner_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('owner_id',isset($establishmentData->people_entities_owner->cc_ruc) ? $establishmentData->people_entities_owner->cc_ruc : '') }}">
+                                        </div>
+                                        <input id="owner_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                        <div class="form-group">
+                                            <label for="name_p">Nombres/Nombre Comercial</label>
+                                            <input type="text" class="form-control" id="name_p" value="{{ old('name_p',isset($establishmentData->people_entities_owner->name) ? $establishmentData->people_entities_owner->name : '') }}" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last_name_p">Apellido Paterno/Razon Social</label>
+                                            <input type="text" class="form-control" id="last_name_p" name="last_name_p" value="{{ old('last_name_p',isset($establishmentData->people_entities_owner->last_name) ? $establishmentData->people_entities_owner->last_name : '') }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="cc_ruc"> Representante legal </label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                            <button id="modalrepresentante" type="button" class="btn btn-primary">Buscar</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <input id="legal_representative_id" name="legal_representative_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('legal_representative_id',isset($establishmentData->people_entities_legal_representative->cc_ruc) ? $establishmentData->people_entities_legal_representative->cc_ruc : '') }}">
+
+                                            @error('legal_representative_id')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <input id="legal_representative_id_2" name="legal_representative_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('legal_representative_id_2')}}">
+                                        <div class="form-group">
+                                            <label for="name_r">Nombres/Nombre Comercial</label>
+                                            <input type="text" class="form-control" id="name_r" name="name_r" value="{{ old('name_r',isset($establishmentData->people_entities_legal_representative->name) ? $establishmentData->people_entities_legal_representative->name : '') }}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last_name_r">Apellido Paterno/Razon Social</label>
+                                            <input type="text" class="form-control" id="last_name_r" value="{{ old('last_name_r',isset($establishmentData->people_entities_legal_representative->last_name) ? $establishmentData->people_entities_legal_representative->last_name : '') }}" disabled>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-12">
-                                    <br>
-                                    <h5>Datos de personas/empresas</h5>
-                                    <hr>
-
-                                </div>
-                                <div class="col-lg-6">
-
-                                    <div class="form-group">
-                                        <label for="name2">Nombres/Nombre Comercial</label>
-                                        <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($establishmentData->people_entities_establishment->name) ? $establishmentData->people_entities_establishment->name : '') }}" disabled>
-
+                            </form>
+                        </div>
+                        <!-- your steps content here -->
+                        <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                            <!-- formulario de informacion -->
+                            <form id="formEstablisment" action="{{ route('establishments.store') }}" method="post">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <br>
+                                        <div class="form-group">
+                                            <button id="btnGuardar" class="btn btn-primary" type="button"><i class="fa fa-plus-square"></i> Guardar </button>
+                                            @if($establishmentData->register >= 1)
+                                            <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                            @endif
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="last_name">Apellido Paterno/Razon Social</label>
-                                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ old('last_name',isset($establishmentData->people_entities_establishment->last_name) ? $establishmentData->people_entities_establishment->last_name : '') }}" disabled>
+                                    <div class="col-lg-6">
+                                        <label for="cc_ruc"> Selecciona Persona / empresa *</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                            <button id="modalempresa" type="button" class="btn btn-primary">Buscar</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <input id="establishment_id" name="establishment_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id',isset($establishmentData->people_entities_establishment->cc_ruc) ? $establishmentData->people_entities_establishment->cc_ruc : '') }}" disabled>
 
+                                            @error('people_entities_id')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <input id="establishment_id_2" name="establishment_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id_2',isset($establishmentData->people_entities_establishment->id) ? $establishmentData->people_entities_establishment->id : '') }}">
+                                        <input id="numbermodal" type="hidden" class="form-control" value="1">
                                     </div>
-
-
-                                    <div class="form-group">
-                                        <label for="email2">Correo Electronico</label>
-                                        <input type="text" class="form-control" id="email2" name="email2" value="{{ old('email2',isset($establishmentData->people_entities_establishment->email) ? $establishmentData->people_entities_establishment->email : '') }}" disabled>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="status2">Estado</label>
-                                        <input type="text" class="form-control" id="status2" name="status2" value="{{ old('status',isset($establishmentData->people_entities_establishment->status) ? $establishmentData->people_entities_establishment->status : '') }}" disabled>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="number_phone1">Telefono</label>
-                                        <input type="number" class="form-control" id="number_phone1" name="number_phone1"  value="{{ old('number_phone1',isset($establishmentData->people_entities_establishment->number_phone1) ? $establishmentData->people_entities_establishment->number_phone1 : '') }}" disabled>
-
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="country_id">Pais</label>
-                                        <input type="text" class="form-control" id="country_id" name="country_id" value="{{old('country_id',isset($establishmentData->people_entities_establishment->countries->name) ? $establishmentData->people_entities_establishment->countries->name : '')}}" disabled>
+                                    <div class="col-lg-12">
+                                        <br>
+                                        <h5>Datos de personas/empresas</h5>
+                                        <hr>
 
                                     </div>
-                                    <div class="form-group">
-                                        <label for="province_id">Provincia</label>
-                                        <input type="text" class="form-control" id="province_id" name="province_id" value="{{old('province_id', isset($establishmentData->people_entities_establishment->provinces->name) ? $establishmentData->people_entities_establishment->provinces->name : '')}}" disabled>
+                                    <div class="col-lg-6">
+
+                                        <div class="form-group">
+                                            <label for="name2">Nombres/Nombre Comercial</label>
+                                            <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($establishmentData->people_entities_establishment->name) ? $establishmentData->people_entities_establishment->name : '') }}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last_name">Apellido Paterno/Razon Social</label>
+                                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ old('last_name',isset($establishmentData->people_entities_establishment->last_name) ? $establishmentData->people_entities_establishment->last_name : '') }}" disabled>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="email2">Correo Electronico</label>
+                                            <input type="text" class="form-control" id="email2" name="email2" value="{{ old('email2',isset($establishmentData->people_entities_establishment->email) ? $establishmentData->people_entities_establishment->email : '') }}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status2">Estado</label>
+                                            <input type="text" class="form-control" id="status2" name="status2" value="{{ old('status',isset($establishmentData->people_entities_establishment->status) ? $establishmentData->people_entities_establishment->status : '') }}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="number_phone1">Telefono</label>
+                                            <input type="number" class="form-control" id="number_phone1" name="number_phone1"  value="{{ old('number_phone1',isset($establishmentData->people_entities_establishment->number_phone1) ? $establishmentData->people_entities_establishment->number_phone1 : '') }}" disabled>
+
+                                        </div>
 
                                     </div>
-                                    <div class="form-group">
-                                        <label for="canton_id">Canton</label>
-                                        <input type="text" class="form-control" id="canton_id" name="canton_id" value="{{ old('canton_id',isset($establishmentData->people_entities_establishment->cantons->name) ? $establishmentData->people_entities_establishment->cantons->name : '')}}" disabled>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="country_id">Pais</label>
+                                            <input type="text" class="form-control" id="country_id" name="country_id" value="{{old('country_id',isset($establishmentData->people_entities_establishment->countries->name) ? $establishmentData->people_entities_establishment->countries->name : '')}}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="province_id">Provincia</label>
+                                            <input type="text" class="form-control" id="province_id" name="province_id" value="{{old('province_id', isset($establishmentData->people_entities_establishment->provinces->name) ? $establishmentData->people_entities_establishment->provinces->name : '')}}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="canton_id">Canton</label>
+                                            <input type="text" class="form-control" id="canton_id" name="canton_id" value="{{ old('canton_id',isset($establishmentData->people_entities_establishment->cantons->name) ? $establishmentData->people_entities_establishment->cantons->name : '')}}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="parish_id">Parroquia</label>
+                                            <input type="text" class="form-control" id="parish_id" name="parish_id" value="{{ old('parish_id',isset($establishmentData->people_entities_establishment->parishes->name) ? $establishmentData->people_entities_establishment->parishes->name : '')}}" disabled>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Direccion</label>
+                                            <input type="text" class="form-control" id="address" name="address" value="{{ old('address',isset($establishmentData->people_entities_establishment->address) ? $establishmentData->people_entities_establishment->address : '') }}" disabled>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <br>
+                                        <h5>Datos de establesimiento</h5>
+                                        <hr>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="name">Nombre de establecimiento *</label>
+                                            <input type="text" class="form-control @error('name')is-invalid @enderror" id="name" name="name" value="{{ old('name',$establishmentData->name) }}" >
+                                            @error('name')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="organization_type">tipo de organizacion *</label>
+                                            <input type="text" class="form-control @error('organization_type')is-invalid @enderror" id="organization_type" name="organization_type" value="{{ old('organization_type',$establishmentData->organization_type) }}" >
+                                            @error('organization_type')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registry_number">Numero de registro *</label>
+                                            <input type="text" class="form-control @error('registry_number')is-invalid @enderror" id="registry_number" name="registry_number" value="{{ old('registry_number',$establishmentData->registry_number) }}" >
+                                            @error('registry_number')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cadastral_registry">registro Catastral</label>
+                                            <input type="text" class="form-control @error('cadastral_registry')is-invalid @enderror" id="cadastral_registry" name="cadastral_registry" value="{{ old('cadastral_registry',$establishmentData->cadastral_registry) }}" >
+                                            @error('cadastral_registry')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="web_page">Pagina web</label>
+                                            <input type="text" class="form-control @error('web_page')is-invalid @enderror" id="web_page" name="web_page" value="{{ old('web_page',$establishmentData->web_page) }}" >
+                                            @error('web_page')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Telefono *</label>
+                                            <input type="text" class="form-control @error('phone')is-invalid @enderror" id="phone" name="phone" value="{{ old('phone',$establishmentData->phone) }}" >
+                                            @error('phone')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
 
                                     </div>
-                                    <div class="form-group">
-                                        <label for="parish_id">Parroquia</label>
-                                        <input type="text" class="form-control" id="parish_id" name="parish_id" value="{{ old('parish_id',isset($establishmentData->people_entities_establishment->parishes->name) ? $establishmentData->people_entities_establishment->parishes->name : '')}}" disabled>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="address">Direccion</label>
-                                        <input type="text" class="form-control" id="address" name="address" value="{{ old('address',isset($establishmentData->people_entities_establishment->address) ? $establishmentData->people_entities_establishment->address : '') }}" disabled>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <br>
-                                    <h5>Datos de establesimiento</h5>
-                                    <hr>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="name">Nombre de establecimiento *</label>
-                                        <input type="text" class="form-control @error('name')is-invalid @enderror" id="name" name="name" value="{{ old('name',$establishmentData->name) }}" >
-                                        @error('name')
-                                        <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="organization_type">tipo de organizacion *</label>
-                                        <input type="text" class="form-control @error('organization_type')is-invalid @enderror" id="organization_type" name="organization_type" value="{{ old('organization_type',$establishmentData->organization_type) }}" >
-                                        @error('organization_type')
-                                        <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="registry_number">Numero de registro *</label>
-                                        <input type="text" class="form-control @error('registry_number')is-invalid @enderror" id="registry_number" name="registry_number" value="{{ old('registry_number',$establishmentData->registry_number) }}" >
-                                        @error('registry_number')
-                                        <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cadastral_registry">registro Catastral</label>
-                                        <input type="text" class="form-control @error('cadastral_registry')is-invalid @enderror" id="cadastral_registry" name="cadastral_registry" value="{{ old('cadastral_registry',$establishmentData->cadastral_registry) }}" >
-                                        @error('cadastral_registry')
-                                        <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="web_page">Pagina web</label>
-                                        <input type="text" class="form-control @error('web_page')is-invalid @enderror" id="web_page" name="web_page" value="{{ old('web_page',$establishmentData->web_page) }}" >
-                                        @error('web_page')
-                                        <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="phone">Telefono *</label>
-                                        <input type="text" class="form-control @error('phone')is-invalid @enderror" id="phone" name="phone" value="{{ old('phone',$establishmentData->phone) }}" >
-                                        @error('phone')
-                                        <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>Actividad turistica *</label>
-                                        <select id="tourist_activity_id" name="tourist_activity_id" class="custom-select @error('tourist_activity_id') is-invalid @enderror">
-                                            @isset($touristActivity)
-                                                <option value="">Seleccione Actividad</option>
-                                                @foreach ($touristActivity as $ta)
-                                                    @if(isset($establishmentData->tourist_activity_id))
-                                                        @if($ta->id == $establishmentData->tourist_activity_id)
-                                                            <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
-                                                        @else
-                                                            <option value="{{ $ta->id }}">{{ $ta->name }}</option>
-                                                        @endif
-                                                    @else
-                                                        @if(Cookie::get('tourist_activity_id'))
-                                                            @if($ta->id == Cookie::get('tourist_activity_id'))
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Actividad turistica *</label>
+                                            <select id="tourist_activity_id" name="tourist_activity_id" class="custom-select @error('tourist_activity_id') is-invalid @enderror">
+                                                @isset($touristActivity)
+                                                    <option value="">Seleccione Actividad</option>
+                                                    @foreach ($touristActivity as $ta)
+                                                        @if(isset($establishmentData->tourist_activity_id))
+                                                            @if($ta->id == $establishmentData->tourist_activity_id)
                                                                 <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
                                                             @else
                                                                 <option value="{{ $ta->id }}">{{ $ta->name }}</option>
                                                             @endif
                                                         @else
-                                                            <option value="{{ $ta->id }}">{{ $ta->name }}</option>
-                                                        @endif
-                                                    @endif
-
-                                                @endforeach
-                                            @endisset
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Clasificacion *</label>
-                                        <select id="classification_id" name="classification_id" class="custom-select @error('classification_id') is-invalid @enderror">
-                                            <option value="">Seleccione Clasificacion</option>
-                                            @if($register or Cookie::get('classification_id'))
-                                                @if ($register == 'yes')
-                                                    @foreach ($establishmentClassification as $ec)
-                                                        @if($ec->id == $establishmentData->classification_id)
-                                                            <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
-                                                        @else
-                                                            <option value="{{ $ec->id }}">{{ $ec->name }}</option>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    @if(Cookie::get('classification_id') !== null)
-                                                        @foreach ($establishmentClassification as $ec)
-                                                            @if(Cookie::get('classification_id'))
-                                                                @if($ec->id == Cookie::get('classification_id'))
-                                                                    <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
+                                                            @if(Cookie::get('tourist_activity_id'))
+                                                                @if($ta->id == Cookie::get('tourist_activity_id'))
+                                                                    <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
                                                                 @else
-                                                                    <option value="{{ $ec->id }}">{{ $ec->name }}</option>
+                                                                    <option value="{{ $ta->id }}">{{ $ta->name }}</option>
                                                                 @endif
+                                                            @else
+                                                                <option value="{{ $ta->id }}">{{ $ta->name }}</option>
+                                                            @endif
+                                                        @endif
+
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Clasificacion *</label>
+                                            <select id="classification_id" name="classification_id" class="custom-select @error('classification_id') is-invalid @enderror">
+                                                <option value="">Seleccione Clasificacion</option>
+                                                @if($register or Cookie::get('classification_id'))
+                                                    @if ($register == 'yes')
+                                                        @foreach ($establishmentClassification as $ec)
+                                                            @if($ec->id == $establishmentData->classification_id)
+                                                                <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
+                                                            @else
+                                                                <option value="{{ $ec->id }}">{{ $ec->name }}</option>
                                                             @endif
                                                         @endforeach
+                                                    @else
+                                                        @if(Cookie::get('classification_id') !== null)
+                                                            @foreach ($establishmentClassification as $ec)
+                                                                @if(Cookie::get('classification_id'))
+                                                                    @if($ec->id == Cookie::get('classification_id'))
+                                                                        <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
+                                                                    @else
+                                                                        <option value="{{ $ec->id }}">{{ $ec->name }}</option>
+                                                                    @endif
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
                                                     @endif
-                                                @endif
-                                            @endisset
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Categoria *</label>
-                                        <select id="category_id" name="category_id" class="custom-select @error('category_id') is-invalid @enderror">
-                                            <option value="">Seleccione Categoria</option>
-                                            @if($register or Cookie::get('classification_id'))
-                                                @if ($register == 'yes')
-                                                    @foreach ($establishmentCategory as $eca)
-                                                        @isset($establishmentData->category_id)
-                                                            @if($eca->id == $establishmentData->category_id)
-                                                                <option value="{{ $eca->id }}" selected>{{ $eca->name }}</option>
-                                                            @else
-                                                                <option value="{{ $eca->id }}">{{ $eca->name }}</option>
-                                                            @endif
-                                                        @endisset
-                                                    @endforeach
-                                                @else
-                                                    @if(Cookie::get('category_id') !== null)
+                                                @endisset
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Categoria *</label>
+                                            <select id="category_id" name="category_id" class="custom-select @error('category_id') is-invalid @enderror">
+                                                <option value="">Seleccione Categoria</option>
+                                                @if($register or Cookie::get('classification_id'))
+                                                    @if ($register == 'yes')
                                                         @foreach ($establishmentCategory as $eca)
-                                                            @if(Cookie::get('category_id'))
-                                                                @if($eca->id == Cookie::get('category_id'))
+                                                            @isset($establishmentData->category_id)
+                                                                @if($eca->id == $establishmentData->category_id)
                                                                     <option value="{{ $eca->id }}" selected>{{ $eca->name }}</option>
                                                                 @else
                                                                     <option value="{{ $eca->id }}">{{ $eca->name }}</option>
                                                                 @endif
-                                                            @endif
+                                                            @endisset
                                                         @endforeach
+                                                    @else
+                                                        @if(Cookie::get('category_id') !== null)
+                                                            @foreach ($establishmentCategory as $eca)
+                                                                @if(Cookie::get('category_id'))
+                                                                    @if($eca->id == Cookie::get('category_id'))
+                                                                        <option value="{{ $eca->id }}" selected>{{ $eca->name }}</option>
+                                                                    @else
+                                                                        <option value="{{ $eca->id }}">{{ $eca->name }}</option>
+                                                                    @endif
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
                                                     @endif
                                                 @endif
-                                            @endif
 
 
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Lugar de funcionamiento *</label>
-                                        <select id="local" name="local" class="custom-select @error('local') is-invalid @enderror">
-                                            <option value="">Seleccione Tipo</option>
-                                            @if ($establishmentData->local == 1)
-                                                <option value="1" selected>propio</option>
-                                                <option value="2">arrendado</option>
-                                                <option value="3">cedido</option>
-                                            @elseif($establishmentData->local == 2)
-                                                <option value="1">propio</option>
-                                                <option value="2" selected>arrendado</option>
-                                                <option value="3">cedido</option>
-                                            @elseif($establishmentData->local == 3)
-                                                <option value="1">propio</option>
-                                                <option value="2" >arrendado</option>
-                                                <option value="3" selected>cedido</option>
-                                            @else
-                                                <option value="1" {{ old('local') == 1 ? 'selected' : '' }}>propio</option>
-                                                <option value="2" {{ old('local') == 2 ? 'selected' : '' }}>arrendado</option>
-                                                <option value="3" {{ old('local') == 3 ? 'selected' : '' }}>cedido</option>
-                                            @endif
-
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="start_date">Fecha Nacimiento:</label>
-
-                                        <div class="input-group">
-                                          <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                                          </div>
-                                          <input type="text" class="form-control" id="start_date" name="start_date" value="{{ old('start_date',$establishmentData->start_date) }}" required/>
+                                            </select>
                                         </div>
-                                        <!-- /.input group -->
+                                        <div class="form-group">
+                                            <label>Lugar de funcionamiento *</label>
+                                            <select id="local" name="local" class="custom-select @error('local') is-invalid @enderror">
+                                                <option value="">Seleccione Tipo</option>
+                                                @if ($establishmentData->local == 1)
+                                                    <option value="1" selected>propio</option>
+                                                    <option value="2">arrendado</option>
+                                                    <option value="3">cedido</option>
+                                                @elseif($establishmentData->local == 2)
+                                                    <option value="1">propio</option>
+                                                    <option value="2" selected>arrendado</option>
+                                                    <option value="3">cedido</option>
+                                                @elseif($establishmentData->local == 3)
+                                                    <option value="1">propio</option>
+                                                    <option value="2" >arrendado</option>
+                                                    <option value="3" selected>cedido</option>
+                                                @else
+                                                    <option value="1" {{ old('local') == 1 ? 'selected' : '' }}>propio</option>
+                                                    <option value="2" {{ old('local') == 2 ? 'selected' : '' }}>arrendado</option>
+                                                    <option value="3" {{ old('local') == 3 ? 'selected' : '' }}>cedido</option>
+                                                @endif
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="start_date">Fecha Nacimiento:</label>
+
+                                            <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" id="start_date" name="start_date" value="{{ old('start_date',$establishmentData->start_date) }}" required/>
+                                            </div>
+                                            <!-- /.input group -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Correo electronico *</label>
+                                            <input type="text" class="form-control @error('email')is-invalid @enderror" id="email" name="email" value="{{ old('email',$establishmentData->email) }}">
+                                            @error('email')
+                                                <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
                                     </div>
-                                    <div class="form-group">
-                                        <label for="email">Correo electronico *</label>
-                                        <input type="text" class="form-control @error('email')is-invalid @enderror" id="email" name="email" value="{{ old('email',$establishmentData->email) }}">
-                                        @error('email')
+                                    <div class="col-lg-12">
+                                        <hr>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="cc_ruc"> Propietario </label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                            <button id="modalpropietario" type="button" class="btn btn-primary">Buscar</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <input id="owner_id" name="owner_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('owner_id',isset($establishmentData->people_entities_owner->cc_ruc) ? $establishmentData->people_entities_owner->cc_ruc : '') }}">
+                                        </div>
+                                        <input id="owner_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
+                                        <div class="form-group">
+                                            <label for="name_p">Nombres/Nombre Comercial</label>
+                                            <input type="text" class="form-control" id="name_p" value="{{ old('name_p',isset($establishmentData->people_entities_owner->name) ? $establishmentData->people_entities_owner->name : '') }}" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last_name_p">Apellido Paterno/Razon Social</label>
+                                            <input type="text" class="form-control" id="last_name_p" name="last_name_p" value="{{ old('last_name_p',isset($establishmentData->people_entities_owner->last_name) ? $establishmentData->people_entities_owner->last_name : '') }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="cc_ruc"> Representante legal </label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                            <button id="modalrepresentante" type="button" class="btn btn-primary">Buscar</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <input id="legal_representative_id" name="legal_representative_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('legal_representative_id',isset($establishmentData->people_entities_legal_representative->cc_ruc) ? $establishmentData->people_entities_legal_representative->cc_ruc : '') }}">
+
+                                            @error('legal_representative_id')
                                             <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-12">
-                                    <hr>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="cc_ruc"> Propietario </label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                          <button id="modalpropietario" type="button" class="btn btn-primary">Buscar</button>
+                                            @enderror
                                         </div>
-                                        <!-- /btn-group -->
-                                        <input id="owner_id" name="owner_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('owner_id',isset($establishmentData->people_entities_owner->cc_ruc) ? $establishmentData->people_entities_owner->cc_ruc : '') }}">
-                                    </div>
-                                    <input id="owner_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="">
-                                    <div class="form-group">
-                                        <label for="name_p">Nombres/Nombre Comercial</label>
-                                        <input type="text" class="form-control" id="name_p" value="{{ old('name_p',isset($establishmentData->people_entities_owner->name) ? $establishmentData->people_entities_owner->name : '') }}" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="last_name_p">Apellido Paterno/Razon Social</label>
-                                        <input type="text" class="form-control" id="last_name_p" name="last_name_p" value="{{ old('last_name_p',isset($establishmentData->people_entities_owner->last_name) ? $establishmentData->people_entities_owner->last_name : '') }}" disabled>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="cc_ruc"> Representante legal </label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                          <button id="modalrepresentante" type="button" class="btn btn-primary">Buscar</button>
+                                        <input id="legal_representative_id_2" name="legal_representative_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('legal_representative_id_2')}}">
+                                        <div class="form-group">
+                                            <label for="name_r">Nombres/Nombre Comercial</label>
+                                            <input type="text" class="form-control" id="name_r" name="name_r" value="{{ old('name_r',isset($establishmentData->people_entities_legal_representative->name) ? $establishmentData->people_entities_legal_representative->name : '') }}" disabled>
+
                                         </div>
-                                        <!-- /btn-group -->
-                                        <input id="legal_representative_id" name="legal_representative_id" type="text" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('legal_representative_id',isset($establishmentData->people_entities_legal_representative->cc_ruc) ? $establishmentData->people_entities_legal_representative->cc_ruc : '') }}">
-
-                                        @error('legal_representative_id')
-                                        <span class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <input id="legal_representative_id_2" name="legal_representative_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('legal_representative_id_2')}}">
-                                    <div class="form-group">
-                                        <label for="name_r">Nombres/Nombre Comercial</label>
-                                        <input type="text" class="form-control" id="name_r" name="name_r" value="{{ old('name_r',isset($establishmentData->people_entities_legal_representative->name) ? $establishmentData->people_entities_legal_representative->name : '') }}" disabled>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="last_name_r">Apellido Paterno/Razon Social</label>
-                                        <input type="text" class="form-control" id="last_name_r" value="{{ old('last_name_r',isset($establishmentData->people_entities_legal_representative->last_name) ? $establishmentData->people_entities_legal_representative->last_name : '') }}" disabled>
+                                        <div class="form-group">
+                                            <label for="last_name_r">Apellido Paterno/Razon Social</label>
+                                            <input type="text" class="form-control" id="last_name_r" value="{{ old('last_name_r',isset($establishmentData->people_entities_legal_representative->last_name) ? $establishmentData->people_entities_legal_representative->last_name : '') }}" disabled>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
-                      </div>
+                            </form>
+                        </div>
                       <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
                         <form id="formEstablismentstep2" action="{{ route('establishments.storestep2',['id' => $establishmentData->id]) }}" method="post">
                             @csrf
@@ -902,7 +1060,7 @@
                             if(res.data.success == true){
                                 console.log("guardando ..");
                                 loading.style.display = 'none';
-                                window.location.href = '{{route("establishments.create",["id" => $establishmentData->id])}}';
+                                toastr.success('El archivo, se subió correctamente');
                             }else{
                                 toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
                                 console.log('error al consultar al servidor');

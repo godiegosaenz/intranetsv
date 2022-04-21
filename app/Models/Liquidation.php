@@ -8,4 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Liquidation extends Model
 {
     use HasFactory;
+
+    protected $table = 'liquidations';
+
+    protected $fillable = [
+        'voucher_number',
+        'liquidation_number',
+        'liquidation_code',
+        'total_payment',
+        'status',
+        'username',
+        'observation',
+        'year',
+        'type_liquidation_id',
+        'establishment_id',
+        'is_coercive',
+    ];
 }

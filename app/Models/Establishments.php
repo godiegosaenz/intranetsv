@@ -14,8 +14,9 @@ class Establishments extends Model
     protected $fillable = [
         'name',
         'start_date',
-        'registry_number',
-        'cadastral_registry',
+        //'registry_number',
+        //'cadastral_registry',
+        'is_register_mintel',
         'is_main',
         'organization_type',
         'local',
@@ -31,8 +32,9 @@ class Establishments extends Model
         'legal_representative_id',
         'tourist_activity_id',
         'classification_id',
-        'username',
+        'category_id',
         'establishment_id',
+        'username',
     ];
 
     public function tourist_activities(){

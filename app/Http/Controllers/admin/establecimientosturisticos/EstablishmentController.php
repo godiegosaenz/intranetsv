@@ -217,9 +217,10 @@ class EstablishmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Establishments $Establishment)
     {
-        //
+
+        return view('tourism.establishmentShow',compact('Establishment'));
     }
 
     /**
@@ -241,21 +242,13 @@ class EstablishmentController extends Controller
 
         if($id != null){
             $register = 'yes';
-            $establishmentData = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative'])->where('id', $id)->first();
+            $establishmentData = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements'])->where('id', $id)->first();
             $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',$establishmentData->tourist_activity_id)->get();
-            $requirementEstablishment = Establishments::find($establishmentData->id)->requirements;
+            $requirementEstablishment = EstablishmentRequirement::where('establishment_id',$establishmentData->id)->get();
             $classificationcategory = ClassificationCategory::select('category_id')->where('classification_id',$establishmentData->classification_id)->get()->toArray();
             $establishmentCategory = EstablishmentCategory::whereIn('id',$classificationcategory)->get();
 
-            $countestablishmentrequirement = EstablishmentRequirement::where('establishment_id',$establishmentData->id)->count();
-            $countestablishmentrequirementupload = EstablishmentRequirement::where('establishment_id',$establishmentData->id)->where('upload',true)->count();
-            if($countestablishmentrequirement == $countestablishmentrequirementupload){
-                $establishment = Establishments::find($establishmentData->id);
-                $establishment->has_requeriment = true;
-                $establishment->register = 3;
-                $establishment->status = true;
-                $establishment->save();
-            }
+
         }else{
             if(Cookie::get('tourist_activity_id') !== null){
                 $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',Cookie::get('tourist_activity_id'))->get();
@@ -272,7 +265,6 @@ class EstablishmentController extends Controller
         Cookie::queue('tourist_activity_id', '');
         Cookie::queue('classification_id', '');
         Cookie::queue('category_id', '');
-
         return view('tourism.establishmentEdit', compact('establishmentData','touristActivity','establishmentClassification','PersonEntityData','establishmentCategory','register','requirementEstablishment'));
     }
 
@@ -363,8 +355,10 @@ class EstablishmentController extends Controller
                     return $establishmentCategory->name;
                 })
                 ->addColumn('action', function ($Establishments) {
-                    //$id = $PersonEntityDataTemp->get('id');
-                    $buttons = '<a onclick="" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i></a>';
+
+                    $buttons = '';
+                    $buttons .= '<a href="'.route('establishments.show',$Establishments).'" class="btn btn-primary btn-sm"><i class="fa fa-info"></i></a> ';
+                    $buttons .= '<a href="'.route('establishments.edit',$Establishments).'" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i></a>';
                     return $buttons;
                 })
                 ->rawColumns(['status','has_requeriment','action'])
@@ -380,8 +374,9 @@ class EstablishmentController extends Controller
 
             return Datatables($PersonEntityDataTemp)
                     ->addColumn('action', function ($PersonEntityDataTemp) {
-                        //$id = $PersonEntityDataTemp->get('id');
-                        $buttons = '<a onclick="selectedPersonEntity('.$PersonEntityDataTemp->id.')" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i></a>';
+                        $buttons = '';
+                        $buttons .= '<a onclick="selectedPersonEntity('.$PersonEntityDataTemp->id.')" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i></a>';
+
                         return $buttons;
                     })
                     ->make(true);

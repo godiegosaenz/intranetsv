@@ -43,17 +43,13 @@ class EstablishmentRequirementController extends Controller
             'InputFile'  => 'required|mimes:doc,docx,pdf,txt|max:2048',
           ]);
 
-        if($request->file('InputFile')){
+
+          if($request->file('InputFile')){
             $file = $request->file('InputFile')->store('public/documents');
             $EstablishmentRequirement = EstablishmentRequirement::where('requirement_id',$request->requirement_id)
                                                                 ->where('establishment_id',$request->establishment_id)
                                                                 ->update(['upload'=> true, 'file_path' => $file]);
             //$EstablishmentRequirement->file_path = $file->file_path;
-            return Response()->json([
-                "success" => true,
-                "file" => $file
-            ]);
-        }
         $countestablishmentrequirement = EstablishmentRequirement::where('establishment_id',$request->establishment_id)->count();
         $countestablishmentrequirementupload = EstablishmentRequirement::where('establishment_id',$request->establishment_id)->where('upload',true)->count();
         if($countestablishmentrequirement == $countestablishmentrequirementupload){
@@ -63,11 +59,11 @@ class EstablishmentRequirementController extends Controller
             $establishment->save();
         }
         Cookie::queue('step', 3);
-        return Response()->json([
-            "success" => false,
-            "file" => ''
-        ]);
-
+            return Response()->json([
+                "success" => true,
+                "file" => $file
+            ]);
+        }
     }
 
     /**
@@ -141,10 +137,11 @@ class EstablishmentRequirementController extends Controller
                 })
 
                 ->addColumn('action', function ($requirementEstablishment) {
-                    $buttons = '<button type="button" id="btnModal'.$requirementEstablishment->id.'" class="btn btn-primary" onclick="viewmodal'.$requirementEstablishment->id.'()"><i class="fas fa-paperclip"></i></button>';
-                    $buttons .= '<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    $buttons = '';
+                    $buttons .= '<button type="button" id="btnModal'.$requirementEstablishment->id.'" class="btn btn-primary" onclick="viewmodal'.$requirementEstablishment->id.'()"><i class="fas fa-paperclip"></i></button>';
                     if($requirementEstablishment->pivot->upload == true){
-                        $buttons .= '<a href="'.route('establishmentrequirement.downloadfile',['id' =>$requirementEstablishment->id ]).'" target="_blank" class="btn btn-secondary"><i class="fas fa-info"></i></a>';
+                        $url = url('/admin/establishmentrequirement/downloadfile/'.$requirementEstablishment->pivot->requirement_id.'/'.$requirementEstablishment->pivot->establishment_id);
+                        $buttons .= '<a href="'.$url.'" target="_blank" class="btn btn-secondary"><i class="fas fa-download"></i></a>';
                     }
                     return $buttons;
                 })

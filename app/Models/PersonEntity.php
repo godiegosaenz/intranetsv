@@ -20,17 +20,18 @@ class PersonEntity extends Model
         'date_birth',
         'status',
         'address',
-        'legal_representative',
+        //'legal_representative',
         'tradename',
         'bussines_name',
         'type',
+        'type_document',
         'number_phone1',
         'number_phone2',
         'email',
-        'country_id',
-        'province_id',
-        'canton_id',
-        'parish_id'
+        //'country_id',
+        //'province_id',
+        //'canton_id',
+        //'parish_id'
     ];
 
     public $incrementing = false;

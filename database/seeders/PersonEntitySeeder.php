@@ -23,18 +23,18 @@ class PersonEntitySeeder extends Seeder
             'is_person' => true,
             'date_birth' => '1992-03-16',
             'status' => '1',
-            'address' => 'San Vicente - El progreso',
-            'legal_representative' => null,
+            //'address' => 'San Vicente - El progreso',
+            //'legal_representative' => null,
             'tradename' => null,
             'bussines_name' => null,
             'type' => 'n',
             'number_phone1' => '0939120904',
             'number_phone2' => null,
             'email' => 'dbermudez1349@hotmail.com',
-            'country_id' => 1,
-            'province_id' => 13,
-            'canton_id' => 109,
-            'parish_id' => 308,
+            //'country_id' => 1,
+            //'province_id' => 13,
+            //'canton_id' => 109,
+            //'parish_id' => 308,
         ]);
 
         PersonEntity::create([
@@ -46,18 +46,13 @@ class PersonEntitySeeder extends Seeder
             'is_person' => true,
             'date_birth' => '2000-08-07',
             'status' => '1',
-            'address' => 'Leonidas Plaza',
-            'legal_representative' => null,
+            //'address' => 'Leonidas Plaza',
             'tradename' => null,
             'bussines_name' => null,
             'type' => 'n',
             'number_phone1' => '0939120904',
             'number_phone2' => null,
             'email' => 'juanjesusparraga@hotmail.com',
-            'country_id' => 1,
-            'province_id' => 13,
-            'canton_id' => 109,
-            'parish_id' => 308,
         ]);
 
         PersonEntity::create([
@@ -69,18 +64,14 @@ class PersonEntitySeeder extends Seeder
             'is_person' => true,
             'date_birth' => '1997-05-27',
             'status' => '1',
-            'address' => 'San Vicente - El progreso',
-            'legal_representative' => null,
+            //'address' => 'San Vicente - El progreso',
+
             'tradename' => null,
             'bussines_name' => null,
-            'type' => 'j',
+            'type' => 'n',
             'number_phone1' => '0939120945',
             'number_phone2' => null,
             'email' => 'gabyloorcano@gmail.com',
-            'country_id' => 1,
-            'province_id' => 13,
-            'canton_id' => 109,
-            'parish_id' => 308,
         ]);
     }
 }

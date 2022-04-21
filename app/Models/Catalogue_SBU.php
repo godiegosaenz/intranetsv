@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TypeLiquidation extends Model
+class Catalogue_SBU extends Model
 {
     use HasFactory;
 
-    protected $table = 'type_liquidations';
+    protected $table = 'catalogue_sbu';
 
     protected $fillable = [
-        'name',
-        'status',
-        'pref',
+        'year',
+        'value',
     ];
 }

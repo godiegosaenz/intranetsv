@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTypeLiquidationsTable extends Migration
+class CreateEnterpriseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateTypeLiquidationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('type_liquidations', function (Blueprint $table) {
+        Schema::create('enterprise', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('status');
-            $table->string('pref')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateTypeLiquidationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_liquidations');
+        Schema::dropIfExists('enterprise');
     }
 }

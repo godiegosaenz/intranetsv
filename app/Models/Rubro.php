@@ -9,4 +9,11 @@ class Rubro extends Model
 {
     use HasFactory;
     protected $table = 'rubros';
+
+    protected $fillable = [
+        'name',
+        'status',
+        'value',
+        'accounting_account',
+    ];
 }

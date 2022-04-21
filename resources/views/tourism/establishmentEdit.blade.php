@@ -14,12 +14,11 @@
                     </div>
                 </div>
             @endisset
-
             @if ($errors->any())
 
                 <div class="col-md-12">
                     <div class="alert alert-danger">
-                        Revise los campos que son obligatorios
+                        {{$errors->first()}}
                     </div>
                 </div>
 
@@ -496,35 +495,6 @@
                                         </thead>
                                         <tbody>
 
-                                            @isset($requirementEstablishment)
-                                                @if($register == 'yes')
-                                                    @foreach ($requirementEstablishment as $re)
-                                                        <tr>
-                                                            <td>{{$re->name}}</td>
-                                                            <td>{{$re->Description}}</td>
-                                                            <td>{{$re->type_document}}</td>
-                                                            <td>
-                                                                @if($re->pivot->upload == true)
-                                                                    <span class="badge bg-success">Completado</span>
-                                                                @else
-                                                                    <span class="badge bg-danger">Pendiente</span>
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                @if($re->pivot->upload == false)
-                                                                    <button type="button" id="btnModal{{$re->id}}" class="btn btn-primary" onclick="viewmodal{{$re->id}}()"><i class="fas fa-paperclip"></i></button>
-                                                                @endif
-                                                                <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                                                                @if($re->pivot->upload == true)
-
-                                                                    <a href="{{ url('/admin/establishmentrequirement/downloadfile/'.$re->pivot->requirement_id.'/'.$re->pivot->establishment_id) }}" target="_blank" class="btn btn-secondary"><i class="fas fa-download"></i></a>
-                                                                @endif
-
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endif
-                                            @endisset
                                         </tbody>
                                     </table>
                                 </div>
@@ -602,7 +572,7 @@
         <!-- /.modal-dialog -->
     </div>
     @if($register == 'yes')
-        @foreach ($requirementEstablishment as $rta)
+        @foreach ($establishmentData->requirements as $rta)
         <div class="modal fade" id="modal-{{$rta->id}}">
             <div class="modal-dialog modal-md">
               <div class="modal-content">
@@ -614,12 +584,12 @@
                 </div>
                 <div class="modal-body">
                     <form method="post" id="form{{$rta->id}}" action="{{ route('establishmentrequirement.store') }}" enctype="multipart/form-data">
-
+                        @csrf
                         <div class="form-group">
                             <label for="InputFile{{$rta->id}}">Subir archivo</label>
                             <div class="input-group">
                               <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="InputFile{{$rta->id}}" lang="es">
+                                <input type="file" class="custom-file-input" id="InputFile{{$rta->id}}" name="InputFile" lang="es">
                                 <label class="custom-file-label" for="InputFile{{$rta->id}}">Elija el archivo</label>
                               </div>
                               <div class="input-group-append">
@@ -893,7 +863,7 @@
         })
 
         @if($register == 'yes')
-            @foreach ($requirementEstablishment as $rta)
+            @foreach ($establishmentData->requirements as $rta)
                 function viewmodal{{$rta->id}}(){
                     $('#modal-{{$rta->id}}').modal('show');
                 }
@@ -920,8 +890,10 @@
                         if(res.status==200) {
                             if(res.data.success == true){
                                 console.log("guardando ..");
+                                requirementstable.ajax.reload();
+                                $('#modal-{{$rta->id}}').modal('hide');
                                 loading.style.display = 'none';
-                                window.location.href = '{{route("establishments.edit",["id" => $establishmentData->id])}}';
+                                toastr.success('El archivo, se subió correctamente');
                             }else{
                                 toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
                                 console.log('error al consultar al servidor');
@@ -939,7 +911,8 @@
                             console.log('Es posible que tu session haya caducado, vuelve a iniciar sesion');
                         }
                         if(err.response.status == 422){
-                            toastr.error('Revise la validacion del archivo');
+                            console.log(err.response.data.errors);
+                            toastr.error(err.response.data.errors['InputFile']);
 
                         }
                     }).then(function() {
@@ -955,6 +928,22 @@
                     },
                     "autoWidth": false,
                     "order": [], //Initial no order
+                    "processing" : true,
+                    "serverSide": true,
+                    "ajax": {
+                        "url" : "{{ route('establishmentrequirement.datatables', ['id' => $establishmentData->id]) }}",
+                        "type": "post",
+                        "data": function (d){
+                            d._token = $("input[name=_token]").val();
+                        }
+                    },
+                    "columns": [
+                        {data: 'name'},
+                        {data: 'Description'},
+                        {data: 'type_document'},
+                        {data: 'status'},
+                        {data: 'action', name: 'action', orderable: false, searchable: false},
+                    ]
                 });
         @endif
 

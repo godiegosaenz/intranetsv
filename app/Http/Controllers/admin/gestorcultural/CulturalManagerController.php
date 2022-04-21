@@ -88,7 +88,7 @@ class CulturalManagerController extends Controller
         $saveCulturalManager->people_entities_id = $validated['people_entities_id'];
         $saveCulturalManager->save();
 
-        return redirect()->route('culturalmanagers.create')->with('status', 'Gestor cultural agregado con exito');;
+        return redirect()->route('culturalmanagers.create')->with('status', 'Gestor cultural agregado con exito');
 
 
     }

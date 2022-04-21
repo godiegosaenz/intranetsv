@@ -13,6 +13,9 @@ try {
     require('admin-lte');
     require('datatables.net-bs4');
     require('datatables.net-buttons-bs4');
+    //require('dataTables.responsive');
+    //require('responsive.bootstrap4');
+    //require('dataTables.buttons');
     window.moment = require('moment');
     window.moment.locale('es');
     require('admin-lte/plugins/inputmask/jquery.inputmask.min.js');

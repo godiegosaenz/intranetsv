@@ -16,6 +16,8 @@ use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentControlle
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentClassificationController;
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentCategoryController;
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentRequirementController;
+use App\Http\Controllers\admin\liquidacion\EmisionController;
+use App\Http\Controllers\admin\luaf\LuafTableController;
 use App\Models\EstablishmentCategory;
 use App\Models\Requirement;
 use App\Models\Establishments;
@@ -76,6 +78,7 @@ Route::prefix('admin')->group(function (){
     Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index')->middleware('auth');
     Route::get('/establishments/create/{id?}', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
     Route::get('/establishments/{id}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit')->middleware('auth');
+    Route::get('/establishments/{Establishment}', [EstablishmentController::class, 'show'])->name('establishments.show')->middleware('auth');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
     Route::put('/establishments/{Establishments}', [EstablishmentController::class, 'update'])->name('establishments.update');
     Route::post('/establishment/storestep2/{id?}', [EstablishmentController::class, 'storeStep2'])->name('establishments.storestep2');
@@ -89,6 +92,14 @@ Route::prefix('admin')->group(function (){
     Route::post('/establishmentrequirement/datatables/{id?}', [EstablishmentRequirementController::class, 'datatables'])->name('establishmentrequirement.datatables');
 
     Route::get('/establishmentrequirement/downloadfile/{requeriment_id}/{establishment_id}', [EstablishmentRequirementController::class, 'downloadFile'])->name('establishmentrequirement.downloadfile');
+
+    Route::get('/emision', [EmisionController::class, 'index'])->name('emision.index')->middleware('auth');
+    Route::post('/emision', [EmisionController::class, 'store'])->name('emision.store');
+
+    Route::get('/luaf', [LuafTableController::class, 'index'])->name('luaf.index')->middleware('auth');
+    Route::post('/luaf', [LuafTableController::class, 'store'])->name('luaf.store');
+    Route::get('/luaf/documentation', [LuafTableController::class, 'documentation'])->name('luaf.documentation');
+
     Route::get('/countries', function(){
         //return EstablishmentCategory::find(2)->establishments_classifications()->orderBy('id')->get();
         //return Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative'])->get();
@@ -98,4 +109,8 @@ Route::prefix('admin')->group(function (){
         //return EstablishmentClassification::find(2)->establishments_categories;
 
     });
+});
+
+Route::prefix('document')->group(function () {
+
 });

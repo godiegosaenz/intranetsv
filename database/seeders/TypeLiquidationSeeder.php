@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\models\TypeLiquidation;
 
 class TypeLiquidationSeeder extends Seeder
 {
@@ -13,6 +14,7 @@ class TypeLiquidationSeeder extends Seeder
      */
     public function run()
     {
-        //
+        TypeLiquidation::create(['name' => 'LICENCIA UNICA ANUAL DE FUNCIONAMIENTO',
+                                'status' => TRUE]);
     }
 }
