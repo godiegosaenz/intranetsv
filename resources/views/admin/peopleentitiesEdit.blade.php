@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('content')
-    <x-header title="Editar Personas / Empresas">
-        <li class="breadcrumb-item"><a href="{{ route('peopleentities.index') }}">Personas/Empresas  {{Cookie::get('province_id')}}</a></li>
-        <li class="breadcrumb-item active">Crear</li>
+    <x-header title="Actualizar personas / empresas">
+        <li class="breadcrumb-item"><a href="{{ route('peopleentities.index') }}">Personas/Empresas</a></li>
+        <li class="breadcrumb-item active">Actualizar</li>
     </x-header>
+
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
@@ -12,229 +13,196 @@
                 <div class="card">
                     <div class="card-header p-2">
                       <ul class="nav nav-pills">
-                        <li class="nav-item"><a class="nav-link" href="#formulario" data-toggle="tab"> Formulario de edicion de usuarios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#formulario" data-toggle="tab"> Formulario de usuarios</a></li>
                       </ul>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                       <div class="tab-content">
                         <div class="active tab-pane" id="formulario">
-                            <form action="{{ route('peopleentities.update', $PersonEntity) }}" method="post">
+                            <form id="formPeopleEntities" action="{{ route('peopleentities.update',$PersonEntity) }}" method="post">
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <br>
                                         <div class="form-group">
-                                            <button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i> Actualizar Persona/Empresa</button>
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i> Actualizar</button>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label>Tipo</label>
+                                            <label>* Tipo</label>
                                             <select id="type" name="type"class="custom-select">
-                                              <option value="1" {{$PersonEntity->type == 1 ? 'selected' : '' }}>Persona</option>
-                                              <option value="2" {{$PersonEntity->type == 2 ? 'selected' : '' }}>Empresa</option>
-                                              <option value="3" {{$PersonEntity->type == 3 ? 'selected' : '' }}>Institucion</option>
-                                              <option value="4" {{$PersonEntity->type == 4 ? 'selected' : '' }}>Asociacion</option>
-                                              <option value="5" {{$PersonEntity->type == 5 ? 'selected' : '' }}>Organizacion sin fines de lucro</option>
+                                              <option value="1" {{ old('type') == 1 ? 'selected' : '' }}>natural</option>
+                                              <option value="2" {{ old('type') == 2 ? 'selected' : '' }}>Juridica</option>
                                             </select>
-                                          </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <hr>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="cc_ruc">*Cédula/Ruc</label>
-                                            <input type="number" class="form-control  @error('cc_ruc')is-invalid @enderror" name="cc_ruc" id="cc_ruc" placeholder="1312......." value="{{ old('cc_ruc',$PersonEntity->cc_ruc) }}" required>
+                                            <label>* Tipo de documento</label>
+                                            <select id="type_document" name="type_document"class="custom-select">
+                                              <option value="1" {{ old('type_document') == 1 ? 'selected' : '' }}>cedula</option>
+                                              <option value="2" {{ old('type_document') == 2 ? 'selected' : '' }}>ruc</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            @if(old('type_document') == 1)
+                                            <label id="label_cc_ruc" for="cc_ruc">* Cédula</label>
+                                            @elseif(old('type_document') == 2)
+                                            <label id="label_cc_ruc" for="cc_ruc">* RUC</label>
+                                            @else
+                                            <label id="label_cc_ruc" for="cc_ruc">* Cédula</label>
+                                            @endif
+                                            <input type="number" class="form-control  @error('cc_ruc')is-invalid @enderror" name="cc_ruc" id="cc_ruc" placeholder="" value="{{ old('cc_ruc',$PersonEntity->cc_ruc) }}" >
                                             @error('cc_ruc')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="name">*Nombres/Nombre Comercial</label>
-                                            <input type="text" class="form-control @error('name')is-invalid @enderror" name="name" id="name" placeholder="Die...." value="{{ old('name',$PersonEntity->name) }}" required>
+                                        @if ($errors->any())
+                                            @if(old('name') != null)
+                                                <div id="formgroupname" class="form-group">
+                                            @else
+                                                <div id="formgroupname" class="form-group" style="display: none">
+                                            @endif
+                                        @else
+                                            <div id="formgroupname" class="form-group">
+                                        @endif
+                                            <label id="labelNombres" for="name">* Nombres</label>
+                                            <input type="text" class="form-control @error('name')is-invalid @enderror" name="name" id="name" placeholder="" value="{{ old('name',$PersonEntity->name) }}" >
                                             @error('name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <label for="last_name">*Apellido Paterno/Razon Social</label>
-                                            <input type="text" class="form-control @error('last_name')is-invalid @enderror" name="last_name" id="last_name" placeholder="Rodr..." value="{{ old('last_name',$PersonEntity->last_name) }}" required>
+                                        @if ($errors->any())
+                                            @if(old('tradename') != null)
+                                            <div id="formgrouptradename" class="form-group">
+                                            @else
+                                                <div id="formgrouptradename" class="form-group" style="display: none">
+                                            @endif
+                                        @else
+                                            <div id="formgrouptradename" class="form-group" style="display: none">
+                                        @endif
+                                            <label for="tradename">* Nombre Comercial</label>
+                                            <input type="text" class="form-control @error('tradename')is-invalid @enderror" name="tradename" id="tradename" placeholder="" value="{{ old('tradename',$PersonEntity->tradename) }}" >
+                                            @error('tradename')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        @if ($errors->any())
+                                            @if(old('last_name') != null)
+                                                <div id="formgrouplastname" class="form-group">
+                                            @else
+                                                <div id="formgrouplastname" class="form-group" style="display: none">
+                                            @endif
+                                        @else
+                                            <div id="formgrouplastname" class="form-group">
+                                        @endif
+                                            <label for="last_name">* Apellido Paterno</label>
+                                            <input type="text" class="form-control @error('last_name')is-invalid @enderror" name="last_name" id="last_name" placeholder="" value="{{ old('last_name',$PersonEntity->last_name) }}" >
                                             @error('last_name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <label for="maternal_last_name">Apellido Materno</label>
-                                            <input type="text" class="form-control @error('maternal_last_name')is-invalid @enderror" name="maternal_last_name" id="maternal_last_name" placeholder="Zambr..." value="{{ old('maternal_last_name',$PersonEntity->maternal_last_name) }}" required>
+                                        @if ($errors->any())
+                                            @if(old('bussines_name') != null)
+                                            <div id="formgroupbussinesname" class="form-group">
+                                            @else
+                                            <div id="formgroupbussinesname" class="form-group" style="display: none">
+                                            @endif
+                                        @else
+                                            <div id="formgroupbussinesname" class="form-group" style="display: none">
+                                        @endif
+                                            <label for="bussines_name">* Razon Social</label>
+                                            <input type="text" class="form-control @error('bussines_name')is-invalid @enderror" name="bussines_name" id="bussines_name" placeholder="" value="{{ old('bussines_name',$PersonEntity->bussines_name) }}" >
+                                            @error('bussines_name')
+                                            <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        @if ($errors->any())
+                                            @if(old('maternal_last_name') != null)
+                                                <div id="formgroupmaternallastname" class="form-group">
+                                            @else
+                                                <div id="formgroupmaternallastname" class="form-group" style="display: none">
+                                            @endif
+                                        @else
+                                            <div id="formgroupmaternallastname" class="form-group">
+                                        @endif
+                                            <label for="maternal_last_name">* Apellido Materno</label>
+                                            <input type="text" class="form-control @error('maternal_last_name')is-invalid @enderror" name="maternal_last_name" id="maternal_last_name" placeholder="" value="{{ old('maternal_last_name',$PersonEntity->maternal_last_name) }}" >
                                             @error('maternal_last_name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label>Fecha Nacimiento:</label>
+                                            <label>Dirección</label>
+                                            <textarea name="address" id="address" class="form-control" rows="3" placeholder="Enter ...">{{ old('address',$PersonEntity->address) }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label id="label_date_birth">*Fecha de nacimiento:</label>
 
                                             <div class="input-group">
                                               <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                               </div>
-                                              <input type="text" class="form-control" id="date_birth" name="date_birth" value="{{ old('date_birth',$PersonEntity->date_birth) }}" required />
+                                              <input type="text" class="form-control" id="date_birth" name="date_birth" value="" />
                                             </div>
                                             <!-- /.input group -->
                                         </div>
                                         <div class="form-group">
                                             <label for="email">*Correo Electronico</label>
-                                            <input type="email" class="form-control @error('email')is-invalid @enderror" name="email" id="email" placeholder="abcd....@gmail.com" value="{{ old('email',$PersonEntity->email) }}" required>
+                                            <input type="email" class="form-control @error('email')is-invalid @enderror" name="email" id="email" placeholder="" value="{{ old('email',$PersonEntity->email) }}" >
                                             @error('email')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label>*Estado</label>
-                                            <select id="status" name="status" class="custom-select" required>
+                                            <select id="status" name="status" class="custom-select @error('status') is-invalid @enderror" >
                                                 <option value="">Seleccione estado</option>
-                                                @if ($PersonEntity->status == 1)
-                                                    <option value="1" selected>Activo</option>
-                                                    <option value="2">Inactivo</option>
+                                                @if(old('status') != null)
+                                                    <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Activo</option>
+                                                    <option value="2" {{ old('status') == 2 ? 'selected' : '' }}>Inactivo</option>
                                                 @else
-                                                    <option value="1">Activo</option>
-                                                    <option value="2" selected>Inactivo</option>
+                                                    <option value="1" {{ $PersonEntity->status == 'Activo' ? 'selected' : '' }}>Activo</option>
+                                                    <option value="2" {{ $PersonEntity->status == 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
                                                 @endif
-
-
                                             </select>
                                             @error('status')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
-                                          </div>
-                                    </div>
-                                    <div class="col-lg-6">
+                                        </div>
                                         <div class="form-group">
                                             <label for="number_phone1">*Telefono</label>
-                                            <input type="text" class="form-control @error('number_phone1')is-invalid @enderror" name="number_phone1" id="number_phone1" placeholder="0995....." value="{{ old('number_phone1',$PersonEntity->number_phone1) }}" required>
+                                            <input type="text" class="form-control @error('number_phone1')is-invalid @enderror" name="number_phone1" id="number_phone1" placeholder="" value="{{ old('number_phone1',$PersonEntity->number_phone1) }}" >
                                             @error('number_phone1')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label>*Pais</label>
-                                            <select id="country_id" name="country_id" class="custom-select  @error('country_id') is-invalid @enderror" required>
-                                                <option value="">Seleccione pais</option>
-                                                @isset($CountryData)
-                                                    @foreach ($CountryData as $cd)
-                                                        @if(Cookie::get('country_id'))
-                                                            @if($cd->id == Cookie::get('country_id'))
-                                                                <option value="{{ $cd->id }}" selected>{{ $cd->name }}</option>
-                                                            @else
-                                                                <option value="{{ $cd->id }}">{{ $cd->name }}</option>
-                                                            @endif
-
-                                                        @else
-                                                            @if($cd->id == $PersonEntity->country_id)
-                                                                <option value="{{ $cd->id }}" selected>{{ $cd->name }}</option>
-                                                            @else
-                                                                <option value="{{ $cd->id }}">{{ $cd->name }}</option>
-                                                            @endif
-
-                                                        @endif
-                                                    @endforeach
-                                                @endisset
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>*Provincia</label>
-
-                                            <select id="province_id" name="province_id" class="custom-select @error('province_id') is-invalid @enderror" required>
-                                                <option value="">Seleccione provincia</option>
-                                                @if($ProvinceData)
-                                                    @foreach ($ProvinceData as $p)
-                                                        @if(Cookie::get('province_id'))
-                                                            @if($p->id == Cookie::get('province_id'))
-                                                                <option value="{{ $p->id }}" selected>{{ $p->name }}</option>
-                                                            @else
-                                                                <option value="{{ $p->id }}">{{ $p->name }}</option>
-                                                            @endif
-
-                                                        @else
-                                                            @if($p->id == $PersonEntity->province_id)
-                                                                <option value="{{ $p->id }}" selected>{{ $p->name }}</option>
-                                                            @else
-                                                                <option value="{{ $p->id }}">{{ $p->name }}</option>
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-
-                                            </select>
-                                            @error('province_id')
-                                                <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label>*Canton</label>
-                                            <select id="canton_id" name="canton_id" class="custom-select @error('canton_id') is-invalid @enderror" required>
-                                                <option value="">Seleccione canton</option>
-                                                @if ($CantonData)
-                                                    @foreach ($CantonData as $c)
-                                                        @if(Cookie::get('canton_id'))
-                                                            @if($c->id == Cookie::get('canton_id'))
-                                                                <option value="{{ $c->id }}" selected>{{ $c->name }}</option>
-                                                            @else
-                                                                <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                                            @endif
-
-                                                        @else
-                                                            @if ($c->id == $PersonEntity->canton_id)
-                                                                <option value="{{ $c->id }}" selected>{{ $c->name }}</option>
-                                                            @else
-                                                                <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-
-                                            </select>
-                                            @error('canton_id')
-                                                <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label>*Parroquia</label>
-                                            <select id="parish_id" name="parish_id" class="custom-select @error('parish_id') is-invalid @enderror" required>
-                                                <option value="">Seleccione canton</option>
-                                                @if ($ParishData)
-                                                    @foreach ($ParishData as $pa)
-                                                        @if(Cookie::get('parish_id'))
-                                                            @if($pa->id == Cookie::get('parish_id'))
-                                                                <option value="{{ $pa->id }}" selected>{{ $pa->name }}</option>
-                                                            @else
-                                                                <option value="{{ $pa->id }}">{{ $pa->name }}</option>
-                                                            @endif
-
-                                                        @else
-                                                            @if($pa->id == $PersonEntity->parish_id)
-                                                                <option value="{{ $pa->id }}" selected>{{ $pa->name }}</option>
-                                                            @else
-                                                                <option value="{{ $pa->id }}">{{ $pa->name }}</option>
-                                                            @endif
-
-                                                        @endif
-                                                    @endforeach
+                                            <br>
+                                            <div class="form-check">
+                                                @if($PersonEntity->is_required_accounts == true)
+                                                    <input class="form-check-input" type="checkbox" name="is_required_accounts" id="is_required_accounts" checked>
                                                 @else
-
+                                                    <input class="form-check-input" type="checkbox" name="is_required_accounts" id="is_required_accounts">
                                                 @endif
+                                                <label class="form-check-label">Obligado a llevar contabilidad</label>
+                                            </div>
+                                            <div class="form-check">
+                                                @if($PersonEntity->has_disability == true)
+                                                <input class="form-check-input" type="checkbox" name="has_disability" id="has_disability" checked>
+                                                @else
+                                                <input class="form-check-input" type="checkbox" name="has_disability" id="has_disability">
+                                                @endif
+                                                <label class="form-check-label">Discapacidad</label>
+                                            </div>
 
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="address">*Direccion</label>
-                                            <input type="text" class="form-control @error('address')is-invalid @enderror" name="address" id="address" placeholder="Calle ..." value="{{ old('address',$PersonEntity->address) }}" required>
-                                            @error('address')
-                                            <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
                                         </div>
                                     </div>
 
@@ -255,105 +223,57 @@
 @endsection
 @push('scripts')
     <script>
-    var selectCountry = document.getElementById('country_id');
-    var selectProvince = document.getElementById('province_id');
-    var selectCanton = document.getElementById('canton_id');
-    var selectParish = document.getElementById('parish_id');
+    var selectType = document.getElementById('type');
+    var selectTypeDocument = document.getElementById('type_document');
+    var formgroupname = document.getElementById('formgroupname');
+    var formgrouptradename = document.getElementById('formgrouptradename');
+    var formgrouplastname = document.getElementById('formgrouplastname');
+    var formgroupbussinesname = document.getElementById('formgroupbussinesname');
+    var formgroupmaternallastname = document.getElementById('formgroupmaternallastname');
+    var loading = document.getElementById('loading');
     let token = "{{csrf_token()}}";
-    // funcion para cargar provincia
-    selectCountry.addEventListener('change', function() {
-        var selectedOption = this.options[selectCountry.selectedIndex];
-        //console.log(selectedOption.value + ': ' + selectedOption.text);
-        var loading = document.getElementById('loading');
+    selectTypeDocument.addEventListener('change', function() {
+        var selectedOption = this.options[selectTypeDocument.selectedIndex];
         loading.style.display = '';
-        loadPronvices(selectedOption.value);
+        if(selectedOption.value == 2){
+            document.getElementById('label_cc_ruc').innerHTML = "*RUC";
+        }else{
+            document.getElementById('label_cc_ruc').innerHTML = "*Cédula";
+        }
+        loading.style.display = 'none';
     });
 
-     // funcion para cargar canton
-     selectProvince.addEventListener('change', function() {
-        var selectedOption2 = this.options[selectProvince.selectedIndex];
-        if (typeof(Storage) !== 'undefined') {
-            //localStorage.setItem('pronvince_id', selectedOption2.value)
-        } else {
-        // Código cuando Storage NO es compatible
-        }
+    selectType.addEventListener('change', function() {
+        var selectedOption = this.options[selectType.selectedIndex];
         //console.log(selectedOption.value + ': ' + selectedOption.text);
-        var loading = document.getElementById('loading');
         loading.style.display = '';
-        console.log(selectedOption2.value)
-        loadCantos(selectedOption2.value)
+        //limpiar campos
+        document.getElementById('name').value = "";
+        document.getElementById('last_name').value = "";
+        document.getElementById('maternal_last_name').value = "";
+        document.getElementById('bussines_name').value = "";
+        document.getElementById('tradename').value = "";
+
+        if(selectedOption.value == 1){
+            formgrouptradename.style.display = 'none';
+            formgroupname.style.display = '';
+
+            formgrouplastname.style.display = '';
+            formgroupbussinesname.style.display = 'none';
+
+            formgroupmaternallastname.style.display = '';
+            document.getElementById('label_date_birth').innerHTML = "*Fecha de nacimiento";
+
+        }else if(selectedOption.value == 2){
+            formgrouptradename.style.display = '';
+            formgroupname.style.display = 'none';
+            formgrouplastname.style.display = 'none';
+            formgroupbussinesname.style.display = '';
+            formgroupmaternallastname.style.display = 'none';
+            document.getElementById('label_date_birth').innerHTML = "*Fecha de inicio de actividades";
+        }
+        loading.style.display = 'none';
     });
-
-    // funcion para cargar canton
-    selectCanton.addEventListener('change', function() {
-        var selectedOption2 = this.options[selectCanton.selectedIndex];
-        if (typeof(Storage) !== 'undefined') {
-            //localStorage.setItem('pronvince_id', selectedOption2.value)
-        } else {
-        // Código cuando Storage NO es compatible
-        }
-        //console.log(selectedOption.value + ': ' + selectedOption.text);
-        var loading = document.getElementById('loading');
-        loading.style.display = '';
-        console.log(selectedOption2.value)
-        loadParish(selectedOption2.value)
-    });
-
-    function loadPronvices(country_id){
-        axios.post('/admin/provinces/'+country_id, {
-        data: {
-        _token: token
-        }
-        }).then(function(res) {
-            if(res.status==200) {
-                console.log("cargando pronvias");
-                console.log(res.data);
-                selectProvince.innerHTML = res.data;
-                loading.style.display = 'none';
-            }
-        }).catch(function(err) {
-                console.log(err);
-        }).then(function() {
-                loading.style.display = 'none';
-        });
-    }
-
-    function loadCantos(province_id){
-        axios.post('/admin/cantons/'+province_id, {
-        data: {
-        _token: token
-        }
-        }).then(function(res2) {
-            if(res2.status==200) {
-                console.log("cargando cantones");
-                console.log(res2.data);
-                selectCanton.innerHTML = res2.data;
-                loading.style.display = 'none';
-            }
-        }).catch(function(err) {
-                console.log(err);
-        }).then(function() {
-                loading.style.display = 'none';
-        });
-    }
-    function loadParish(canton_id){
-        axios.post('/admin/parishes/'+canton_id, {
-        data: {
-        _token: token
-        }
-        }).then(function(res2) {
-            if(res2.status==200) {
-                console.log("cargando cantones");
-                console.log(res2.data);
-                selectParish.innerHTML = res2.data;
-                loading.style.display = 'none';
-            }
-        }).catch(function(err) {
-                console.log(err);
-        }).then(function() {
-                loading.style.display = 'none';
-        });
-    }
 
     //jquery
     $(function () {
@@ -362,6 +282,145 @@
             position: 'top-end',
             showConfirmButton: false,
             timer: 3000
+        });
+        $("#formPeopleEntities").keypress(function(event) {
+            if (event.keyCode === 13) {
+            }
+        });
+        $('#formPeopleEntities').validate({
+            rules: {
+                cc_ruc: {
+                    required: true,
+                    number: true,
+                    minlength: function(element) {
+                        if($("#type_document").val() == 1){
+                            return 10;
+                        }else{
+                            return 13;
+                        }
+
+                    },
+                    maxlength: function(element) {
+                        if($("#type_document").val() == 1){
+                            return 10;
+                        }else{
+                            return 13;
+                        }
+                    },
+                },
+                name: {
+                    required: function(element) {
+                        return $("#type").val() == 1;
+                    },
+                    minlength: 2,
+                    maxlength: 150
+                },
+                tradename: {
+                    required: function(element) {
+                        return $("#type").val() == 2;
+                    },
+                    minlength: 2,
+                    maxlength: 150
+                },
+                last_name: {
+                    required: function(element) {
+                        return $("#type").val() == 1;
+                    },
+                    minlength: 2,
+                    maxlength: 150
+                },
+                bussines_name: {
+                    required: function(element) {
+                        return $("#type").val() == 2;
+                    },
+                    minlength: 2,
+                    maxlength: 150
+                },
+                maternal_last_name: {
+                    required: function(element) {
+                        return $("#type").val() == 1;
+                    },
+                    minlength: 2,
+                    maxlength: 150
+                },
+                date_birth: {
+                    required: true,
+                    dateISO: true
+                },
+                email: {
+                    required: true,
+                    //email: true
+                },
+                status: {
+                    required: true,
+                },
+                number_phone1: {
+                    required: true,
+                    number: true,
+                    minlength: 7,
+                    maxlength: 10
+                },
+            },
+            messages: {
+                cc_ruc: {
+                    required: "El campo nombre es requerido.",
+                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
+                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
+                },
+                name: {
+                    required: "El campo nombre es requerido.",
+                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
+                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
+                },
+                last_name: {
+                    required: "El campo Apellido Paterno es requerido.",
+                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
+                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
+                },
+                maternal_last_name: {
+                    required: "El campo Apellido Paterno es requerido.",
+                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
+                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
+                },
+                tradename: {
+                    required: "El campo Nombre comercial es requerido.",
+                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
+                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
+                },
+                bussines_name: {
+                    required: "El campo razon social es requerido.",
+                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
+                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
+                },
+                date_birth: {
+                    required: "El campo nombre es requerido.",
+                    dateISO: "El campo Fecha de nacimiento no es una fecha válida."
+                },
+                email: {
+                    required: "El campo correo electronico es requerido.",
+                    email: "El formato del correo electronico es inválido.",
+                },
+                status: {
+                    required: "El campo estado es requerido.",
+                },
+                number_phone1: {
+                    required: "El campo telefono es requerido.",
+                    number: "El campo debe ser un numero.",
+                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
+                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+            }
         });
         @if (session('status'))
             toastr.success('{{session('status')}}');

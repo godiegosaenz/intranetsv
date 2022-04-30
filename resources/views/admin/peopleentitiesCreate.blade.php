@@ -4,11 +4,7 @@
         <li class="breadcrumb-item"><a href="{{ route('peopleentities.index') }}">Personas/Empresas  {{Cookie::get('province_id')}}</a></li>
         <li class="breadcrumb-item active">Crear</li>
     </x-header>
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
+
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
@@ -54,7 +50,7 @@
                                         </div>
                                         <div class="form-group">
                                             @if(old('type_document') == 1)
-                                            <label id="label_cc_ruc" for="cc_ruc">* RUCCédula</label>
+                                            <label id="label_cc_ruc" for="cc_ruc">* Cédula</label>
                                             @elseif(old('type_document') == 2)
                                             <label id="label_cc_ruc" for="cc_ruc">* RUC</label>
                                             @else
@@ -66,7 +62,7 @@
                                             @enderror
                                         </div>
                                         @if ($errors->any())
-                                            @if($errors->has('name') == true)
+                                            @if(old('name') != null)
                                                 <div id="formgroupname" class="form-group">
                                             @else
                                                 <div id="formgroupname" class="form-group" style="display: none">
@@ -81,11 +77,11 @@
                                             @enderror
                                         </div>
                                         @if ($errors->any())
-                                          @if($errors->has('tradename') == true)
+                                            @if(old('tradename') != null)
                                             <div id="formgrouptradename" class="form-group">
-                                          @else
-                                            <div id="formgrouptradename" class="form-group" style="display: none">
-                                          @endif
+                                            @else
+                                                <div id="formgrouptradename" class="form-group" style="display: none">
+                                            @endif
                                         @else
                                             <div id="formgrouptradename" class="form-group" style="display: none">
                                         @endif
@@ -96,11 +92,11 @@
                                             @enderror
                                         </div>
                                         @if ($errors->any())
-                                          @if($errors->has('last_name') == true)
-                                            <div id="formgrouplastname" class="form-group">
-                                          @else
-                                            <div id="formgrouplastname" class="form-group" style="display: none">
-                                          @endif
+                                            @if(old('last_name') != null)
+                                                <div id="formgrouplastname" class="form-group">
+                                            @else
+                                                <div id="formgrouplastname" class="form-group" style="display: none">
+                                            @endif
                                         @else
                                             <div id="formgrouplastname" class="form-group">
                                         @endif
@@ -111,7 +107,7 @@
                                             @enderror
                                         </div>
                                         @if ($errors->any())
-                                            @if($errors->has('bussines_name') == true)
+                                            @if(old('bussines_name') != null)
                                             <div id="formgroupbussinesname" class="form-group">
                                             @else
                                             <div id="formgroupbussinesname" class="form-group" style="display: none">
@@ -126,7 +122,7 @@
                                             @enderror
                                         </div>
                                         @if ($errors->any())
-                                            @if($errors->has('maternal_last_name') == true)
+                                            @if(old('maternal_last_name') != null)
                                                 <div id="formgroupmaternallastname" class="form-group">
                                             @else
                                                 <div id="formgroupmaternallastname" class="form-group" style="display: none">
@@ -168,8 +164,8 @@
                                             <label>*Estado</label>
                                             <select id="status" name="status" class="custom-select @error('status') is-invalid @enderror" >
                                                 <option value="">Seleccione estado</option>
-                                                <option value="1">Activo</option>
-                                                <option value="2">Inactivo</option>
+                                                <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Activo</option>
+                                                <option value="2" {{ old('status') == 2 ? 'selected' : '' }}>Inactivo</option>
                                             </select>
                                             @error('status')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
@@ -185,11 +181,11 @@
                                         <div class="form-group">
                                             <br>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox">
+                                                <input class="form-check-input" type="checkbox" name="is_required_accounts" id="is_required_accounts">
                                                 <label class="form-check-label">Obligado a llevar contabilidad</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox">
+                                                <input class="form-check-input" type="checkbox" name="has_disability" id="has_disability">
                                                     <label class="form-check-label">Discapacidad</label>
                                             </div>
 
@@ -274,6 +270,10 @@
             showConfirmButton: false,
             timer: 3000
         });
+        $("#formPeopleEntities").keypress(function(event) {
+            if (event.keyCode === 13) {
+            }
+        });
         $('#formPeopleEntities').validate({
             rules: {
                 cc_ruc: {
@@ -344,6 +344,8 @@
                 number_phone1: {
                     required: true,
                     number: true,
+                    minlength: 7,
+                    maxlength: 10
                 },
             },
             messages: {
@@ -390,6 +392,9 @@
                 },
                 number_phone1: {
                     required: "El campo telefono es requerido.",
+                    number: "El campo debe ser un numero.",
+                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
+                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
                 }
             },
             errorElement: 'span',

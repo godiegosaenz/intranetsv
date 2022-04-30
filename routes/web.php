@@ -63,6 +63,7 @@ Route::prefix('admin')->group(function (){
     Route::post('/peopleentities', [PeopleEntitiesController::class, 'store'])->name('peopleentities.store');
     Route::put('/peopleentities/{PersonEntity}', [PeopleEntitiesController::class, 'update'])->name('peopleentities.update');
     Route::post('/peopleentities/{id}/get', [PeopleEntitiesController::class, 'getPersonEntity'])->name('peopleentities.get');
+    Route::post('/peopleentities/datatablesPersonas', [PeopleEntitiesController::class, 'datatablesPersonas'])->name('peopleentities.datatablesPersonas');
 
     Route::post('/provinces/{id}', [ProvincesController::class, 'show'])->name('provinces.show')->middleware('auth');
     Route::post('/cantons/{id}', [CantonController::class, 'show'])->name('cantons.show')->middleware('auth');
@@ -72,7 +73,8 @@ Route::prefix('admin')->group(function (){
     Route::get('/culturalmanagers/create/{id?}', [CulturalManagerController::class, 'create'])->name('culturalmanagers.create')->middleware('auth');
     Route::get('/culturalmanagers/{CulturalManager}', [CulturalManagerController::class, 'show'])->name('culturalmanagers.show')->middleware('auth');
     Route::get('/culturalmanagers/{CulturalManager}/edit', [CulturalManagerController::class, 'edit'])->name('culturalmanagers.edit')->middleware('auth');
-    Route::post('/culturalmanagers/datatablesPersonas', [CulturalManagerController::class, 'datatablesPersonas'])->name('culturalmanagers.datatablesPersonas');
+    Route::put('/culturalmanagers/{CulturalManager}', [CulturalManagerController::class, 'update'])->name('culturalmanagers.update');
+
     Route::post('/culturalmanagers', [CulturalManagerController::class, 'store'])->name('culturalmanagers.store')->middleware('auth');
 
     Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index')->middleware('auth');

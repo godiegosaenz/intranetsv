@@ -50,59 +50,98 @@
             <div class="card-body">
                 <div class="row">
                   <div class="col-lg-6">
+                        @if($PersonEntity->type_document == 1)
                         <strong><i class="fas fa-map-marker-alt mr-1"></i> Cedula</strong>
+                        @else
+                        <strong><i class="fas fa-map-marker-alt mr-1"></i> Ruc</strong>
+                        @endif
+
                         <p class="text-muted">{{$PersonEntity->cc_ruc}}</p>
 
                         <hr>
-
+                        @if($PersonEntity->type == 1)
                         <strong><i class="fas fa-book mr-1"></i> Nombres</strong>
                         <p class="text-muted">
                             {{$PersonEntity->name}}
                         </p>
-
                         <hr>
-
                         <strong><i class="fas fa-map-marker-alt mr-1"></i> Apellidos</strong>
 
                         <p class="text-muted">{{$PersonEntity->last_name.' '.$PersonEntity->maternal_last_name}}</p>
 
+                        @else
+                        <strong><i class="fas fa-book mr-1"></i> Nombre comercial</strong>
+                        <p class="text-muted">
+                            {{$PersonEntity->tradename}}
+                        </p>
                         <hr>
+                        <strong><i class="fas fa-map-marker-alt mr-1"></i> Razon Social</strong>
 
-                        <strong><i class="fas fa-pencil-alt mr-1"></i> Fecha de nacimiento</strong>
+                        <p class="text-muted">{{$PersonEntity->bussines_name}}</p>
 
+                        @endif
+
+                        <hr>
+                        @if($PersonEntity->type == 1)
+                        <strong><i class="fas fa-calendar mr-1"></i> Fecha de nacimiento</strong>
+                        @else
+                        <strong><i class="fas fa-calendar mr-1"></i> Fecha de inicio de actividades</strong>
+                        @endif
                         <p class="text-muted">{{$PersonEntity->date_birth}}</p>
-
                         <hr>
+                        <strong><i class="fas fa-at mr-1"></i> Correo electronico</strong>
 
-                        <strong><i class="far fa-file-alt mr-1"></i> Edad</strong>
-
-                        <p class="text-muted">29</p>
+                        <p class="text-muted">{{$PersonEntity->email}}</p>
+                        <hr>
+                        <strong><i class="far fa-file-alt mr-1"></i> Estado</strong>
+                        @if($PersonEntity->status == 1)
+                          <p class="text-muted">Activo</p>
+                        @else
+                          <p class="text-muted">Inactivo</p>
+                        @endif
                   </div>
                   <div class="col-lg-6">
-                    <strong><i class="fas fa-book mr-1"></i> Pais</strong>
+                    <strong><i class="fas fa-users mr-1"></i> Tipo de persona</strong>
+                    @if($PersonEntity->type_document == 1)
+                    <p class="text-muted">Persona Natural</p>
+                    @else
+                    <p class="text-muted">Persona Juridica</p>
+                    @endif
+                    <hr>
+                    @if($PersonEntity->is_required_accounts == 1)
+                    <strong><i class="fas fa-book mr-1"></i> Obligado a llevar contabilidad</strong>
+                    <p class="text-muted">
+                        SI
+                    </p>
+                    @else
+                    <strong><i class="fas fa-calculator mr-1"></i> Obligado a llevar contabilidad</strong>
+                    <p class="text-muted">
+                        NO
+                    </p>
+                    @endif
 
-                        <p class="text-muted">
-                            {{$PersonEntity->countries->name}}
-                        </p>
+                    <hr>
+                    <strong><i class="fa fa-wheelchair"></i> Discapacidad</strong>
+                    @if($PersonEntity->has_disability == 1)
+                    <p class="text-muted">SI</p>
+                    @else
+                    <p class="text-muted">NO  </p>
+                    @endif
+                    <hr>
+                    <strong><i class="fa fa-user mr-1"></i> Tiene tercera edad</strong>
+                    @if($PersonEntity->old_age == 1)
+                    <p class="text-muted">SI</p>
+                    @else
+                    <p class="text-muted">NO  </p>
+                    @endif
+                    <hr>
+                    <strong><i class="fa fa-phone"></i> Telefono celular</strong>
+                    <p class="text-muted">{{$PersonEntity->number_phone1}}</p>
+                    <hr>
+                    <strong><i class="far fa-map mr-1"></i> Direccion</strong>
+                    <p class="text-muted">{{$PersonEntity->address}}</p>
 
-                        <hr>
-
-                        <strong><i class="fas fa-map-marker-alt mr-1"></i> Provincias</strong>
-
-                        <p class="text-muted">{{$PersonEntity->provinces->name}}</p>
-
-                        <hr>
-
-                        <strong><i class="fas fa-pencil-alt mr-1"></i> Cantones</strong>
-
-                        <p class="text-muted">{{$PersonEntity->cantons->name}}</p>
-
-                        <hr>
-
-                        <strong><i class="far fa-file-alt mr-1"></i> Parroquia</strong>
-
-                        <p class="text-muted">{{$PersonEntity->parishes->name}}</p>
-                  </div>
+              </div>
                 </div>
 
             </div>

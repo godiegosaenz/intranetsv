@@ -62,7 +62,7 @@
                                     <div class="col-lg-6">
                                         <br>
                                         <div class="form-group">
-                                            <button id="btnGuardar" class="btn btn-primary" type="button"><i class="fa fa-plus-square"></i> Guardar </button>
+                                            <button id="btnGuardarStep1" class="btn btn-primary" type="button"><i class="fa fa-plus-square"></i> Guardar Establecimiento </button>
                                             @if($establishmentData->register >= 1)
                                             <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
                                             @endif
@@ -84,12 +84,7 @@
                                         <input id="establishment_id_2" name="establishment_id_2" type="hidden" class="form-control @error('people_entities_id')is-invalid @enderror" value="{{ old('establishment_id_2',isset($establishmentData->people_entities_establishment->id) ? $establishmentData->people_entities_establishment->id : '') }}">
                                         <input id="numbermodal" type="hidden" class="form-control" value="1">
                                     </div>
-                                    <div class="col-lg-12">
-                                        <br>
-                                        <h5>Datos de personas/empresas</h5>
-                                        <hr>
 
-                                    </div>
                                     <div class="col-lg-6">
 
                                         <div class="form-group">
@@ -109,42 +104,21 @@
                                             <input type="text" class="form-control" id="email2" name="email2" value="{{ old('email2',isset($establishmentData->people_entities_establishment->email) ? $establishmentData->people_entities_establishment->email : '') }}" disabled>
 
                                         </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="status2">Estado</label>
-                                            <input type="text" class="form-control" id="status2" name="status2" value="{{ old('status',isset($establishmentData->people_entities_establishment->status) ? $establishmentData->people_entities_establishment->status : '') }}" disabled>
+                                            <input type="text" class="form-control" id="status2" value="{{ old('status',$PersonEntityData->status) }}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="number_phone1">Telefono</label>
-                                            <input type="number" class="form-control" id="number_phone1" name="number_phone1"  value="{{ old('number_phone1',isset($establishmentData->people_entities_establishment->number_phone1) ? $establishmentData->people_entities_establishment->number_phone1 : '') }}" disabled>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="country_id">Pais</label>
-                                            <input type="text" class="form-control" id="country_id" name="country_id" value="{{old('country_id',isset($establishmentData->people_entities_establishment->countries->name) ? $establishmentData->people_entities_establishment->countries->name : '')}}" disabled>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="province_id">Provincia</label>
-                                            <input type="text" class="form-control" id="province_id" name="province_id" value="{{old('province_id', isset($establishmentData->people_entities_establishment->provinces->name) ? $establishmentData->people_entities_establishment->provinces->name : '')}}" disabled>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="canton_id">Canton</label>
-                                            <input type="text" class="form-control" id="canton_id" name="canton_id" value="{{ old('canton_id',isset($establishmentData->people_entities_establishment->cantons->name) ? $establishmentData->people_entities_establishment->cantons->name : '')}}" disabled>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="parish_id">Parroquia</label>
-                                            <input type="text" class="form-control" id="parish_id" name="parish_id" value="{{ old('parish_id',isset($establishmentData->people_entities_establishment->parishes->name) ? $establishmentData->people_entities_establishment->parishes->name : '')}}" disabled>
+                                            <input type="number" class="form-control" id="number_phone1" value="{{ old('number_phone1',$PersonEntityData->number_phone1) }}" disabled>
 
                                         </div>
                                         <div class="form-group">
                                             <label for="address">Direccion</label>
-                                            <input type="text" class="form-control" id="address" name="address" value="{{ old('address',isset($establishmentData->people_entities_establishment->address) ? $establishmentData->people_entities_establishment->address : '') }}" disabled>
+                                            <input type="email" class="form-control" id="address" value="{{ old('address',$PersonEntityData->address) }}" disabled>
 
                                         </div>
                                     </div>
@@ -687,7 +661,7 @@
         </div>
     </section>
     <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">Seleccione Persona/empresa</h4>
@@ -697,40 +671,36 @@
             </div>
             <div class="modal-body">
                 <div class="card">
-                    <div class="card-body">
-                        @csrf
-                        <table id="entities-table" class="table table-sm table-bordered table-hover">
-                            <thead>
-                            <tr>
-                              <th>Cedula/Ruc</th>
-                              <th>Nombres</th>
-                              <th>Apellido 1</th>
-                              <th>Apellido 2</th>
-                              <th>Estado</th>
-                              <th>Correo</th>
-                              <th>Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                              <th>Cedula/Ruc</th>
-                              <th>Nombres</th>
-                              <th>Apellido 1</th>
-                              <th>Apellido 2</th>
-                              <th>Estado</th>
-                              <th>Correo</th>
-                              <th>Acciones</th>
-                            </tr>
-                            </tfoot>
-                        </table>
-
-                    </div>
-                    <div id="loading_modal" class="overlay dark" style="display: none">
-                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-                    </div>
-
+                    @csrf
+                    <table id="entities-table" class="table table-sm table-bordered table-hover">
+                        <thead>
+                        <tr>
+                          <th>Cedula/Ruc</th>
+                          <th>Tipo de persona</th>
+                          <th>Nombres / Nombre comercial</th>
+                          <th>Apellidos / Razon Social</th>
+                          <th>Estado</th>
+                          <th>Correo</th>
+                          <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Cedula/Ruc</th>
+                            <th>Tipo de persona</th>
+                            <th>Nombres / Nombre comercial</th>
+                            <th>Apellidos / Razon Social</th>
+                            <th>Estado</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <div id="loading" class="overlay dark" style="display: none">
+                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                        </div>
                 </div>
 
             </div>
@@ -808,10 +778,7 @@
         let status = document.getElementById('status2');
         let address = document.getElementById('address');
         let number_phone1 = document.getElementById('number_phone1');
-        let country_id = document.getElementById('country_id');
-        let province_id = document.getElementById('province_id');
-        let canton_id = document.getElementById('canton_id');
-        let parish_id = document.getElementById('parish_id');
+
         let establishment_id_2 = document.getElementById('establishment_id_2');
 
         let token = "{{csrf_token()}}";
@@ -855,26 +822,34 @@
         })
 
         var modalempresa = document.getElementById('modalempresa');
-        let tableentities = $('#entities-table').DataTable({
-                "lengthMenu": [ 5, 10],
-                "language" : {
-                    "url": '{{ url("/js/spanish.json") }}',
-                },
-                "processing" : true,
+        let tableentities =$('#entities-table').DataTable({
+            "lengthMenu": [ 5, 10],
+            "language" : {
+                "url": '{{ url("/js/spanish.json") }}',
+            },
+            "autoWidth": false,
+            "order": [], //Initial no order
+            "processing" : true,
+            "serverSide": true,
+            "ajax": {
+                "url" : "{{ route('peopleentities.datatablesPersonas') }}",
+                "type": "post",
+                "data": function (d){
+                    d._token = $("input[name=_token]").val();
+                }
+            },
+            "columns": [
+                {data: 'cc_ruc'},
+                {data: 'type_person'},
+                {data: 'name_tradename'},
+                {data: 'last_name_bussines_name'},
+                {data: 'status'},
+                {data: 'email'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
 
-                "autoWidth": false,
-                "order": [], //Initial no order
-                "columns": [
-                    {data: 'cc_ruc'},
-                    {data: 'name'},
-                    {data: 'last_name'},
-                    {data: 'maternal_last_name'},
-                    {data: 'status'},
-                    {data: 'email'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
+        });
 
-                ]
-            });
         //cargar modal persona
         modalempresa.addEventListener('click', function(e) {
             loading_modal.style.display = '';
@@ -996,10 +971,7 @@
                         last_name.value = res.data.last_name+' '+res.data.maternal_last_name;
                         status.value = res.data.status;
                         address.value = res.data.address;
-                        country_id.value = res.data.countries.name;
-                        province_id.value = res.data.provinces.name;
-                        canton_id.value = res.data.cantons.name;
-                        parish_id.value = res.data.parishes.name;
+
                         establishment_id_2.value = res.data.id;
                     }else if(modal == 2){
                         name_p.value = res.data.name;
@@ -1023,7 +995,8 @@
                     loading.style.display = 'none';
             });
         }
-        btnGuardar.addEventListener('click', function(e) {
+
+        btnGuardarStep1.addEventListener('click', function(e) {
             $('#formEstablisment').submit();
         })
 

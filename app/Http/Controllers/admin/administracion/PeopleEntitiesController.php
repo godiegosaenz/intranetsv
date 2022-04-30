@@ -13,6 +13,7 @@ use App\Http\Requests\StorePersonEntityRequest;
 use App\Http\Requests\UpdatePersonEntityRequest;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 
 class PeopleEntitiesController extends Controller
 {
@@ -65,13 +66,39 @@ class PeopleEntitiesController extends Controller
      */
     public function store(StorePersonEntityRequest $request)
     {
+        //return $request->has_disability;
+        $old_age = Carbon::parse($request->date_birth)->age;
+        $matriz_adicional = array();
         if($request->type == "1"){
-            $validationComplete = Arr::add($request->validated(),'is_person','1') ;
+            $matriz_adicional['is_person'] = true;
+            //$validationComplete = Arr::add($request->validated(),'is_person','1');
+
         }else{
-            $validationComplete = Arr::add($request->validated(),'is_person','0') ;
+            $matriz_adicional['is_person'] = false;
+            //$validationComplete = Arr::add($request->validated(),'is_person','0');
         }
+        if($old_age >= 65){
+            $matriz_adicional['old_age'] = true;
+            //return $matriz_adicional;
+        }else{
+            $matriz_adicional['old_age'] = false;
+            //return $matriz_adicional;
+        }
+        if($request->is_required_accounts != null){
+            $matriz_adicional['is_required_accounts'] = true;
+        }else{
+            $matriz_adicional['is_required_accounts'] = false;
+        }
+        if($request->has_disability != null){
+            $matriz_adicional['has_disability'] = true;
+        }else{
+            $matriz_adicional['has_disability'] = false;
+        }
+
+        $matriz_adicional['number_phone2'] = '1231';
+        $validationSave = array_merge($request->validated(),$matriz_adicional) ;
         //dd($validationComplete);
-        $personcreate = PersonEntity::create($validationComplete);
+        $personcreate = PersonEntity::create($validationSave);
         return redirect()->route('peopleentities.create')->with('status', 'El registro fue exitoso');
     }
 
@@ -83,7 +110,7 @@ class PeopleEntitiesController extends Controller
      */
     public function show($id)
     {
-        $PersonEntity = PersonEntity::with(['countries','provinces','cantons','parishes'])->find($id);
+        $PersonEntity = PersonEntity::find($id);
         return view('admin/peopleentitiesShow',compact('PersonEntity'));
     }
 
@@ -95,11 +122,8 @@ class PeopleEntitiesController extends Controller
      */
     public function edit(PersonEntity $PersonEntity)
     {
-        $CountryData = Country::all();
-        $ProvinceData = Province::where('country_id',$PersonEntity->country_id)->get();
-        $CantonData = Canton::where('province_id',$PersonEntity->province_id)->get();
-        $ParishData = Parish::where('canton_id',$PersonEntity->canton_id)->get();
-        return view('admin.peopleentitiesEdit',compact('PersonEntity','CountryData','ProvinceData','CantonData','ParishData'));
+
+        return view('admin.peopleentitiesEdit',compact('PersonEntity'));
     }
 
     /**
@@ -111,12 +135,36 @@ class PeopleEntitiesController extends Controller
      */
     public function update(UpdatePersonEntityRequest $request, PersonEntity $PersonEntity)
     {
+        $old_age = Carbon::parse($request->date_birth)->age;
+        $matriz_adicional = array();
         if($request->type == "1"){
-            $validationComplete = Arr::add($request->validated(),'is_person','1') ;
+            $matriz_adicional['is_person'] = true;
+            //$validationComplete = Arr::add($request->validated(),'is_person','1');
+
         }else{
-            $validationComplete = Arr::add($request->validated(),'is_person','0') ;
+            $matriz_adicional['is_person'] = false;
+            //$validationComplete = Arr::add($request->validated(),'is_person','0');
         }
-        $PersonEntity->update($validationComplete);
+        if($old_age >= 65){
+            $matriz_adicional['old_age'] = true;
+            //return $matriz_adicional;
+        }else{
+            $matriz_adicional['old_age'] = false;
+            //return $matriz_adicional;
+        }
+        if($request->is_required_accounts != null){
+            $matriz_adicional['is_required_accounts'] = true;
+        }else{
+            $matriz_adicional['is_required_accounts'] = false;
+        }
+        if($request->has_disability != null){
+            $matriz_adicional['has_disability'] = true;
+        }else{
+            $matriz_adicional['has_disability'] = false;
+        }
+        //$matriz_adicional['number_phone2'] = '1231';
+        $validationSave = array_merge($request->validated(),$matriz_adicional) ;
+        $PersonEntity->update($validationSave);
         return back()->with('status',  'El usuario '.$request->name.' se ha actualizado satisfactoriamente');
     }
 
@@ -135,14 +183,14 @@ class PeopleEntitiesController extends Controller
         if ($request->ajax()) {
             //$peopleEntitiesdata = PersonEntity::find(auth()->user()->id);
 
-            $PersonEntityData = PersonEntity::all();
+            $PersonEntityData = PersonEntity::where('type', $request->type)->get();
 
             //$PersonEntityData = Arr::add($PersonEntityDataTemp,'formRequestPeople', '1');
             return Datatables($PersonEntityData)
                     ->addColumn('action', function ($PersonEntityData) {
-                        $buttons = '<a href="'.route('peopleentities.show',['PersonEntity' => $PersonEntityData]).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Ver</a> ';
-                        $buttons .= '<a href="'.route('peopleentities.edit',['PersonEntity' => $PersonEntityData]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Editar</a> ';
-                        $buttons .= '<a onclick="deleteMessage('.$PersonEntityData->id.')" class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i> Eliminar</a>';
+                        $buttons = '<a href="'.route('peopleentities.show',['PersonEntity' => $PersonEntityData]).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a> ';
+                        $buttons .= '<a href="'.route('peopleentities.edit',['PersonEntity' => $PersonEntityData]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a> ';
+                        $buttons .= '<a onclick="deleteMessage('.$PersonEntityData->id.')" class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></a>';
                         return $buttons;
                     })
                     ->make(true);
@@ -151,7 +199,46 @@ class PeopleEntitiesController extends Controller
     }
 
     public function getPersonEntity($id) {
-        $PersonEntityData = PersonEntity::with(['Countries','provinces','cantons','parishes'])->where('id', $id)->first();
+        $PersonEntityData = PersonEntity::where('id', $id)->first();
         return $PersonEntityData;
+    }
+
+    public function datatablesPersonas(Request $request){
+        if ($request->ajax()) {
+            //$peopleEntitiesdata = PersonEntity::find(auth()->user()->id);
+
+            $PersonEntityData = PersonEntity::where('status',1)->get();
+
+            //$PersonEntityData = Arr::add($PersonEntityDataTemp,'formRequestPeople', '1');
+            return Datatables($PersonEntityData)
+                    ->addColumn('type_person', function ($PersonEntityData) {
+                        if($PersonEntityData->type == 1){
+                            return 'Natural';
+                        }else{
+                            return 'Juridica';
+                        }
+                    })
+                    ->addColumn('name_tradename', function ($PersonEntityData) {
+                        if($PersonEntityData->type == 1){
+                            return $PersonEntityData->name;
+                        }else{
+                            return $PersonEntityData->tradename;
+                        }
+                    })
+                    ->addColumn('last_name_bussines_name', function ($PersonEntityData) {
+                        if($PersonEntityData->type == 1){
+                            return $PersonEntityData->last_name.' '.$PersonEntityData->maternal_last_name;
+                        }else{
+                            return $PersonEntityData->bussines_name;
+                        }
+                    })
+                    ->addColumn('action', function ($PersonEntityData) {
+                        $buttons = '<a onclick="selectedPersonEntity('.$PersonEntityData->id.')" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i></a>';
+                        return $buttons;
+                    })
+                    ->rawColumns(['type_person','name_tradename','last_name_bussines_name','action'])
+                    ->make(true);
+        }
+
     }
 }

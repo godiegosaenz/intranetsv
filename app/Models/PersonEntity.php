@@ -17,6 +17,9 @@ class PersonEntity extends Model
         'last_name',
         'maternal_last_name',
         'is_person',
+        'is_required_accounts',
+        'has_disability',
+        'old_age',
         'date_birth',
         'status',
         'address',
@@ -27,30 +30,10 @@ class PersonEntity extends Model
         'type_document',
         'number_phone1',
         'number_phone2',
-        'email',
-        //'country_id',
-        //'province_id',
-        //'canton_id',
-        //'parish_id'
+        'email'
     ];
 
     public $incrementing = false;
-
-    public function Countries(){
-        return $this->belongsTo(Country::class,'country_id');
-    }
-
-    public function provinces(){
-        return $this->belongsTo(Province::class,'province_id');
-    }
-
-    public function cantons(){
-        return $this->belongsTo(Canton::class,'canton_id');
-    }
-
-    public function parishes(){
-        return $this->belongsTo(Parish::class,'parish_id');
-    }
 
     public function getStatusAttribute($status){
         if($status == 1){

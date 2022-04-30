@@ -48,15 +48,21 @@
                         @isset($CulturalManager)
                             @foreach ($CulturalManager as $cm)
                                 <tr>
-                                    <td>{{$cm->name}}</td>
+                                    <td>{{$cm->people_entities->name.' '.$cm->people_entities->last_name.' '.$cm->people_entities->maternal_last_name}}</td>
                                     <td>{{$cm->type_activity->name}}</td>
                                     <td>{{$cm->Scope_activity->name}}</td>
-                                    <td>{{$cm->status}}</td>
+                                    @if ($cm->status==1)
+                                    <td><span class="badge bg-success">Activo</span></td>
+                                    @else
+                                    <td><span class="badge bg-danger">Inactivo</span></td>
+
+                                    @endif
+
                                     <td>{{$cm->people_entities->number_phone1}}</td>
-                                    <td>{{$cm->people_entities->countries->name}}</td>
-                                    <td>{{$cm->people_entities->provinces->name}}</td>
-                                    <td>{{$cm->people_entities->cantons->name}}</td>
-                                    <td>{{$cm->people_entities->parishes->name}}</td>
+                                    <td>{{$cm->countries->name}}</td>
+                                    <td>{{$cm->provinces->name}}</td>
+                                    <td>{{$cm->cantons->name}}</td>
+                                    <td>{{$cm->parishes->name}}</td>
                                     <td>
                                         <a href="{{route('culturalmanagers.show',['CulturalManager' => $cm])}}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
                                         <a href="{{route('culturalmanagers.edit',['CulturalManager' => $cm])}}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>

@@ -37,7 +37,7 @@ class UserController extends Controller
 
     public function create($id = null){
         if($id != null){
-            $PersonEntityData = PersonEntity::with(['Countries','provinces','cantons','parishes'])->where('id', $id)->first();
+            $PersonEntityData = PersonEntity::where('id', $id)->first();
         }else{
             $PersonEntityData = new PersonEntity();
         }
