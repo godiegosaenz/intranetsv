@@ -29,18 +29,22 @@ class StoreEstablishmentRequest extends FormRequest
         $arrayReglas = array(
             'name' => 'bail|required|string|min:2|max:190',
             'start_date' => 'bail|required|date',
-            'registry_number' => 'bail|required|numeric',
+            'registry_number' => '',
             'cadastral_registry' => '',
-            'organization_type'=> 'bail|required',
+            'establishment_type'=> 'bail|required',
             'local'=> 'bail|required',
+            'franchise_chain' => '',
             'web_page'=> '',
             'phone'=> 'bail|required|numeric|digits:10',
-            'tourist_activity_id'=> 'required|numeric',
-            'classification_id'=> 'required|numeric',
-            'category_id'=> 'required|numeric',
             'establishment_id_2'=> 'bail|required|numeric',
-            'owner_id'=> '',
-            'legal_representative_id'=> '',
+            'legal_representative_id_2'=> 'bail|required|numeric',
+            'country_id' => 'bail|required|numeric',
+            'province_id' => 'bail|required|numeric',
+            'canton_id' => 'bail|required|numeric',
+            'parish_id' => 'bail|required|numeric',
+            'main_street' => 'bail|required|string|min:2|max:190',
+            'location_reference' => 'bail|required|string|min:2',
+            'status' => 'bail|required',
         );
         if ($this->route()->named('establishments.edit')) {
             $arrayReglas = Arr::add($arrayReglas,'email', ['bail','required', Rule::unique('App\Models\Establishments')->ignore($this->route('Establishments'))]);
@@ -48,24 +52,6 @@ class StoreEstablishmentRequest extends FormRequest
             $arrayReglas = Arr::add($arrayReglas,'email', 'bail|required|email|unique:App\Models\Establishments,email');
         }
         return $arrayReglas;
-
-        return [
-            'name' => 'bail|required|string|min:2|max:190',
-            'start_date' => 'bail|required|date',
-            'registry_number' => 'bail|required|numeric',
-            'cadastral_registry' => '',
-            'organization_type'=> 'bail|required',
-            'local'=> 'bail|required',
-            'web_page'=> '',
-
-            'phone'=> 'bail|required|numeric|digits:10',
-            'tourist_activity_id'=> 'required|numeric',
-            'classification_id'=> 'required|numeric',
-            'category_id'=> 'required|numeric',
-            'establishment_id_2'=> 'bail|required|numeric',
-            'owner_id'=> '',
-            'legal_representative_id'=> '',
-        ];
     }
 
     public function attributes()
@@ -85,7 +71,9 @@ class StoreEstablishmentRequest extends FormRequest
             'category_id'=> 'categoria',
             'establishment_id_2'=> 'Persona / empresa',
             'owner_id'=> 'Propietario',
-            'legal_representative_id'=> 'Representante legal',
+            'legal_representative_id_2'=> 'Representante legal',
+            'main_street' => 'Calle principal',
+            'location_reference' => 'Referencia de ubicacion',
         ];
     }
 
@@ -94,6 +82,10 @@ class StoreEstablishmentRequest extends FormRequest
         Cookie::queue('tourist_activity_id', $this->tourist_activity_id);
         Cookie::queue('classification_id', $this->classification_id);
         Cookie::queue('category_id', $this->category_id);
+        Cookie::queue('country_id', $this->country_id);
+        Cookie::queue('province_id', $this->province_id);
+        Cookie::queue('canton_id', $this->canton_id);
+        Cookie::queue('parish_id', $this->parish_id);
     }
 
 }

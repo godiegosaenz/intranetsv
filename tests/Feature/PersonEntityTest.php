@@ -16,7 +16,7 @@ class PersonEntityTest extends TestCase
      */
     public function test_example()
     {
-        //$PersonEntity = PersonEntity::factory()->times(10)->create();
+        //$PersonEntity = PersonEntity::factory()->times(20)->create();
         $PersonEntity = PersonEntity::factory()->enterprise()->create();
     }
 }

@@ -16,6 +16,6 @@ class EstablishmentTest extends TestCase
      */
     public function test_example()
     {
-        Establishments::factory()->times(5)->hoteles()->create();
+        //Establishments::factory()->times(5)->hoteles()->create();
     }
 }

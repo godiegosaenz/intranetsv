@@ -79,7 +79,7 @@ Route::prefix('admin')->group(function (){
 
     Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index')->middleware('auth');
     Route::get('/establishments/create/{id?}', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
-    Route::get('/establishments/{id}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit')->middleware('auth');
+    Route::get('/establishments/{Establishments}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit')->middleware('auth');
     Route::get('/establishments/{Establishment}', [EstablishmentController::class, 'show'])->name('establishments.show')->middleware('auth');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
     Route::put('/establishments/{Establishments}', [EstablishmentController::class, 'update'])->name('establishments.update');

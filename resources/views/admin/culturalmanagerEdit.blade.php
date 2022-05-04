@@ -132,7 +132,7 @@
                                                         <option value="{{ $p->id }}" {{ $CulturalManager->province_id == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
                                                         @endif
                                                     @endforeach
-                                                @endif
+                                                @endisset
                                             </select>
                                             @error('province_id')
                                                 <span class="error invalid-feedback">{{ $message }}</span>

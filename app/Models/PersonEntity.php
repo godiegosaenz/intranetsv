@@ -13,6 +13,7 @@ class PersonEntity extends Model
 
     protected $fillable = [
         'cc_ruc',
+        'type_document',
         'name',
         'last_name',
         'maternal_last_name',
