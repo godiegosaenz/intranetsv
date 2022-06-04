@@ -15,13 +15,13 @@ class CreateLiquidationsTable extends Migration
     {
         Schema::create('liquidations', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('voucher_number');
+            $table->bigInteger('voucher_number')->nullable();
             $table->bigInteger('liquidation_number');
-            $table->bigInteger('liquidation_code');
-            $table->bigInteger('total_payment');
+            $table->char('liquidation_code',20);
+            $table->decimal('total_payment',$precision = 20, $scale = 2)->nullable();
             $table->boolean('status');
             $table->char('username');
-            $table->text('observation');
+            $table->text('observation')->nullable();
             $table->integer('year');
             $table->unsignedBigInteger('type_liquidation_id');
             $table->index('type_liquidation_id');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class PersonEntity extends Model
 {
@@ -46,5 +47,21 @@ class PersonEntity extends Model
 
     public function cultural_manager(){
         return $this->hasOne(CulturalManager::class,'people_entities_id');
+    }
+
+    public function getLastNameFullAttribute(){
+        return $this->last_name.' '.$this->maternal_last_name;
+    }
+
+    public function getAgePersonAttribute(){
+        return Carbon::parse($this->date_birth)->age;
+    }
+
+    public function getTypePersonAttribute(){
+        if ($this->type == 1){
+            return 'Natural';
+        }else{
+            return 'Juridica';
+        }
     }
 }

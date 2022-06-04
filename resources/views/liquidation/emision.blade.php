@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <x-header title="Panel de establecimientos turisticos">
+    <x-header title="Panel de emisión">
         <li class="breadcrumb-item active">Emision de titulos</li>
     </x-header>
      <!-- Main content -->
@@ -28,14 +28,21 @@
                       <div class="step" data-target="#porcentaje-part">
                         <button type="button" class="step-trigger" role="tab" aria-controls="porcentaje-part" id="porcentaje-part-trigger">
                           <span class="bs-stepper-circle">2</span>
-                          <span class="bs-stepper-label">Porcentaje del Rubro LUAF</span>
+                          <span class="bs-stepper-label">Tabla Luaf</span>
                         </button>
                       </div>
                       <div class="line"></div>
                       <div class="step" data-target="#emision-part">
                         <button type="button" class="step-trigger" role="tab" aria-controls="emision-part" id="emision-part-trigger">
                           <span class="bs-stepper-circle">3</span>
-                          <span class="bs-stepper-label">Seleccionar otros rubros</span>
+                          <span class="bs-stepper-label">Rubros</span>
+                        </button>
+                      </div>
+                      <div class="line"></div>
+                      <div class="step" data-target="#report-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="report-part" id="report-part-trigger">
+                          <span class="bs-stepper-circle">4</span>
+                          <span class="bs-stepper-label">Reporte</span>
                         </button>
                       </div>
                     </div>
@@ -44,82 +51,78 @@
                             @csrf
                             <div id="year-emision-part" class="content" role="tabpanel" aria-labelledby="year-emision-part-trigger">
                                 <div class="row">
-                                    <div class="col-lg-4">
+
+                                    <div class="col-lg-12">
                                         <br>
-                                        <div class="form-group">
-                                            <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="year_emision">Año de emision</label>
-                                            <input type="text" class="form-control" id="year_emision" name="year_emision">
+                                        <div class="float-right">
+                                            <div class="form-group">
+                                                <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                            </div>
                                         </div>
                                     </div>
 
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="year_emision">Ingrese año de emision *</label>
+                                            <input type="text" class="form-control" id="year_emision" name="year_emision">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div id="porcentaje-part" class="content" role="tabpanel" aria-labelledby="porcentaje-part-trigger">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <br>
-                                        <div class="form-group">
-                                            <button id="btnstep3" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
-                                            <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                        <div class="float-right">
+                                            <div class="form-group">
+                                                <button id="btnstep3" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
+                                                <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12">
-                                        <table id="luaf-table" class="table table-sm table-bordered table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Seleccionar</th>
-                                                    <th>Actividad Turistica</th>
-                                                    <th>Clasificacion</th>
-                                                    <th>Categoria</th>
-                                                    <th>Porcentaje</th>
-                                                    <th>Año</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @isset($LuafTable)
-                                                    @foreach ($LuafTable as $lt)
-
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-group">
-                                                                        <div class="form-check">
-                                                                        <input class="form-check-input" name="checkLuaf[]" type="checkbox" value="{{$lt->id}}">
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>{{$lt->tourist_activities->name}}</td>
-                                                                <td>{{$lt->establishments_classifications->name}}</td>
-                                                                <td>{{$lt->establishments_categories->name}}</td>
-                                                                <td>{{$lt->percentage}}</td>
-                                                                <td>{{$lt->year}}</td>
-                                                            </tr>
-
-
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Seleccione tabla de calculo de LUAF *</label>
+                                            <select id="year_luaf" name="year_luaf" class="custom-select @error('status') is-invalid @enderror">
+                                                <option value="">Seleccione año</option>
+                                                @isset($yearEmision)
+                                                    @foreach ($yearEmision as $ye)
+                                                        <option value="{{$ye->year}}">{{$ye->year}}</option>
                                                     @endforeach
                                                 @endisset
+                                            </select>
 
-                                            </tbody>
-
-                                        </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="emision-part" class="content" role="tabpanel" aria-labelledby="emision-part-trigger">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <br>
-                                        <div class="form-group">
-                                            <button id="btnstep3" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
+                                        <div class="float-right">
+                                            <div class="form-group">
+                                                <button id="btnstep3" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
+                                                <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="float-right">
+                                        <div class="col-lg-12">
                                             <button class="btn btn-primary" type="submit"><i class="fa fa-check"></i> Emitir LUAF </button>
                                         </div>
                                     </div>
+                                </div>
+                                <br>
+                                <div class="row">
                                     <div class="col-lg-12">
-                                        <hr>
+                                        <label>Seleccione Rubros a emitir</label>
                                     </div>
                                     <div class="col-lg-12">
                                         <table id="requirements-table" class="table table-sm table-bordered table-hover">
@@ -156,10 +159,39 @@
                                         </table>
                                     </div>
                                 </div>
+                            </div>
+                            <div id="report-part" class="content" role="tabpanel" aria-labelledby="report-part-trigger">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <br>
+                                        <div class="float-right">
+                                            <div class="form-group">
+                                                <button id="btnstep3" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
+                                                <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table id="emision-table" class="table table-sm table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Seleccionar</th>
+                                                    <th>Rubro</th>
+                                                    <th>Estado</th>
+                                                    <th>valor</th>
+                                                    <th>Cuenta contable</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-
-
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>

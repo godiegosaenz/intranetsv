@@ -43,7 +43,7 @@
                 <p>Tablero</p>
                 </a>
             </li>
-            <li class="nav-item {{ (url()->current() == route('users.index') || url()->current() == route('peopleentities.index') || url()->current() == route('luaf.index')) ? 'menu-open' : '' }}">
+            <li class="nav-item {{ (url()->current() == route('users.index') || url()->current() == route('peopleentities.index')) ? 'menu-open' : '' }}">
                 @auth
                 <a href="#" class="nav-link {{ (url()->current() == route('peopleentities.index') || url()->current() == route('users.index')) ? 'active' : '' }}">
                 @endauth
@@ -66,12 +66,7 @@
                     <p>Usuarios</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('luaf.index')}}" class="nav-link {{ (url()->current() == route('luaf.index')) ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Tabla Luaf</p>
-                    </a>
-                </li>
+
                 </ul>
             </li>
 
@@ -140,9 +135,19 @@
                         <p>Establecimientos</p>
                       </a>
                 </li>
-
+            </ul>
+          </li>
+          <li class="nav-item {{ url()->current() == route('emision.index') || url()->current() == route('luaf.index') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-file-invoice-dollar"></i>
+              <p>
+                Rentas
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('liquidation.index') }}" class="nav-link {{ (url()->current() == route('liquidation.index')) ? 'active' : '' }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Recaudacion</p>
                 </a>
@@ -159,6 +164,12 @@
                   <p>Rubros</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ route('luaf.index')}}" class="nav-link {{ (url()->current() == route('luaf.index')) ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tabla Luaf</p>
+                </a>
+            </li>
             </ul>
           </li>
         </ul>

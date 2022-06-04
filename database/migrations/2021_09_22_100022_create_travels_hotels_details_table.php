@@ -15,11 +15,11 @@ class CreateTravelsHotelsDetailsTable extends Migration
     {
         Schema::create('travels_hotels_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('cbp');
-            $table->integer('bc');
-            $table->integer('total');
-            $table->integer('bed');
-            $table->integer('plazas');
+            $table->integer('cbp')->nullable();
+            $table->integer('bc')->nullable();
+            $table->integer('total'); //numero total de habitaciones
+            $table->integer('bed'); // numero total de camas
+            $table->integer('plazas'); // numero total de plazas
             $table->unsignedBigInteger('type_room_id');
             $table->index('type_room_id');
             $table->foreign('type_room_id')->references('id')->on('type_rooms');

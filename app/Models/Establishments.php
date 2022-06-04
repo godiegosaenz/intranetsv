@@ -44,6 +44,7 @@ class Establishments extends Model
         'parish_id',
         'owner_id',
         'legal_representative_id',
+        'area_applications_id',
         'tourist_activity_id',
         'classification_id',
         'category_id',
@@ -84,6 +85,10 @@ class Establishments extends Model
         return $this->belongsTo(EstablishmentClassification::class,'classification_id');
     }
 
+    public function establishments_categories(){
+        return $this->belongsTo(EstablishmentCategory::class,'category_id');
+    }
+
     public function people_entities_establishment(){
         return $this->belongsTo(PersonEntity::class,'establishment_id');
     }
@@ -103,6 +108,68 @@ class Establishments extends Model
 
     public function validation_requeriments_establishment($id){
 
+    }
+
+    public function rooms_hotels(){
+        return $this->belongsToMany(TypeRoom::class, 'travels_hotels_details','establishment_id','type_room_id')->withPivot('id','total', 'bed','plazas')->withTimestamps();
+    }
+
+    public function establishment_services(){
+        return $this->belongsToMany(Services::class, 'establishment_services','establishment_id','service_id')->withPivot('id','services_total_beds','services_total_plazas','services_type')->withTimestamps();
+    }
+
+    public function Countries(){
+        return $this->belongsTo(Country::class,'country_id');
+    }
+
+    public function provinces(){
+        return $this->belongsTo(Province::class,'province_id');
+    }
+
+    public function cantons(){
+        return $this->belongsTo(Canton::class,'canton_id');
+    }
+
+    public function parishes(){
+        return $this->belongsTo(Parish::class,'parish_id');
+    }
+
+    public function getLocalNameAttribute(){
+        $LocalName = null;
+        if($this->local == 1){
+            $LocalName = 'Propio';
+        }else if($this->local == 2){
+            $LocalName = 'Arrendado';
+        }
+        else{
+            $LocalName = 'Cedido';
+        }
+        return $LocalName;
+    }
+
+    public function getEstablishmentTypeNameAttribute(){
+        $typeName = null;
+        if($this->establishment_type == 1){
+            $typeName = 'Ninguno';
+        }else if($this->establishment_type == 2){
+            $typeName = 'Franquicia';
+        }
+        else{
+            $typeName = 'Candena/Sucursal';
+        }
+        return $typeName;
+    }
+
+    public function getStatusNameAttribute(){
+        if($this->status == 1){
+            return 'Abierto';
+        }else{
+            return 'Cerrado';
+        }
+    }
+
+    public function getLastNameFullAttribute(){
+        return $this->last_name.' '.$this->maternal_last_name;
     }
 
 }

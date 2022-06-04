@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\models\Catalogue_SBU;
 
 class CatalogueSBUSeeder extends Seeder
 {
@@ -13,6 +14,6 @@ class CatalogueSBUSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Catalogue_SBU::create(['year' => 2022, 'value' => 425.00]);
     }
 }

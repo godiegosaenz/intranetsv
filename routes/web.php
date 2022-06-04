@@ -16,13 +16,16 @@ use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentControlle
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentClassificationController;
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentCategoryController;
 use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentRequirementController;
+use App\Http\Controllers\admin\establecimientosturisticos\EstablismentServicesController;
 use App\Http\Controllers\admin\liquidacion\EmisionController;
+use App\Http\Controllers\admin\liquidacion\LiquidationController;
 use App\Http\Controllers\admin\luaf\LuafTableController;
 use App\Models\EstablishmentCategory;
 use App\Models\Requirement;
 use App\Models\Establishments;
 use App\Models\TouristActivity;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\admin\establecimientosturisticos\TravelHotelsDetailController;
 
 Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('guest');
 
@@ -79,13 +82,20 @@ Route::prefix('admin')->group(function (){
 
     Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index')->middleware('auth');
     Route::get('/establishments/create/{id?}', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
-    Route::get('/establishments/{Establishments}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit')->middleware('auth');
+    Route::get('/establishments/{id}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit')->middleware('auth');
     Route::get('/establishments/{Establishment}', [EstablishmentController::class, 'show'])->name('establishments.show')->middleware('auth');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
     Route::put('/establishments/{Establishments}', [EstablishmentController::class, 'update'])->name('establishments.update');
-    Route::post('/establishment/storestep2/{id?}', [EstablishmentController::class, 'storeStep2'])->name('establishments.storestep2');
+    Route::put('/establishment/updateTab2/{id?}', [EstablishmentController::class, 'updateTab2'])->name('establishments.updateTab2');
     Route::post('/establishments/datatablesPersonas', [EstablishmentController::class, 'datatablesPersonas'])->name('establishments.datatablesPersonas');
     Route::post('/establishments/datatables', [EstablishmentController::class, 'datatables'])->name('establishments.datatables');
+    Route::post('/establishments/datatablesEstablishmentLiquidation', [EstablishmentController::class, 'datatablesEstablishmentLiquidation'])->name('establishments.datatablesEstablishmentLiquidation');
+
+    Route::post('/travelhotelsdetail/{id?}', [TravelHotelsDetailController::class, 'store'])->name('travelhotelsdetail.store');
+    Route::delete('/travelhotelsdetail/{id}', [TravelHotelsDetailController::class, 'destroy'])->name('travelhotelsdetail.destroy');
+
+    Route::post('/establishmentservices/{id?}', [EstablismentServicesController::class, 'store'])->name('establishmentservices.store');
+    Route::delete('/establishmentservices/{id?}', [EstablismentServicesController::class, 'destroy'])->name('establishmentservices.destroy');
 
     Route::post('/establishmentclassification/{id}', [EstablishmentClassificationController::class, 'show'])->name('establishmentclassification.show')->middleware('auth');
     Route::post('/establishmentcategory/{id}', [EstablishmentCategoryController::class, 'show'])->name('establishmentcategory.show')->middleware('auth');
@@ -97,6 +107,9 @@ Route::prefix('admin')->group(function (){
 
     Route::get('/emision', [EmisionController::class, 'index'])->name('emision.index')->middleware('auth');
     Route::post('/emision', [EmisionController::class, 'store'])->name('emision.store');
+
+    Route::get('/liquidation', [LiquidationController::class, 'index'])->name('liquidation.index')->middleware('auth');
+    Route::post('/liquidation', [LiquidationController::class, 'getLiquidation'])->name('liquidation.get');
 
     Route::get('/luaf', [LuafTableController::class, 'index'])->name('luaf.index')->middleware('auth');
     Route::post('/luaf', [LuafTableController::class, 'store'])->name('luaf.store');

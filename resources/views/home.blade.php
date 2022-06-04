@@ -11,9 +11,8 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3>150</h3>
-
-            <p>New Orders</p>
+            <h3>{{$totalEstablishment}}</h3>
+            <p>Numero de Establecimientos</p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
@@ -26,9 +25,9 @@
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3>53<sup style="font-size: 20px">%</sup></h3>
+            <h3>{{$totalAbiertosEstablishment}}</h3>
 
-            <p>Bounce Rate</p>
+            <p>Establicimeintos cerrados</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
@@ -41,9 +40,9 @@
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3>44</h3>
+            <h3>{{$totalcerradosEstablishment}}</h3>
 
-            <p>User Registrations</p>
+            <p>Establecimientos abiertos</p>
           </div>
           <div class="icon">
             <i class="ion ion-person-add"></i>
@@ -58,7 +57,7 @@
           <div class="inner">
             <h3>65</h3>
 
-            <p>Unique Visitors</p>
+            <p>Usuarios conectados</p>
           </div>
           <div class="icon">
             <i class="ion ion-pie-graph"></i>

@@ -25,22 +25,26 @@
                 <div class="card-header p-0 border-bottom-0">
                   <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
                     <li class="nav-item">
-                      <a class="nav-link active" id="custom-tabs-step1-tab" data-toggle="pill" href="#custom-tabs-step1" role="tab" aria-controls="custom-tabs-step1" aria-selected="true">Informacion de establecimiento</a>
+                        @if(session('tabEstablishment') != null)
+                        <a class="nav-link {{ session('tabEstablishment') == 1 ? 'active' : '' }}" id="custom-tabs-step1-tab" data-toggle="pill" href="#custom-tabs-step1" role="tab" aria-controls="custom-tabs-step1" aria-selected="true">Informacion de establecimiento</a>
+                        @else
+                        <a class="nav-link active" id="custom-tabs-step1-tab" data-toggle="pill" href="#custom-tabs-step1" role="tab" aria-controls="custom-tabs-step1" aria-selected="true">Informacion de establecimiento</a>
+                        @endif
                     </li>
+                    @if($Establishments->register == '1')
                     <li class="nav-item">
-                      <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Informacion turistica</a>
+                      <a class="nav-link {{ session('tabEstablishment') == 2 ? 'active' : '' }}" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Informacion turistica</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Messages</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-settings" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Settings</a>
-                    </li>
+                    @endif
                   </ul>
                 </div>
                 <div class="card-body">
                   <div class="tab-content" id="custom-tabs-four-tabContent">
+                    @if(session('tabEstablishment') != null)
+                    <div class="tab-pane fade {{ session('tabEstablishment') == 1 ? 'show active' : '' }}" id="custom-tabs-step1" role="tabpanel" aria-labelledby="custom-tabs-step1-tab">
+                    @else
                     <div class="tab-pane fade show active" id="custom-tabs-step1" role="tabpanel" aria-labelledby="custom-tabs-step1-tab">
+                    @endif
                         <div id="stepper1" class="bs-stepper">
                             <div class="bs-stepper-header" role="tablist">
                               <!-- your steps here -->
@@ -102,11 +106,19 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-12">
+                                                    @if($Establishments->register == 1)
                                                     <div class="alert alert-info alert-dismissible">
                                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                                         <h5><i class="icon fas fa-info"></i> ¡Importante!</h5>
+                                                        Ya puedes ingresar la informacion turistica del Establecimiento en la siguiente pestaña.
+                                                    </div>
+                                                    @else
+                                                    <div class="alert alert-info alert-dismissible">
+                                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                        <h5><i class="icon fas fa-info"></i> Recuerda!</h5>
                                                         Todos los campos con un asterisco al final. Son campos obligatorios.
                                                     </div>
+                                                    @endif
                                                     @if($errors->has('establishment_id_2'))
                                                     <div class="alert alert-danger alert-dismissible">
                                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -285,6 +297,7 @@
                                                         <span class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
                                                     </div>
+                                                    {{$Establishments->LocalName}}
                                                     <div class="form-group">
                                                         <label>Lugar de funcionamiento *</label>
                                                         <select id="local" name="local" class="custom-select @error('local') is-invalid @enderror">
@@ -955,14 +968,15 @@
                             </form>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                    @if($Establishments->register == '1')
+                    <div class="tab-pane fade {{ session('tabEstablishment') == 2 ? 'show active' : '' }}" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
                         <div id="stepper2" class="bs-stepper">
                             <div class="bs-stepper-header" role="tablist">
                               <!-- your steps here -->
                               <div class="step" data-target="#toutist-step1-part">
                                 <button type="button" class="step-trigger" role="tab" aria-controls="toutist-step1-part" id="toutist-step1-part-trigger">
                                   <span class="bs-stepper-circle">1</span>
-                                  <span class="bs-stepper-label">Logins</span>
+                                  <span class="bs-stepper-label">Normativa</span>
                                 </button>
                               </div>
                               <div class="line"></div>
@@ -983,152 +997,183 @@
                             <div class="bs-stepper-content">
                                 <!-- start step 1 -->
                                 <div id="toutist-step1-part" class="content" role="tabpanel" aria-labelledby="toutist-step1-part-trigger">
-                                    <div class="row">
-                                        <br>
-                                        <div class="col-lg-6">
-                                            <h4>Cumplimiento de requisitos de establecimiento</h4>
-                                        </div>
-                                        <div class="col-lg-6 ">
-                                            <div class="float-right">
-                                                <div class="form-group">
-                                                    <button id="btnstep2" class="btn btn-secondary" type="button" onclick="stepprevioustab2()"><i class="fa fa-arrow-left"></i> Anterior </button>
-                                                    <button id="btnSiguiente" class="btn btn-secondary " type="button" onclick="stepnexttab2()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                    <form id="formEstablismentTab2" action="{{ route('establishments.updateTab2',$Establishments->id) }}" method="post">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="row">
+                                            <br>
+                                            <div class="col-lg-6">
+                                                <h4>Cumplimiento de requisitos de establecimiento</h4>
+                                            </div>
+                                            <div class="col-lg-6 ">
+                                                <div class="float-right">
+                                                    <div class="form-group">
+                                                        <button id="btnstep2" class="btn btn-secondary" type="button" onclick="stepprevioustab2()"><i class="fa fa-arrow-left"></i> Anterior </button>
+                                                        <button id="btnSiguiente" class="btn btn-secondary " type="button" onclick="stepnexttab2()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <hr>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Ambito de aplicacion *</label>
-                                                <select id="tourist_activity_id" name="tourist_activity_id" class="custom-select @error('tourist_activity_id') is-invalid @enderror">
-                                                    @isset($touristActivity)
-                                                        <option value="">Seleccione Actividad</option>
-                                                        @foreach ($touristActivity as $ta)
-                                                            @if(isset($Establishments->tourist_activity_id))
-                                                                @if($ta->id == $Establishments->tourist_activity_id)
-                                                                    <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
-                                                                @else
-                                                                    <option value="{{ $ta->id }}">{{ $ta->name }}</option>
-                                                                @endif
-                                                            @else
-                                                                @if(Cookie::get('tourist_activity_id'))
-                                                                    @if($ta->id == Cookie::get('tourist_activity_id'))
-                                                                        <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
-                                                                    @else
-                                                                        <option value="{{ $ta->id }}">{{ $ta->name }}</option>
-                                                                    @endif
-                                                                @else
-                                                                    <option value="{{ $ta->id }}">{{ $ta->name }}</option>
-                                                                @endif
-                                                            @endif
-
-                                                        @endforeach
-                                                    @endisset
-                                                </select>
+                                            <div class="col-lg-12">
+                                                <hr>
                                             </div>
-                                            <div class="form-group">
-                                                <label>Actividad turistica *</label>
-                                                <select id="tourist_activity_id" name="tourist_activity_id" class="custom-select @error('tourist_activity_id') is-invalid @enderror">
-                                                    @isset($touristActivity)
-                                                        <option value="">Seleccione Actividad</option>
-                                                        @foreach ($touristActivity as $ta)
-                                                            @if(isset($Establishments->tourist_activity_id))
-                                                                @if($ta->id == $Establishments->tourist_activity_id)
-                                                                    <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
-                                                                @else
-                                                                    <option value="{{ $ta->id }}">{{ $ta->name }}</option>
-                                                                @endif
-                                                            @else
-                                                                @if(Cookie::get('tourist_activity_id'))
-                                                                    @if($ta->id == Cookie::get('tourist_activity_id'))
-                                                                        <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
-                                                                    @else
-                                                                        <option value="{{ $ta->id }}">{{ $ta->name }}</option>
-                                                                    @endif
-                                                                @else
-                                                                    <option value="{{ $ta->id }}">{{ $ta->name }}</option>
-                                                                @endif
-                                                            @endif
-
-                                                        @endforeach
-                                                    @endisset
-                                                </select>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                @if ($errors->has('area_applications_id') or $errors->has('tourist_activity_id') or $errors->has('classification_id') or $errors->has('category_id'))
+                                                <div class="alert alert-danger alert-dismissible">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                    <h5><i class="icon fas fa-ban"></i> ¡Alerta!</h5>
+                                                    Revisa que todos los campos obligatorios esten llenos.
+                                                </div>
+                                                @endif
+                                                @if(session('status'))
+                                                    @if(session('tabEstablishment') == '2' and session('step')== '1')
+                                                    <div class="alert alert-success alert-dismissible">
+                                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                        <h5><i class="icon fas fa-check"></i> ¡Felicidades!</h5>
+                                                        {{session('status')}}
+                                                    </div>
+                                                    @endif
+                                                @endif
                                             </div>
-                                            <div class="form-group">
-                                                <label>Clasificacion *</label>
-                                                <select id="classification_id" name="classification_id" class="custom-select @error('classification_id') is-invalid @enderror">
-                                                    <option value="">Seleccione Clasificacion</option>
-                                                    @if($register or Cookie::get('classification_id'))
-                                                        @if ($register == 'yes')
-                                                            @foreach ($establishmentClassification as $ec)
-                                                                @if($ec->id == $Establishments->classification_id)
-                                                                    <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <button class="btn btn-primary" type="submit">Guardar datos de Establecimiento</button>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Ambito de aplicacion *</label>
+                                                    <select id="area_applications_id" name="area_applications_id" class="custom-select @error('area_applications_id') is-invalid @enderror">
+                                                        @isset($AreaApplication)
+                                                            <option value="">Seleccione Ambito</option>
+                                                            @foreach ($AreaApplication as $ap)
+                                                                @if (old('area_applications_id'))
+                                                                <option value="{{ $ap->id }}" {{ old('area_applications_id') == $ap->id ? 'selected' : '' }}>{{ $ap->name }}</option>
                                                                 @else
-                                                                    <option value="{{ $ec->id }}">{{ $ec->name }}</option>
+                                                                <option value="{{ $ap->id }}" {{ $Establishments->area_applications_id == $ap->id ? 'selected' : '' }}>{{ $ap->name }}</option>
                                                                 @endif
                                                             @endforeach
-                                                        @else
-                                                            @if(Cookie::get('classification_id') !== null)
-                                                                @foreach ($establishmentClassification as $ec)
-                                                                    @if(Cookie::get('classification_id'))
-                                                                        @if($ec->id == Cookie::get('classification_id'))
-                                                                            <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
+                                                        @endisset
+                                                    </select>
+                                                    @error('area_applications_id')
+                                                        <span class="error invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Actividad turistica *</label>
+                                                    <select id="tourist_activity_id" name="tourist_activity_id" class="custom-select @error('tourist_activity_id') is-invalid @enderror">
+                                                        @isset($touristActivity)
+                                                            <option value="">Seleccione Actividad</option>
+                                                            @foreach ($touristActivity as $ta)
+                                                                @if(isset($Establishments->tourist_activity_id))
+                                                                    @if($ta->id == $Establishments->tourist_activity_id)
+                                                                        <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
+                                                                    @else
+                                                                        <option value="{{ $ta->id }}">{{ $ta->name }}</option>
+                                                                    @endif
+                                                                @else
+                                                                    @if(Cookie::get('tourist_activity_id'))
+                                                                        @if($ta->id == Cookie::get('tourist_activity_id'))
+                                                                            <option value="{{ $ta->id }}" selected>{{ $ta->name }}</option>
                                                                         @else
-                                                                            <option value="{{ $ec->id }}">{{ $ec->name }}</option>
+                                                                            <option value="{{ $ta->id }}">{{ $ta->name }}</option>
                                                                         @endif
+                                                                    @else
+                                                                        <option value="{{ $ta->id }}">{{ $ta->name }}</option>
+                                                                    @endif
+                                                                @endif
+
+                                                            @endforeach
+                                                        @endisset
+                                                    </select>
+                                                    @error('tourist_activity_id')
+                                                        <span class="error invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Clasificacion *</label>
+                                                    <select id="classification_id" name="classification_id" class="custom-select @error('classification_id') is-invalid @enderror">
+                                                        <option value="">Seleccione Clasificacion</option>
+                                                        @if($register or Cookie::get('classification_id'))
+                                                            @if ($register == 'yes')
+                                                                @foreach ($establishmentClassification as $ec)
+                                                                    @if($ec->id == $Establishments->classification_id)
+                                                                        <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
+                                                                    @else
+                                                                        <option value="{{ $ec->id }}">{{ $ec->name }}</option>
                                                                     @endif
                                                                 @endforeach
+                                                            @else
+                                                                @if(Cookie::get('classification_id') !== null)
+                                                                    @foreach ($establishmentClassification as $ec)
+                                                                        @if(Cookie::get('classification_id'))
+                                                                            @if($ec->id == Cookie::get('classification_id'))
+                                                                                <option value="{{ $ec->id }}" selected>{{ $ec->name }}</option>
+                                                                            @else
+                                                                                <option value="{{ $ec->id }}">{{ $ec->name }}</option>
+                                                                            @endif
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
                                                             @endif
-                                                        @endif
-                                                    @endisset
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Categoria *</label>
-                                                <select id="category_id" name="category_id" class="custom-select @error('category_id') is-invalid @enderror">
-                                                    <option value="">Seleccione Categoria</option>
-                                                    @if($register or Cookie::get('classification_id'))
-                                                        @if ($register == 'yes')
-                                                            @foreach ($establishmentCategory as $eca)
-                                                                @isset($Establishments->category_id)
-                                                                    @if($eca->id == $Establishments->category_id)
-                                                                        <option value="{{ $eca->id }}" selected>{{ $eca->name }}</option>
-                                                                    @else
-                                                                        <option value="{{ $eca->id }}">{{ $eca->name }}</option>
-                                                                    @endif
-                                                                @endisset
-                                                            @endforeach
-                                                        @else
-                                                            @if(Cookie::get('category_id') !== null)
+                                                        @endisset
+                                                    </select>
+                                                    @error('classification_id')
+                                                        <span class="error invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Categoria *</label>
+                                                    <select id="category_id" name="category_id" class="custom-select @error('category_id') is-invalid @enderror">
+                                                        <option value="">Seleccione Categoria</option>
+                                                        @if($register or Cookie::get('classification_id'))
+                                                            @if ($register == 'yes')
                                                                 @foreach ($establishmentCategory as $eca)
-                                                                    @if(Cookie::get('category_id'))
-                                                                        @if($eca->id == Cookie::get('category_id'))
+                                                                    @isset($Establishments->category_id)
+                                                                        @if($eca->id == $Establishments->category_id)
                                                                             <option value="{{ $eca->id }}" selected>{{ $eca->name }}</option>
                                                                         @else
                                                                             <option value="{{ $eca->id }}">{{ $eca->name }}</option>
                                                                         @endif
-                                                                    @endif
+                                                                    @endisset
                                                                 @endforeach
+                                                            @else
+                                                                @if(Cookie::get('category_id') !== null)
+                                                                    @foreach ($establishmentCategory as $eca)
+                                                                        @if(Cookie::get('category_id'))
+                                                                            @if($eca->id == Cookie::get('category_id'))
+                                                                                <option value="{{ $eca->id }}" selected>{{ $eca->name }}</option>
+                                                                            @else
+                                                                                <option value="{{ $eca->id }}">{{ $eca->name }}</option>
+                                                                            @endif
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
                                                             @endif
                                                         @endif
-                                                    @endif
 
 
-                                                </select>
+                                                    </select>
+                                                    @error('category_id')
+                                                        <span class="error invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+
+
                                             </div>
-
-
                                         </div>
-                                    </div>
-
+                                    </form>
                                 </div>
                                 <!-- end step 1 -->
                                 <!-- start step 2 -->
                                 <div id="toutist-step2-part" class="content" role="tabpanel" aria-labelledby="toutist-step2-part-trigger">
+                                    <form id="formEstablismentTab2step2" action="{{ route('travelhotelsdetail.store',$Establishments->id) }}" method="post">
+                                        @csrf
+
                                     <div class="row">
                                         <br>
                                         <div class="col-lg-6">
@@ -1145,61 +1190,93 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-12">
+                                            @if(session('status'))
+                                                @if(session('tabEstablishment') == '2' and session('step')== '2')
+                                                    <div class="alert alert-success alert-dismissible">
+                                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                        <h5><i class="icon fas fa-check"></i> ¡Felicidades!</h5>
+                                                        {{session('status')}}.
+                                                    </div>
+                                                @endif
+                                            @endif
+                                            @if ($errors->has('total_rooms') or $errors->has('total_beds') or $errors->has('total_places') or $errors->has('type_room_id'))
+                                                <div class="alert alert-danger alert-dismissible">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                    <h5><i class="icon fas fa-ban"></i> ¡Alerta!</h5>
+                                                    Revisa que todos los campos obligatorios esten llenos.
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="name2">Total de habitaciones</label>
-                                                <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($Establishments->people_entities_establishment->name) ? $Establishments->people_entities_establishment->name : '') }}" disabled>
+                                                <label for="total_rooms">Total de habitaciones</label>
+                                                <input type="number" class="form-control" id="total_rooms" name="total_rooms" value="{{ old('total_rooms',isset($Establishments->total_rooms) ? $Establishments->total_rooms : 0) }}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="name2">Total de camas</label>
-                                                <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($Establishments->people_entities_establishment->name) ? $Establishments->people_entities_establishment->name : '') }}" disabled>
+                                                <label for="total_beds">Total de camas</label>
+                                                <input type="text" class="form-control" id="total_beds" name="total_beds" value="{{ old('total_beds',isset($Establishments->total_beds) ? $Establishments->total_beds : 0) }}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="name2">Total de plazas</label>
-                                                <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($Establishments->people_entities_establishment->name) ? $Establishments->people_entities_establishment->name : '') }}" disabled>
+                                                <label for="total_places">Total de plazas</label>
+                                                <input type="text" class="form-control" id="total_places" name="total_places" value="{{ old('total_places',isset($Establishments->total_places) ? $Establishments->total_places : 0) }}" disabled>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <button id="" class="btn btn-secondary " type="button"><i class="fa fa-arrow-right"></i> Agregar </button>
+                                                <button id="" class="btn btn-primary " type="submit"><i class="fa fa-arrow-right"></i> Agregar </button>
                                             </div>
                                             <div class="form-group">
                                                 <label>Tipo de habitacion *</label>
-                                                <select id="tourist_activity_id" name="tourist_activity_id" class="custom-select @error('tourist_activity_id') is-invalid @enderror">
-
+                                                <select id="type_room_id" name="type_room_id" class="custom-select @error('type_room_id') is-invalid @enderror">
+                                                    @isset($TypeRoom)
+                                                        <option value="">Seleccione tipo</option>
+                                                        @foreach ($TypeRoom as $tr)
+                                                            @if (old('type_room_id'))
+                                                            <option value="{{ $tr->id }}" {{ old('type_room_id') == $tr->id ? 'selected' : '' }}>{{ $tr->name }}</option>
+                                                            @else
+                                                            <option value="{{ $tr->id }}" >{{ $tr->name }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    @endisset
                                                 </select>
+                                                @error('type_room_id')
+                                                    <span class="error invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="name">Habitaciones *</label>
-                                                <input type="text" class="form-control @error('number_establishment')is-invalid @enderror" id="number_establishment" name="number_establishment" value="{{ old('number_establishment',$Establishments->number_establishment) }}" >
-                                                @error('number_establishment')
+                                                <label for="total">Habitaciones *</label>
+                                                <input type="number" class="form-control @error('total')is-invalid @enderror" id="total" name="total" value="{{ old('total') }}" >
+                                                @error('total')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="name">Camas por habitacion *</label>
-                                                <input type="text" class="form-control @error('number_establishment')is-invalid @enderror" id="number_establishment" name="number_establishment" value="{{ old('number_establishment',$Establishments->number_establishment) }}" >
-                                                @error('number_establishment')
+                                                <label for="bed">Camas por habitacion *</label>
+                                                <input type="number" class="form-control @error('bed')is-invalid @enderror" id="bed" name="bed" value="{{ old('bed') }}" >
+                                                @error('bed')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="name">Plazas *</label>
-                                                <input type="text" class="form-control @error('number_establishment')is-invalid @enderror" id="number_establishment" name="number_establishment" value="{{ old('number_establishment',$Establishments->number_establishment) }}" >
-                                                @error('number_establishment')
+                                                <label for="plazas">Plazas *</label>
+                                                <input type="number" class="form-control @error('plazas')is-invalid @enderror" id="plazas" name="plazas" value="{{ old('plazas') }}" >
+                                                @error('plazas')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
                                             <!-- star table -->
-                                            <table id="cultural-table" class="table table-sm table-bordered table-hover">
+                                            <table id="habitacion-table" class="table table-sm table-bordered table-hover">
                                                 <thead>
                                                 <tr>
                                                   <th>Tipo de habitacion</th>
@@ -1210,94 +1287,178 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                    @isset($Establishments->rooms_hotels)
+                                                        @if($Establishments->rooms_hotels->count() > 0)
+                                                            @foreach ($Establishments->rooms_hotels as $th)
+                                                                <tr>
+                                                                    <td>{{$th->name}}</td>
+                                                                    <td>{{$th->pivot->total}}</td>
+                                                                    <td>{{$th->pivot->bed}}</td>
+                                                                    <td>{{$th->pivot->plazas}}</td>
+                                                                    <td>
+                                                                        <a class="btn btn-danger btn-sm" onclick="deleteRooms({{$th->pivot->id}})">
+                                                                        <i class="fas fa-trash">
+                                                                        </i>
+                                                                        Delete
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+                                                    @endisset
                                                 </tbody>
 
                                             </table>
                                             <!-- end table -->
+
                                         </div>
                                     </div>
-
-
+                                    </form>
                                 </div>
                                 <!-- end step 2 -->
                                 <!-- start step 3 -->
                                 <div id="toutist-step3-part" class="content" role="tabpanel" aria-labelledby="toutist-step3-part-trigger">
-                                    <div class="row">
-                                        <br>
-                                        <div class="col-lg-6">
-                                            <h4>Servicios complementarios</h4>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="float-right">
-                                                <button id="btnstep2" class="btn btn-secondary" type="button" onclick="stepprevioustab2()"><i class="fa fa-arrow-left"></i> Anterior </button>
-                                                <button id="btnSiguiente" class="btn btn-secondary " type="button" onclick="stepnexttab2()"><i class="fa fa-arrow-right"></i> Siguiente </button>
+                                    <form action="{{ route('establishmentservices.store',$Establishments->id) }}" method="post">
+                                        @csrf
+                                        <div class="row">
+                                            <br>
+                                            <div class="col-lg-6">
+                                                <h4>Servicios complementarios</h4>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <hr>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                                  <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                                                  <label class="custom-control-label" for="customSwitch3">Tiene servicios complementarios</label>
+                                            <div class="col-lg-6">
+                                                <div class="float-right">
+                                                    <button id="btnstep2" class="btn btn-secondary" type="button" onclick="stepprevioustab2()"><i class="fa fa-arrow-left"></i> Anterior </button>
+                                                    <button id="btnSiguiente" class="btn btn-secondary " type="button" onclick="stepnexttab2()"><i class="fa fa-arrow-right"></i> Siguiente </button>
                                                 </div>
-                                              </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                               <button class="btn btn-primary"><i class="fa fa-plus"></i> Agregar</button>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="name2">Clasificacion</label>
-                                                <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($Establishments->people_entities_establishment->name) ? $Establishments->people_entities_establishment->name : '') }}" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="name2">Cantidad de mesas</label>
-                                                <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($Establishments->people_entities_establishment->name) ? $Establishments->people_entities_establishment->name : '') }}" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="name2">Cantidad de plazas</label>
-                                                <input type="text" class="form-control" id="name2" name="name2" value="{{ old('name2',isset($Establishments->people_entities_establishment->name) ? $Establishments->people_entities_establishment->name : '') }}" disabled>
+                                            <div class="col-lg-12">
+                                                <hr>
                                             </div>
                                         </div>
-                                        <div class="col-lg-8">
-                                            <!-- star table -->
-                                            <table id="servicios-table" class="table table-sm table-bordered table-hover">
-                                                <thead>
-                                                <tr>
-                                                  <th>Clasificacion</th>
-                                                  <th>Cantidad de mesas</th>
-                                                  <th>Cantidad de plazas</th>
-                                                  <th>Accion</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                @if(session('status'))
+                                                    @if(session('tabEstablishment') == '2' and session('step')== '3')
+                                                        <div class="alert alert-success alert-dismissible">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                            <h5><i class="icon fas fa-check"></i> ¡Felicidades!</h5>
+                                                            {{session('status')}}.
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                                @if ($errors->has('service_id') or $errors->has('services_type'))
+                                                    <div class="alert alert-danger alert-dismissible">
+                                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                        <h5><i class="icon fas fa-ban"></i> ¡Alerta!</h5>
+                                                        Revisa que todos los campos obligatorios esten llenos.
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                   <button id="btnEstablishmentServices" class="btn btn-primary" type="submit"><i class="fa fa-plus"></i> Agregar</button>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Servicios *</label>
+                                                    <select id="service_id" name="service_id" class="custom-select @error('service_id') is-invalid @enderror">
+                                                        @isset($Services)
+                                                            <option value="">Seleccione servicio</option>
+                                                            @foreach ($Services as $s)
+                                                                @if (old('service_id'))
+                                                                <option value="{{ $s->id }}" {{ old('service_id') == $s->id ? 'selected' : '' }}>{{ $s->description }}</option>
+                                                                @else
+                                                                <option value="{{ $s->id }}" >{{ $s->description }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        @endisset
+                                                    </select>
+                                                    @error('service_id')
+                                                        <span class="error invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
 
-                                                </tbody>
+                                                <div class="form-group">
+                                                    <label>Tipo de Servicios *</label>
+                                                    <select id="services_type" name="services_type" class="custom-select @error('services_type') is-invalid @enderror">
+                                                        <option value="">Seleccione tipo</option>
+                                                        <option value="1">Alimentos y bebidas</option>
+                                                        <option value="2">Otros</option>
+                                                    </select>
+                                                    @error('services_type')
+                                                        <span class="error invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="services_total_beds">Cantidad de mesas</label>
+                                                    <input type="text" class="form-control @error('services_total_beds')is-invalid @enderror" id="services_total_beds" name="services_total_beds" value="" >
+                                                    @error('services_total_beds')
+                                                    <span class="error invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="services_total_plazas">Cantidad de plazas</label>
+                                                    <input type="text" class="form-control @error('services_total_plazas')is-invalid @enderror" id="services_total_plazas" name="services_total_plazas" value="" >
+                                                    @error('services_total_plazas')
+                                                    <span class="error invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <!-- star table -->
+                                                <table id="servicios-table" class="table table-sm table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                      <th>Servicio</th>
+                                                      <th>Tipo</th>
+                                                      <th>Cantidad de mesas</th>
+                                                      <th>Cantidad de plazas</th>
+                                                      <th>Accion</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @isset($Establishments->establishment_services)
+                                                            @if($Establishments->establishment_services->count() > 0)
+                                                                @foreach ($Establishments->establishment_services as $th)
+                                                                    <tr>
+                                                                        <td>{{$th->description}}</td>
+                                                                        @if ($th->pivot->services_type == 1)
+                                                                            <td>Alimentos y bebidas</td>
+                                                                        @else
+                                                                            <td>Otros</td>
+                                                                        @endif
+                                                                        <td>{{$th->pivot->services_total_beds}}</td>
+                                                                        <td>{{$th->pivot->services_total_plazas}}</td>
+                                                                        <td>
+                                                                            <a class="btn btn-danger btn-sm" onclick="deleteServicesEstablishment({{$th->pivot->id}})">
+                                                                                <i class="fas fa-trash">
+                                                                                </i>
+                                                                                Eliminar
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endif
+                                                        @endisset
+                                                    </tbody>
 
-                                            </table>
-                                            <!-- end table -->
+                                                </table>
+                                                <!-- end table -->
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                                 <!-- end step 3 -->
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
-                       Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna.
-                    </div>
-                    <div class="tab-pane fade" id="custom-tabs-four-settings" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                       Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
-                    </div>
+                    @endif
                   </div>
+                </div>
+                <div id="loading" class="overlay dark" style="display: none">
+                    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                 </div>
                 <!-- /.card -->
               </div>
@@ -1316,39 +1477,52 @@
               </button>
             </div>
             <div class="modal-body">
-                <div class="card">
-                    @csrf
-                    <table id="entities-table" class="table table-sm table-bordered table-hover">
-                        <thead>
-                        <tr>
-                          <th>Cedula/Ruc</th>
-                          <th>Tipo de persona</th>
-                          <th>Nombres / Nombre comercial</th>
-                          <th>Apellidos / Razon Social</th>
-                          <th>Estado</th>
-                          <th>Correo</th>
-                          <th>Acciones</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Cedula/Ruc</th>
-                            <th>Tipo de persona</th>
-                            <th>Nombres / Nombre comercial</th>
-                            <th>Apellidos / Razon Social</th>
-                            <th>Estado</th>
-                            <th>Correo</th>
-                            <th>Acciones</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                    <div id="loading" class="overlay dark" style="display: none">
-                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-                        </div>
-                </div>
+                @csrf
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-sm" onclick="tableentities.ajax.reload()"><i class="fa fa-update">Actualizar</i></button>
+                        <br>
+                    </div>
 
+                    <div class="col-12">
+                        <div class="alert alert-info alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> ¡Importante!</h5>
+                            Si ocurre algun error al cargar la tabla, de clic en actualizar.
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <table id="entities-table" class="table table-sm table-bordered table-hover">
+                            <thead>
+                            <tr>
+                              <th>Cedula/Ruc</th>
+                              <th>Tipo de persona</th>
+                              <th>Nombres / Nombre comercial</th>
+                              <th>Apellidos / Razon Social</th>
+                              <th>Estado</th>
+                              <th>Correo</th>
+                              <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Cedula/Ruc</th>
+                                <th>Tipo de persona</th>
+                                <th>Nombres / Nombre comercial</th>
+                                <th>Apellidos / Razon Social</th>
+                                <th>Estado</th>
+                                <th>Correo</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
 
           </div>
@@ -1356,73 +1530,74 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    @if($register == 'yes')
-        @foreach ($requirementEstablishment as $rta)
-        <div class="modal fade" id="modal-{{$rta->id}}">
-            <div class="modal-dialog modal-md">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Cargar {{$rta->name}}</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" id="form{{$rta->id}}" action="{{ route('establishmentrequirement.store') }}" enctype="multipart/form-data">
+    <div class="modal fade" id="modal-notificacion">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h6 id="titleModalDelete" class="modal-title">Está seguro de eliminar la fila</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form id="formDeleteRooms" action="" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <div class="row">
 
-                        <div class="form-group">
-                            <label for="InputFile{{$rta->id}}">Subir archivo</label>
-                            <div class="input-group">
-                              <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="InputFile{{$rta->id}}" lang="es">
-                                <label class="custom-file-label" for="InputFile{{$rta->id}}">Elija el archivo</label>
-                              </div>
-                              <div class="input-group-append">
-                                <span class="input-group-text" id="">Subir</span>
-                              </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" type="submit">Confirmar</button>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <button class="btn btn-danger btn-block">Cancelar</button>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" id="btnFile-{{$rta->id}}" class="btn btn-primary">Guardar Archivo</button>
-                        </div>
-                    </form>
 
-                </div>
-
-              </div>
-              <!-- /.modal-content -->
+                    </div>
+                </form>
             </div>
-            <!-- /.modal-dialog -->
+
+          </div>
+          <!-- /.modal-content -->
         </div>
-        <!-- /.modal -->
-        @endforeach
-    @endif
+        <!-- /.modal-dialog -->
+    </div>
 @endsection
 @push('scripts')
     <script>
-        var stepper = new Stepper(document.querySelector('#stepper1'))
-        var stepper2 = new Stepper(document.querySelector('#stepper2'))
-        @if ($Establishments->register == 1)
-        stepper.to(1);
-        @elseif ($Establishments->register == 2)
-        stepper.to(2);
-        @elseif ($Establishments->register == 3)
-        stepper.to(3);
-        @else
-        stepper.to(1);
-        @endif
+        var stepper = new Stepper(document.querySelector('#stepper1'));
         function stepnext(){
             stepper.next()
         }
         function stepprevious(){
             stepper.previous()
         }
-        function stepnexttab2(){
-            stepper2.next()
-        }
-        function stepprevioustab2(){
-            stepper2.previous()
-        }
+
+        @if($Establishments->register == '1')
+        var stepper2 = new Stepper(document.querySelector('#stepper2'));
+            @if(session('tabEstablishment') == 2 and session('step') == 3)
+            stepper2.to(3);
+            @elseif(session('tabEstablishment') == 2 and session('step') == 2)
+            stepper2.to(2);
+            @else
+            stepper2.to(1);
+            @endif
+            function stepnexttab2(){
+                @if($Establishments->tourist_activity_id != null and $Establishments->tourist_activity_id > 0)
+                stepper2.next()
+                @else
+                toastr.error('Para que se muestra la siguiente sección, debe ingresar los datos de ambito de aplicación, actividad turistica, clasificación y categoria');
+                @endif
+            }
+            function stepprevioustab2(){
+                stepper2.previous()
+            }
+        @endif
+
         //datos organizacion
         let establishment_id = document.getElementById('establishment_id');
         let name2 = document.getElementById('name2');
@@ -1437,9 +1612,11 @@
         let token = "{{csrf_token()}}";
         let loading = document.getElementById('loading');
         let loading_modal = document.getElementById('loading_modal');
+        @if($Establishments->register == 1)
         var selectTouristActivity = document.getElementById('tourist_activity_id');
         var selectclassification = document.getElementById('classification_id');
         var selectcategory = document.getElementById('category_id');
+        @endif
 
         let name_p = document.getElementById('name_p');
         let last_name_p = document.getElementById('last_name_p');
@@ -1486,6 +1663,8 @@
             "language" : {
                 "url": '{{ url("/js/spanish.json") }}',
             },
+            "responsive": true,
+            "lengthChange": true,
             "autoWidth": false,
             "order": [], //Initial no order
             "processing" : true,
@@ -1543,7 +1722,7 @@
             });
         });
 
-
+        @if($Establishments->register == '1')
         // funcion para cargar actividadturistica
         selectTouristActivity.addEventListener('change', function() {
             var selectedOption = this.options[selectTouristActivity.selectedIndex];
@@ -1611,6 +1790,7 @@
                     loading.style.display = 'none';
             });
         }
+        @endif
         function selectedPersonEntity(id){
             let modal = document.getElementById("numbermodal").value;
             axios.post('/admin/peopleentities/'+id+'/get', {
@@ -1746,80 +1926,21 @@
             });
         }
         //final funciones de ubicacion
-/*
-        btnGuardarStep1.addEventListener('click', function(e) {
-            $('#formEstablisment').submit();
-        })
 
-        btnGuardarstep2.addEventListener('click', function(e) {
-            $('#formEstablismentstep2').submit();
-        })
-*/
-        @if($register == 'yes')
-            @foreach ($requirementEstablishment as $rta)
-                function viewmodal{{$rta->id}}(){
-                    $('#modal-{{$rta->id}}').modal('show');
-                }
+        function deleteRooms(idRoomsHotels){
+            let formDeleteRooms = document.getElementById("formDeleteRooms");
+            formDeleteRooms.setAttribute("action","/admin/travelhotelsdetail/"+idRoomsHotels);
+            titleModalDelete.innerHTML = "¡Está seguro de eliminar la habitación!";
+            $('#modal-notificacion').modal('show');
+        }
 
-                /*var modal{{$rta->id}} = document.getElementById('btnModal{{$rta->id}}');
-                modal{{$rta->id}}.addEventListener('click', function(e) {
-                    $('#modal-{{$rta->id}}').modal('show');
-                });*/
-
-                var btnFile{{$rta->id}} = document.getElementById('btnFile-{{$rta->id}}');
-                var form{{$rta->id}} = document.getElementById('form{{$rta->id}}');
-                //cargar modal persona
-                form{{$rta->id}}.addEventListener('submit', function(e) {
-                    var loading = document.getElementById('loading');
-                    loading.style.display = '';
-                    e.preventDefault()
-                    let InputFile= document.getElementById('InputFile{{$rta->id}}').files[0];
-                    let formData = new FormData(this);
-                    formData.append('_token',token);
-                    formData.append('requirement_id',{{$rta->pivot->requirement_id}});
-                    formData.append('establishment_id',{{$rta->pivot->establishment_id}});
-                    formData.append('InputFile',InputFile);
-                    axios.post('/admin/establishmentrequirement',formData).then(function(res) {
-                        if(res.status==200) {
-                            if(res.data.success == true){
-                                console.log("guardando ..");
-                                loading.style.display = 'none';
-                                toastr.success('El archivo, se subió correctamente');
-                            }else{
-                                toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
-                                console.log('error al consultar al servidor');
-                            }
-
-                        }
-                    }).catch(function(err) {
-                        if(err.response.status == 500){
-                            toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
-                            console.log('error al consultar al servidor');
-                        }
-
-                        if(err.response.status == 419){
-                            toastr.error('Es posible que tu session haya caducado, vuelve a iniciar sesion');
-                            console.log('Es posible que tu session haya caducado, vuelve a iniciar sesion');
-                        }
-                        if(err.response.status == 422){
-                            toastr.error('Revise la validacion del archivo');
-
-                        }
-                    }).then(function() {
-                            loading.style.display = 'none';
-                    });
-                });
-            @endforeach
-
-            var requirementstable = $('#requirements-table').DataTable({
-                    "lengthMenu": [ 5, 10],
-                    "language" : {
-                        "url": '{{ url("/js/spanish.json") }}',
-                    },
-                    "autoWidth": false,
-                    "order": [], //Initial no order
-                });
-        @endif
+        function deleteServicesEstablishment(idServicesEstablishment){
+            let titleModalDelete = document.getElementById("titleModalDelete");
+            let formDeleteRooms = document.getElementById("formDeleteRooms");
+            formDeleteRooms.setAttribute("action","/admin/establishmentservices/"+idServicesEstablishment);
+            titleModalDelete.innerHTML = "¡Está seguro de eliminar el Servicio!";
+            $('#modal-notificacion').modal('show');
+        }
 
         $(function () {
             bsCustomFileInput.init()
@@ -1943,13 +2064,8 @@
             @error('people_entities_id')
                 toastr.error('{{$message}}');
             @enderror
-            @if ($Establishments->register == 1)
-                toastr.success('El establecimiento ha sido registrado con exito');
-                //cargardatatablesRequerimientos();
-            @elseif ($Establishments->register == 2)
-                toastr.success('El establecimiento se ha actualizado');
-            @elseif ($Establishments->register == 3)
-                toastr.success('Los requerimientos se actualizaron con exito');
+            @if (session('status'))
+                toastr.success('{{session('status')}}');
             @endif
             $('input[name="start_date"]').daterangepicker({
                 locale: {
@@ -1960,25 +2076,19 @@
                 minYear: 1901,
                 maxYear: parseInt(moment().format('YYYY'),10)
             });
-            var table = $('#cultural-table').DataTable({
+            var tableRooms = $('#habitacion-table').DataTable({
                 "lengthMenu": [ 5, 10],
                 "language" : {
                     "url": '{{ url("/js/spanish.json") }}',
                 },
                 "order": [], //Initial no order
-                "scrollX": true,
-                "columnDefs": [
-                    { "width": "200px", "targets": 0 },
-                    { "width": "200px", "targets": 1 },
-                    { "width": "200px", "targets": 2 },
-                    { "width": "50px", "targets": 3 },
-                    { "width": "50px", "targets": 4 },
-                    { "width": "100px", "targets": 5 },
-                    { "width": "100px", "targets": 6 },
-                    { "width": "150px", "targets": 7 },
-                    { "width": "200px", "targets": 8 },
-                    { "width": "120px", "targets": 9 },
-                ],
+            });
+            var tableServices = $('#servicios-table').DataTable({
+                "lengthMenu": [ 5, 10],
+                "language" : {
+                    "url": '{{ url("/js/spanish.json") }}',
+                },
+                "order": [], //Initial no order
             });
         });
     </script>

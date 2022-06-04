@@ -16,4 +16,8 @@ class TypeRoom extends Model
         'status',
     ];
 
+    public function rooms_hotels(){
+        return $this->belongsToMany(Establishments::class, 'travels_hotels_details','type_room_id','establishment_id');
+    }
+
 }

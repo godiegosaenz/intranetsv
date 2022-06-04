@@ -22,7 +22,7 @@ class CreateEstablishmentsTable extends Migration
             $table->boolean('is_register_mintel')->default(false); //campo nuevo
             $table->char('establishment_type')->default(1); // ninguno 1, franquicia 2 , cadena/sucursal 3
             $table->char('franchise_chain')->nullable(); // si se selecciona franquicia o cadena
-            $table->char('local')->default(1); // propio 1, arrendado 2, cedido
+            $table->char('local')->default(1); // propio 1, arrendado 2, cedido 3
             $table->char('status')->default(1);
             $table->string('web_page')->nullable();
             $table->string('email')->unique()->nullable();
@@ -57,6 +57,9 @@ class CreateEstablishmentsTable extends Migration
             $table->unsignedBigInteger('legal_representative_id')->nullable();
             $table->index('legal_representative_id');
             $table->foreign('legal_representative_id')->references('id')->on('people_entities');
+            $table->unsignedBigInteger('area_applications_id')->nullable();
+            $table->index('area_applications_id');
+            $table->foreign('area_applications_id')->references('id')->on('area_applications');
             $table->unsignedBigInteger('tourist_activity_id')->nullable();
             $table->index('tourist_activity_id');
             $table->foreign('tourist_activity_id')->references('id')->on('tourist_activities');

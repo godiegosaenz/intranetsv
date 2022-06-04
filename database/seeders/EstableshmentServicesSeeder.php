@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\models\EstableshmentServices;
 
 class EstableshmentServicesSeeder extends Seeder
 {
@@ -13,6 +14,8 @@ class EstableshmentServicesSeeder extends Seeder
      */
     public function run()
     {
-        //
+        EstableshmentServices::create([
+
+        ]);
     }
 }

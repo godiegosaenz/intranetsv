@@ -31,6 +31,12 @@ class DatabaseSeeder extends Seeder
             ClassificationCategorySeeder::class,
             RequirementSeeder::class,
             TouristActivityRequirementSeeder::class,
+            AreaApplicationSeeder::class,
+            ServicesSeeder::class,
+            CatalogueSBUSeeder::class,
+            TypeLiquidationSeeder::class,
+            RubroSeeder::class,
+            LuafTableSeeder::class,
         ]);
     }
 }

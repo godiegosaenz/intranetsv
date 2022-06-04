@@ -21,6 +21,9 @@ class CreateEstablishmentServicesTable extends Migration
             $table->unsignedBigInteger('establishment_id');
             $table->index('establishment_id');
             $table->foreign('establishment_id')->references('id')->on('establishments');
+            $table->char('services_type');
+            $table->integer('services_total_beds')->default(0);
+            $table->integer('services_total_plazas')->default(0);
             $table->timestamps();
         });
     }

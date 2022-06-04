@@ -24,4 +24,8 @@ class Liquidation extends Model
         'establishment_id',
         'is_coercive',
     ];
+
+    public function establishment(){
+        return $this->belongsTo(Establishments::class,'establishment_id');
+    }
 }

@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Establishments;
+use App\Models\PersonEntity;
 
-class EstablishmentTest extends TestCase
+class PersonEntityTest extends TestCase
 {
     /**
      * A basic feature test example.
@@ -16,6 +16,7 @@ class EstablishmentTest extends TestCase
      */
     public function test_example()
     {
-        //Establishments::factory()->times(5)->hoteles()->create();
+        $PersonEntity = PersonEntity::factory()->times(40)->create();
+        $PersonEntity = PersonEntity::factory()->enterprise()->create();
     }
 }

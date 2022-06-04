@@ -32,15 +32,19 @@
                 <table id="establishment-table" class="table table-sm table-bordered table-hover">
                     <thead>
                     <tr>
-                      <th>Nombre</th>
-                      <th>estado</th>
-                      <th>Tipo de actividad</th>
-                      <th>Clasificacion</th>
-                      <th>Categoria</th>
-                      <th>Inicio de actividad</th>
-                      <th>Numero de registro</th>
-                      <th>Requerimientos</th>
-                      <th>Acciones</th>
+                        <th>Nombre</th>
+                        <th>estado</th>
+                        <th>Tipo de actividad</th>
+                        <th>Clasificacion</th>
+                        <th>Categoria</th>
+                        <th>Inicio de actividad</th>
+                        <th>Tipo de establecimiento</th>
+                        <th>Tipo de Local</th>
+                        <th>País </th>
+                        <th>Provincia </th>
+                        <th>Canton </th>
+                        <th>Parroquia </th>
+                        <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -66,7 +70,7 @@
                 "url": '{{ url("/js/spanish.json") }}',
             },
             "scrollX": true,
-            "autoWidth": false,
+            "autoWidth": true,
             "order": [], //Initial no order
             "processing" : true,
             "serverSide": true,
@@ -78,17 +82,19 @@
                 }
             },
             "columns": [
-                {data: 'name'},
+                {data: 'name', 'width': '150px', 'targets': 0},
                 {data: 'status'},
-                {data: 'tourist_activity'},
-                {data: 'classification'},
-                {data: 'category'},
-                {data: 'start_date'},
-                {data: 'registry_number'},
-                {data: 'has_requeriment'},
-
-
-                {data: 'action', name: 'action', orderable: false, searchable: false},
+                {data: 'tourist_activity', 'width': '120px', 'targets': 2},
+                {data: 'classification' , 'width': '120px', 'targets': 3},
+                {data: 'category', 'width': '120px', 'targets': 4},
+                {data: 'start_date', 'width': '100px', 'targets': 5},
+                {data: 'EstablishmentTypeName'},
+                {data: 'LocalName'},
+                {data: 'country', 'width': '100px', 'targets': 8},
+                {data: 'province', 'width': '100px', 'targets': 9},
+                {data: 'canton', 'width': '100px', 'targets': 10},
+                {data: 'parish', 'width': '200px', 'targets': 11},
+                {data: 'action', 'width': '150px', 'targets': 12 , name: 'action', orderable: false, searchable: false},
 
             ]
         });

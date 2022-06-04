@@ -15,7 +15,7 @@ class RubroSeeder extends Seeder
     public function run()
     {
         Rubro::create([
-            'name' => 'LUAF',
+            'name' => 'LICENCIA UNICA ANUAL DE FUNCIONAMIENTO',
             'status' => true,
             'value' => 0.00,
             'accounting_account' => '',

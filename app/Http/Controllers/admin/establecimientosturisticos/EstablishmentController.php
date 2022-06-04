@@ -19,6 +19,11 @@ use App\Models\Country;
 use App\Models\Province;
 use App\Models\Canton;
 use App\Models\Parish;
+use App\Models\AreaApplication;
+use App\Models\TypeRoom;
+use App\Models\TravelHotelDetail;
+use App\Models\Services;
+use Illuminate\Support\Facades\Validator;
 
 class EstablishmentController extends Controller
 {
@@ -50,10 +55,13 @@ class EstablishmentController extends Controller
         $ProvinceData = new Province();
         $CantonData = new Canton();
         $ParishData = new Parish();
-
+        $AreaApplication = AreaApplication::all();
+        $TypeRoom = TypeRoom::all();
+        $Services = Services::all();
         if($id != null){
             $register = 'yes';
-            $Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative'])->where('id', $id)->first();
+            $Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','establishment_services','rooms_hotels','establishments_categories'])->where('id', $id)->first();
+            //$Establishments = Establishments::find($id);
             $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',$Establishments->tourist_activity_id)->get();
             $requirementEstablishment = Establishments::find($Establishments->id)->requirements;
             $classificationcategory = ClassificationCategory::select('category_id')->where('classification_id',$Establishments->classification_id)->get()->toArray();
@@ -61,7 +69,6 @@ class EstablishmentController extends Controller
             $ProvinceData = Province::where('country_id',$Establishments->country_id)->get();
             $CantonData = Canton::where('province_id',$Establishments->province_id)->get();
             $ParishData = Parish::where('canton_id',$Establishments->canton_id)->get();
-
         }else{
             if(Cookie::get('tourist_activity_id') !== null){
                 $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',Cookie::get('tourist_activity_id'))->get();
@@ -74,15 +81,6 @@ class EstablishmentController extends Controller
 
             }
         }
-        /*if(Cookie::get('country_id') !== null){
-            $ProvinceData = Province::where('country_id',Cookie::get('country_id'))->get();
-        }
-        if(Cookie::get('province_id') !== null){
-            $CantonData = Canton::where('province_id',Cookie::get('province_id'))->get();
-        }
-        if(Cookie::get('canton_id') !== null){
-            $ParishData = Parish::where('canton_id',Cookie::get('canton_id'))->get();
-        }*/
 
         Cookie::queue('country_id', '');
         Cookie::queue('province_id', '');
@@ -95,7 +93,7 @@ class EstablishmentController extends Controller
         Cookie::queue('classification_id', '');
         Cookie::queue('category_id', '');
 
-        return view('tourism.establishmentCreate2', compact('Establishments','touristActivity','establishmentClassification','PersonEntityData','establishmentCategory','register','requirementEstablishment','CountryData','ProvinceData','CantonData','ParishData'));
+        return view('tourism.establishmentCreate2', compact('Establishments','touristActivity','establishmentClassification','PersonEntityData','establishmentCategory','register','requirementEstablishment','CountryData','ProvinceData','CantonData','ParishData','AreaApplication','TypeRoom','Services'));
     }
 
     /**
@@ -113,7 +111,7 @@ class EstablishmentController extends Controller
             $establishmentData->owner_id = $request->owner_id_2;
         }
 
-        if($request->legal_representative_id != null){
+        if($request->legal_representative_id_2 != null){
             $establishmentData->legal_representative_id = $request->legal_representative_id_2;
         }
         $establishmentData->establishment_id = $request->establishment_id_2;
@@ -206,53 +204,7 @@ class EstablishmentController extends Controller
 
         Cookie::queue('tab', 1);
 
-        return redirect()->route('establishments.create',['id' => $establishmentData->id])->with(['register' => $establishmentData->register,'status' => 'El registro fue exitoso']);
-
-    }
-
-    public function storeTab1Step1(){
-
-    }
-
-    public function storeStep2(Request $request, $id = null){
-        $establishmentData = Establishments::find($id);
-        $establishmentData->has_requeriment = false;
-        if($request->has_sewer != null){
-            $establishmentData->has_sewer = true;
-        }else{
-            $establishmentData->has_sewer = false;
-        }
-        if($request->has_sewage_treatment_system != null){
-            $establishmentData->has_sewage_treatment_system = true;
-        }else{
-            $establishmentData->has_sewage_treatment_system = false;
-        }
-
-        if($request->has_septic_tank != null){
-            $establishmentData->has_septic_tank = true;
-        }else{
-            $establishmentData->has_septic_tank = false;
-        }
-        if($request->is_patrimonial != null){
-            $establishmentData->is_patrimonial = true;
-        }else{
-            $establishmentData->is_patrimonial = false;
-        }
-        if($request->is_main == 'm'){
-            $establishmentData->is_main = true;
-            $establishmentData->is_branch = false;
-        }else{
-            $establishmentData->is_branch = true;
-            $establishmentData->is_main = false;
-        }
-        $establishmentData->register = '2';
-        $establishmentData->save();
-        Cookie::queue('step', 2);
-        if ($request->routeIs('establishments.create')) {
-            return redirect()->route('establishments.create',['id' => $id])->with('status', 'El registro fue exitoso');
-        }else{
-            return redirect()->route('establishments.edit',['id' => $id])->with('status', 'Se actualizó la información correctamente');
-        }
+        return redirect()->route('establishments.edit',['id' => $establishmentData->id])->with(['register' => $establishmentData->register,'status' => 'El registro fue exitoso']);
 
     }
 
@@ -264,7 +216,6 @@ class EstablishmentController extends Controller
      */
     public function show(Establishments $Establishment)
     {
-
         return view('tourism.establishmentShow',compact('Establishment'));
     }
 
@@ -277,23 +228,30 @@ class EstablishmentController extends Controller
     public function edit($id)
     {
         $PersonEntityData = new PersonEntity();
-        $establishmentData = new Establishments();
+        $Establishments = new Establishments();
         $touristActivity = TouristActivity::all();
         $establishmentClassification = new EstablishmentClassification();
         $establishmentCategory = new EstablishmentCategory();
         $register = 'no';
         $requirementEstablishment = '';
-
-
+        $CountryData = Country::all();
+        $ProvinceData = new Province();
+        $CantonData = new Canton();
+        $ParishData = new Parish();
+        $AreaApplication = AreaApplication::all();
+        $TypeRoom = TypeRoom::all();
+        $Services = Services::all();
         if($id != null){
             $register = 'yes';
-            $establishmentData = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements'])->where('id', $id)->first();
-            $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',$establishmentData->tourist_activity_id)->get();
-            $requirementEstablishment = EstablishmentRequirement::where('establishment_id',$establishmentData->id)->get();
-            $classificationcategory = ClassificationCategory::select('category_id')->where('classification_id',$establishmentData->classification_id)->get()->toArray();
+            $Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','establishment_services','rooms_hotels','establishments_categories'])->where('id', $id)->first();
+            //$Establishments = Establishments::find($id);
+            $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',$Establishments->tourist_activity_id)->get();
+            $requirementEstablishment = Establishments::find($Establishments->id)->requirements;
+            $classificationcategory = ClassificationCategory::select('category_id')->where('classification_id',$Establishments->classification_id)->get()->toArray();
             $establishmentCategory = EstablishmentCategory::whereIn('id',$classificationcategory)->get();
-
-
+            $ProvinceData = Province::where('country_id',$Establishments->country_id)->get();
+            $CantonData = Canton::where('province_id',$Establishments->province_id)->get();
+            $ParishData = Parish::where('canton_id',$Establishments->canton_id)->get();
         }else{
             if(Cookie::get('tourist_activity_id') !== null){
                 $establishmentClassification = EstablishmentClassification::where('tourist_activity_id',Cookie::get('tourist_activity_id'))->get();
@@ -306,11 +264,19 @@ class EstablishmentController extends Controller
 
             }
         }
+
+        Cookie::queue('country_id', '');
+        Cookie::queue('province_id', '');
+        Cookie::queue('canton_id', '');
+        Cookie::queue('parish_id', '');
+
+
         Cookie::queue('step', '');
         Cookie::queue('tourist_activity_id', '');
         Cookie::queue('classification_id', '');
         Cookie::queue('category_id', '');
-        return view('tourism.establishmentEdit', compact('establishmentData','touristActivity','establishmentClassification','PersonEntityData','establishmentCategory','register','requirementEstablishment'));
+
+        return view('tourism.establishmentCreate2', compact('Establishments','touristActivity','establishmentClassification','PersonEntityData','establishmentCategory','register','requirementEstablishment','CountryData','ProvinceData','CantonData','ParishData','AreaApplication','TypeRoom','Services'));
     }
 
     /**
@@ -327,7 +293,7 @@ class EstablishmentController extends Controller
             $Establishments->owner_id = $request->owner_id_2;
         }
 
-        if($request->legal_representative_id != null){
+        if($request->legal_representative_id_2 != null){
             $Establishments->legal_representative_id = $request->legal_representative_id_2;
         }
         $Establishments->establishment_id = $request->establishment_id_2;
@@ -420,9 +386,36 @@ class EstablishmentController extends Controller
 
         Cookie::queue('tab', 1);
 
-        return redirect()->route('establishments.create',['id' => $Establishments->id])->with(['register' => $Establishments->register,'status' => 'Se actualizaron los datos correctamente']);
+        return redirect()->route('establishments.edit',['id' => $Establishments->id])->with(['register' => $Establishments->register,'status' => 'Se actualizo la información de forma satisfactoria']);
     }
 
+    public function updateTab2(Request $request, $id){
+        $attributes = [
+            'area_applications_id' => 'Ambito de aplicacion',
+            'tourist_activity_id' => 'Tipo de actividad',
+            'classification_id' => 'Clasificación',
+            'category_id' => 'Categoría',
+        ];
+        $validator = Validator::make($request->all(), [
+            'area_applications_id' => 'required',
+            'tourist_activity_id' => 'required',
+            'classification_id' => 'required',
+            'category_id' => 'required',
+        ],[],$attributes);
+
+        if ($validator->fails()) {
+            //$people_entities_id = $request->people_entities_id;
+            return back()->withErrors($validator)->withInput()->with(['tabEstablishment' => 2,'step' => 1]);
+        }
+        $validated = $validator->validated();
+        $Establishments =  Establishments::find($id);
+        $Establishments->area_applications_id = $validated['area_applications_id'];
+        $Establishments->tourist_activity_id = $validated['tourist_activity_id'];
+        $Establishments->classification_id = $validated['classification_id'];
+        $Establishments->category_id = $validated['category_id'];
+        $Establishments->save();
+        return redirect()->route('establishments.edit',['id' => $Establishments->id])->with(['register' => $Establishments->register,'status' => 'Se actualizaron los datos correctamente', 'tabEstablishment' => 2,'step' => 1]);
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -435,8 +428,8 @@ class EstablishmentController extends Controller
     }
 
     public function datatables(){
-        //$Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements'])->get();
-        $Establishments = Establishments::all();
+        $Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements','establishments_categories','Countries','provinces','cantons','parishes','establishments_categories','rooms_hotels','establishment_services'])->get();
+        //$Establishments = Establishments::all();
         return Datatables($Establishments)
                 ->editColumn('status', function ($Establishments) {
                     if($Establishments->status == 1){
@@ -451,6 +444,24 @@ class EstablishmentController extends Controller
                     }else{
                         return '<span class="badge bg-danger">Pendientes</span>';
                     }
+                })*/
+                ->addColumn('country', function ($Establishments) {
+                    return $Establishments->countries->name;
+                })
+                ->addColumn('province', function ($Establishments) {
+                    return $Establishments->provinces->name;
+                })
+                ->addColumn('canton', function ($Establishments) {
+                    return $Establishments->cantons->name;
+                })
+                ->addColumn('parish', function ($Establishments) {
+                    return $Establishments->parishes->name;
+                })
+                ->addColumn('EstablishmentTypeName', function ($Establishments) {
+                    return $Establishments->EstablishmentTypeName;
+                })
+                ->addColumn('LocalName', function ($Establishments) {
+                    return $Establishments->LocalName;
                 })
                 ->addColumn('tourist_activity', function ($Establishments) {
                     return $Establishments->tourist_activities->name;
@@ -459,14 +470,68 @@ class EstablishmentController extends Controller
                     return $Establishments->establishments_classifications->name;
                 })
                 ->addColumn('category', function ($Establishments) {
-                    $establishmentCategory = EstablishmentCategory::find($Establishments->classification_id);
-                    return $establishmentCategory->name;
-                })*/
+                    return $Establishments->establishments_categories->name;
+                })
                 ->addColumn('action', function ($Establishments) {
 
                     $buttons = '';
-                    $buttons .= '<a href="'.route('establishments.show',$Establishments).'" class="btn btn-primary btn-sm"><i class="fa fa-info"></i></a> ';
-                    $buttons .= '<a href="'.route('establishments.edit',$Establishments).'" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i></a>';
+                    $buttons .= '<a href="'.route('establishments.show',$Establishments).'" class="btn btn-success btn-sm"><i class="far fa-eye"></i> Ver</a> ';
+                    $buttons .= '<a href="'.route('establishments.edit',$Establishments).'" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i> Editar</a>';
+                    return $buttons;
+                })
+                ->rawColumns(['status','has_requeriment','action'])
+                ->make(true);
+    }
+
+    public function datatablesEstablishmentLiquidation(){
+        $Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements','establishments_categories','Countries','provinces','cantons','parishes','establishments_categories','rooms_hotels','establishment_services'])->get();
+        //$Establishments = Establishments::all();
+        return Datatables($Establishments)
+                ->editColumn('status', function ($Establishments) {
+                    if($Establishments->status == 1){
+                        return '<span class="badge bg-success">Abierto</span>';
+                    }else{
+                        return '<span class="badge bg-danger">Cerrado</span>';
+                    }
+                })
+                /*->editColumn('has_requeriment', function ($Establishments) {
+                    if($Establishments->has_requeriment == true){
+                        return '<span class="badge bg-success">Completos</span>';
+                    }else{
+                        return '<span class="badge bg-danger">Pendientes</span>';
+                    }
+                })*/
+                ->addColumn('country', function ($Establishments) {
+                    return $Establishments->countries->name;
+                })
+                ->addColumn('province', function ($Establishments) {
+                    return $Establishments->provinces->name;
+                })
+                ->addColumn('canton', function ($Establishments) {
+                    return $Establishments->cantons->name;
+                })
+                ->addColumn('parish', function ($Establishments) {
+                    return $Establishments->parishes->name;
+                })
+                ->addColumn('EstablishmentTypeName', function ($Establishments) {
+                    return $Establishments->EstablishmentTypeName;
+                })
+                ->addColumn('LocalName', function ($Establishments) {
+                    return $Establishments->LocalName;
+                })
+                ->addColumn('tourist_activity', function ($Establishments) {
+                    return $Establishments->tourist_activities->name;
+                })
+                ->addColumn('classification', function ($Establishments) {
+                    return $Establishments->establishments_classifications->name;
+                })
+                ->addColumn('category', function ($Establishments) {
+                    return $Establishments->establishments_categories->name;
+                })
+                ->addColumn('action', function ($Establishments) {
+
+                    $buttons = '';
+                    $buttons .= '<a onclick="selectEstablishment('.$Establishments->id.')" class="btn btn-primary btn-sm">Seleccionar</a> ';
                     return $buttons;
                 })
                 ->rawColumns(['status','has_requeriment','action'])

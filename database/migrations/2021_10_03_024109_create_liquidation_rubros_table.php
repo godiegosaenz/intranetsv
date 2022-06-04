@@ -21,7 +21,7 @@ class CreateLiquidationRubrosTable extends Migration
             $table->unsignedBigInteger('liquidation_id');
             $table->index('liquidation_id');
             $table->foreign('liquidation_id')->references('id')->on('liquidations');
-            $table->float('value');
+            $table->decimal('value',$precision = 20, $scale = 2);
             $table->boolean('status');
             $table->timestamps();
         });
