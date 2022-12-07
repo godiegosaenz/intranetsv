@@ -16,4 +16,9 @@ class Rubro extends Model
         'value',
         'accounting_account',
     ];
+
+    public function rubros_liquidations()
+    {
+        return $this->belongsToMany(Liquidation::class,'liquidation_rubros','liquidation_id','rubro_id')->withPivot('id','rubro_id','liquidation_id','value','status')->withTimestamps();
+    }
 }

@@ -50,6 +50,7 @@
                         <form id="formEmision" action="{{route('emision.store')}}" method="post">
                             @csrf
                             <div id="year-emision-part" class="content" role="tabpanel" aria-labelledby="year-emision-part-trigger">
+
                                 <div class="row">
 
                                     <div class="col-lg-12">
@@ -61,6 +62,15 @@
                                         </div>
                                     </div>
 
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="alert alert-info alert-dismissible">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <h5><i class="icon fas fa-info"></i> ¡Alerta!</h5>
+                                            Antes de realizar la emision debe estar registrado el sueldo basico unicado del año a emitir.
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -109,13 +119,6 @@
                                                 <button id="btnstep3" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
                                                 <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="float-right">
-                                        <div class="col-lg-12">
-                                            <button class="btn btn-primary" type="submit"><i class="fa fa-check"></i> Emitir LUAF </button>
                                         </div>
                                     </div>
                                 </div>
@@ -172,7 +175,14 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="float-right">
+                                        <div class="col-lg-12">
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-check"></i> Emitir Licencia Unica Anual de Funcionamiento </button>
+                                            <a id="btnReportEmision" href="" class="btn btn-success"><i class="fa fa-check"></i> Reporte de emision </a>
+                                        </div>
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-lg-12">

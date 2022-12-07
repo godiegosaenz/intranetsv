@@ -19,7 +19,7 @@ class CreateInitialEmissionValuesTable extends Migration
             $table->index('rubro_id');
             $table->foreign('rubro_id')->references('id')->on('rubros');
             $table->integer('year');
-            $table->float('initial_value');
+            $table->decimal('initial_value',$precision = 12, $scale = 2);
             $table->boolean('status');
             $table->timestamps();
         });

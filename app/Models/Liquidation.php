@@ -28,4 +28,9 @@ class Liquidation extends Model
     public function establishment(){
         return $this->belongsTo(Establishments::class,'establishment_id');
     }
+
+    public function liquidations_rubros()
+    {
+        return $this->belongsToMany(Rubro::class,'liquidation_rubros','rubro_id','liquidation_id')->withPivot('id','rubro_id','liquidation_id','value','status')->withTimestamps();
+    }
 }

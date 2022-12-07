@@ -107,6 +107,7 @@ Route::prefix('admin')->group(function (){
 
     Route::get('/emision', [EmisionController::class, 'index'])->name('emision.index')->middleware('auth');
     Route::post('/emision', [EmisionController::class, 'store'])->name('emision.store');
+    Route::get('/emision/reporte/{year}', [EmisionController::class, 'report'])->name('emision.report')->middleware('auth');
 
     Route::get('/liquidation', [LiquidationController::class, 'index'])->name('liquidation.index')->middleware('auth');
     Route::post('/liquidation', [LiquidationController::class, 'getLiquidation'])->name('liquidation.get');
