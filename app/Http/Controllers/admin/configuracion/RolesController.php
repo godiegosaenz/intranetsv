@@ -49,7 +49,7 @@ class RolesController extends Controller
 
         $role = Role::create($datavalidate);
         $role->syncPermissions($request->permisions);
-        return redirect('/roles/create')->with('status', 'El Rol '.$role->name.' se ha registrado satisfactoriamente');
+        return redirect('/admin/roles/create')->with('status', 'El Rol '.$role->name.' se ha registrado satisfactoriamente');
     }
 
     /**
