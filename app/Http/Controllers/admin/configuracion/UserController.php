@@ -27,15 +27,17 @@ class UserController extends Controller
         $this->users = $users->all();
     }
 
-    public function index(){
+    public function index(Request $r,User $User){
 
+        $this->authorize('view', $User);
         Cookie::queue('tabusuario', '1');
         return view('configuracion.user', [
             'users' => $this->users,
         ]);
     }
 
-    public function create($id = null){
+    public function create(Request $r,User $User,$id = null){
+        $this->authorize('create', $User);
         if($id != null){
             $PersonEntityData = PersonEntity::where('id', $id)->first();
         }else{
@@ -70,15 +72,15 @@ class UserController extends Controller
         ]);
     }
 
-    public function edit(User $user, Request $request){
-        //$this->authorize('edit', $user);
-        $PersonEntityData = PersonEntity::with(['Countries','provinces','cantons','parishes'])->where('id', $user->people_entities_id)->first();
+    public function edit(Request $request,User $User){
+        $this->authorize('edit', $User);
+        $PersonEntityData = PersonEntity::where('id', $User->people_entities_id)->first();
         $roles = Role::all()->pluck('name','id');
-        $rolPermissionuser = $user->getPermissionsViaRoles()->pluck('name','id');
-        $roluser = $user->getRoleNames();
-        $permissionsuser = $user->permissions->pluck('name','id');
+        $rolPermissionuser = $User->getPermissionsViaRoles()->pluck('name','id');
+        $roluser = $User->getRoleNames();
+        $permissionsuser = $User->permissions->pluck('name','id');
         return view('configuracion.userEdit',
-                    ['user' => $user,
+                    ['user' => $User,
                     'roluser' => $roluser,
                     'roles' => $roles,
                     'Permission' => Permission::all(),

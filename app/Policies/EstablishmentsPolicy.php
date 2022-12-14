@@ -2,25 +2,25 @@
 
 namespace App\Policies;
 
+use App\Models\Establishments;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Facades\Auth;
 
-class UserPolicy
+class EstablishmentsPolicy
 {
     use HandlesAuthorization;
 
-    /*public function before(User $user, $ability)
-    {
-        //return $user->hasRole('Super Administrador') ? true : null;
-        //return $user->isAdministrator();
-    }*/
     /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
      * @return mixed
      */
+    public function before(User $user, $ability)
+    {
+
+    }
+
     public function viewAny(User $user)
     {
         //
@@ -30,13 +30,12 @@ class UserPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Establishments  $establishments
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function view(User $user, Establishments $establishments)
     {
-        return $user->hasPermissionTo('ver usuarios');
-        return true;
+        return $user->hasPermissionTo('ver establecimiento');
     }
 
     /**
@@ -45,55 +44,48 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user,User $model)
+    public function create(User $user)
     {
-        return $user->hasPermissionTo('crear usuarios');
-        return true;
+        return $user->hasPermissionTo('crear establecimiento');
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function edit(User $user, User $model){
-        //return Auth()->id() === $model->id;
-        return $user->hasPermissionTo('editar usuarios');
-        return true;
-    }
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Establishments  $establishments
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Establishments $establishments)
     {
+        //
+    }
 
+    public function edit(User $user, Establishments $establishments)
+    {
+        return $user->hasPermissionTo('editar establecimiento');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Establishments  $establishments
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Establishments $establishments)
     {
-        return $user->hasPermissionTo('eliminar usuarios');
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Establishments  $establishments
      * @return mixed
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user, Establishments $establishments)
     {
         //
     }
@@ -102,10 +94,10 @@ class UserPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Establishments  $establishments
      * @return mixed
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user, Establishments $establishments)
     {
         //
     }

@@ -32,8 +32,9 @@ class EstablishmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Establishments $Establishments)
     {
+        $this->authorize('view', $Establishments);
         return view('tourism.establishment');
     }
 
@@ -42,8 +43,9 @@ class EstablishmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request,$id = null)
+    public function create(Request $request,Establishments $Establishments,$id = null)
     {
+        $this->authorize('create', $Establishments);
         $PersonEntityData = new PersonEntity();
         $Establishments = new Establishments();
         $touristActivity = TouristActivity::all();
@@ -225,8 +227,9 @@ class EstablishmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Establishments $Establishments,$id)
     {
+        $this->authorize('edit', $Establishments);
         $PersonEntityData = new PersonEntity();
         $Establishments = new Establishments();
         $touristActivity = TouristActivity::all();
@@ -422,9 +425,9 @@ class EstablishmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Establishments $Establishments,$id)
     {
-        //
+
     }
 
     public function datatables(){

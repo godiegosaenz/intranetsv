@@ -43,6 +43,7 @@
                 <p>Tablero</p>
                 </a>
             </li>
+            @can('menu de administracion')
             <li class="nav-item {{ (url()->current() == route('users.index') || url()->current() == route('peopleentities.index')) ? 'menu-open' : '' }}">
                 @auth
                 <a href="#" class="nav-link {{ (url()->current() == route('peopleentities.index') || url()->current() == route('users.index')) ? 'active' : '' }}">
@@ -69,7 +70,8 @@
 
                 </ul>
             </li>
-
+            @endcan
+            @can('menu de configuraciones')
             <li class="nav-item {{ url()->current() == route('roles.index') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ (url()->current() == route('roles.index')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-cogs"></i>
@@ -94,84 +96,91 @@
                 </li>
                 </ul>
             </li>
-          <li class="nav-item {{ url()->current() == route('culturalmanagers.index') ? 'menu-open' : '' }} ">
-            <a href="#" class="nav-link {{ (url()->current() == route('culturalmanagers.index')) ? 'active' : '' }}">
-              <i class="nav-icon fas fa-book-open"></i>
-              <p>
-                Modulo Cultura
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('culturalmanagers.index') }}" class="nav-link {{ (url()->current() == route('culturalmanagers.index')) ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Gestores culturales</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>
-                    Inventario Patrimonial
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item {{ url()->current() == route('establishments.index') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ (url()->current() == route('establishments.index')) ? 'active' : '' }}">
-              <i class="nav-icon fas fa-globe"></i>
-              <p>
-                Modulo Turismo
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
+            @endcan
+            @can('menu de cultura')
+            <li class="nav-item {{ url()->current() == route('culturalmanagers.index') ? 'menu-open' : '' }} ">
+              <a href="#" class="nav-link {{ (url()->current() == route('culturalmanagers.index')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-book-open"></i>
+                <p>
+                  Modulo Cultura
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route('establishments.index') }}" class="nav-link {{ (url()->current() == route('establishments.index')) ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Establecimientos</p>
-                      </a>
+                  <a href="{{ route('culturalmanagers.index') }}" class="nav-link {{ (url()->current() == route('culturalmanagers.index')) ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Gestores culturales</p>
+                  </a>
                 </li>
-            </ul>
-          </li>
-          <li class="nav-item {{ url()->current() == route('emision.index') || url()->current() == route('luaf.index') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
-              <i class="nav-icon fas fa-file-invoice-dollar"></i>
-              <p>
-                Rentas
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('liquidation.index') }}" class="nav-link {{ (url()->current() == route('liquidation.index')) ? 'active' : '' }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Recaudacion</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('emision.index') }}" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Emisión</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Rubros</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('luaf.index')}}" class="nav-link {{ (url()->current() == route('luaf.index')) ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Tabla Luaf</p>
-                </a>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>
+                      Inventario Patrimonial
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                </li>
+              </ul>
             </li>
-            </ul>
-          </li>
+            @endcan
+            @can('menu de turismo')
+            <li class="nav-item {{ url()->current() == route('establishments.index') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link {{ (url()->current() == route('establishments.index')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-globe"></i>
+                <p>
+                  Modulo Turismo
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="{{ route('establishments.index') }}" class="nav-link {{ (url()->current() == route('establishments.index')) ? 'active' : '' }}">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Establecimientos</p>
+                        </a>
+                  </li>
+              </ul>
+            </li>
+            @endcan
+            @can('menu de rentas')
+            <li class="nav-item {{ url()->current() == route('emision.index') || url()->current() == route('luaf.index') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                <p>
+                  Rentas
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('liquidation.index') }}" class="nav-link {{ (url()->current() == route('liquidation.index')) ? 'active' : '' }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Recaudacion</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('emision.index') }}" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Emisión</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Rubros</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('luaf.index')}}" class="nav-link {{ (url()->current() == route('luaf.index')) ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tabla Luaf</p>
+                  </a>
+              </li>
+              </ul>
+            </li>
+            @endcan
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

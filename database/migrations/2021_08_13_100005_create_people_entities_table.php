@@ -34,16 +34,16 @@ class CreatePeopleEntitiesTable extends Migration
             $table->char('number_phone1',10);
             $table->char('number_phone2',10)->nullable();
             $table->string('email')->nullable();
-            //$table->unsignedBigInteger('country_id');
-            //$table->unsignedBigInteger('province_id');
-            //$table->unsignedBigInteger('canton_id');
-            //$table->unsignedBigInteger('parish_id');
+            $table->unsignedBigInteger('country_id')->nullable();
+            $table->unsignedBigInteger('province_id')->nullable();
+            $table->unsignedBigInteger('canton_id')->nullable();
+            $table->unsignedBigInteger('parish_id')->nullable();
             $table->timestamps();
-            //$table->index(['country_id','province_id','canton_id','parish_id']);
-            //$table->foreign('country_id')->references('id')->on('countries');
-            //$table->foreign('province_id')->references('id')->on('provinces');
-            //$table->foreign('canton_id')->references('id')->on('cantons');
-            //$table->foreign('parish_id')->references('id')->on('parishes');
+            $table->index(['country_id','province_id','canton_id','parish_id']);
+            $table->foreign('country_id')->references('id')->on('countries');
+            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->foreign('canton_id')->references('id')->on('cantons');
+            $table->foreign('parish_id')->references('id')->on('parishes');
         });
     }
 

@@ -2,19 +2,14 @@
 
 namespace App\Policies;
 
+use App\Models\PersonEntity;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Facades\Auth;
 
-class UserPolicy
+class PersonEntityPolicy
 {
     use HandlesAuthorization;
 
-    /*public function before(User $user, $ability)
-    {
-        //return $user->hasRole('Super Administrador') ? true : null;
-        //return $user->isAdministrator();
-    }*/
     /**
      * Determine whether the user can view any models.
      *
@@ -30,13 +25,12 @@ class UserPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\PersonEntity  $personEntity
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function view(User $user, PersonEntity $personEntity)
     {
-        return $user->hasPermissionTo('ver usuarios');
-        return true;
+        return $user->hasPermissionTo('ver personas');
     }
 
     /**
@@ -45,55 +39,48 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user,User $model)
+    public function create(User $user)
     {
-        return $user->hasPermissionTo('crear usuarios');
-        return true;
+        return $user->hasPermissionTo('crear personas');
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function edit(User $user, User $model){
-        //return Auth()->id() === $model->id;
-        return $user->hasPermissionTo('editar usuarios');
-        return true;
-    }
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\PersonEntity  $personEntity
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user, PersonEntity $personEntity)
     {
+        //
+    }
 
+    public function edit(User $user, PersonEntity $personEntity)
+    {
+        return $user->hasPermissionTo('editar personas');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\PersonEntity  $personEntity
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, PersonEntity $personEntity)
     {
-        return $user->hasPermissionTo('eliminar usuarios');
+        return $user->hasPermissionTo('eliminar personas');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\PersonEntity  $personEntity
      * @return mixed
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user, PersonEntity $personEntity)
     {
         //
     }
@@ -102,10 +89,10 @@ class UserPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\PersonEntity  $personEntity
      * @return mixed
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user, PersonEntity $personEntity)
     {
         //
     }

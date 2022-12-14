@@ -22,9 +22,9 @@ class PeopleEntitiesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PersonEntity $PersonEntity)
     {
-
+        $this->authorize('view', $PersonEntity);
         return view('admin.peopleentities');
     }
 
@@ -33,8 +33,9 @@ class PeopleEntitiesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(PersonEntity $PersonEntity)
     {
+        $this->authorize('create', $PersonEntity);
         $CountryData = Country::all();
         $ProvinceData = new Province();
         $CantonData = new Canton();
@@ -122,7 +123,7 @@ class PeopleEntitiesController extends Controller
      */
     public function edit(PersonEntity $PersonEntity)
     {
-
+        $this->authorize('edit', $PersonEntity);
         return view('admin.peopleentitiesEdit',compact('PersonEntity'));
     }
 
