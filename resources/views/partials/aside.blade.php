@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="{{route('home')}}" class="brand-link">
       <img src="{{asset('img/logosv.png')}}" alt="GAD San Vicente Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Intranet</span>
+      <span class="brand-text font-weight-light">SGT</span>
     </a>
 
     <!-- Sidebar -->
@@ -55,19 +55,22 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+                @can('ver personas')
                 <li class="nav-item">
                     <a href="{{ route('peopleentities.index') }}" class="nav-link {{ (url()->current() == route('peopleentities.index')) ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Personas/empresas</p>
                     </a>
                 </li>
+                @endcan
+                @can('ver usuarios')
                 <li class="nav-item">
                     <a href="{{ route('users.index')}}" class="nav-link {{ (url()->current() == route('users.index')) ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Usuarios</p>
                     </a>
                 </li>
-
+                @endcan
                 </ul>
             </li>
             @endcan
@@ -82,18 +85,22 @@
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
+                @can('ver roles')
                 <li class="nav-item">
                     <a href="{{ route('roles.index')}}" class="nav-link {{ (url()->current() == route('roles.index')) ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Roles</p>
                     </a>
                 </li>
+                @endcan
+                @can('ver permisos')
                 <li class="nav-item">
                     <a href="pages/layout/boxed.html" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Permisos</p>
                     </a>
                 </li>
+                @endcan
                 </ul>
             </li>
             @endcan
@@ -107,12 +114,15 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                @can('ver gestor cultural')
                 <li class="nav-item">
                   <a href="{{ route('culturalmanagers.index') }}" class="nav-link {{ (url()->current() == route('culturalmanagers.index')) ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Gestores culturales</p>
                   </a>
                 </li>
+                @endcan
+                @can('ver inventario patrimonial')
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
@@ -122,6 +132,7 @@
                     </p>
                   </a>
                 </li>
+                @endcan
               </ul>
             </li>
             @endcan
@@ -135,12 +146,14 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                @can('ver establecimiento')
                   <li class="nav-item">
                       <a href="{{ route('establishments.index') }}" class="nav-link {{ (url()->current() == route('establishments.index')) ? 'active' : '' }}">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Establecimientos</p>
                         </a>
                   </li>
+                @endcan
               </ul>
             </li>
             @endcan
@@ -154,30 +167,36 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                @can('recaudar')
                 <li class="nav-item">
                   <a href="{{ route('liquidation.index') }}" class="nav-link {{ (url()->current() == route('liquidation.index')) ? 'active' : '' }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Recaudacion</p>
                   </a>
                 </li>
+                @endcan
+                @can('emitir')
                 <li class="nav-item">
                   <a href="{{ route('emision.index') }}" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Emisión</p>
                   </a>
                 </li>
+                @endcan
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Rubros</p>
                   </a>
                 </li>
+                @can('ver tabla de luaf')
                 <li class="nav-item">
                   <a href="{{ route('luaf.index')}}" class="nav-link {{ (url()->current() == route('luaf.index')) ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Tabla Luaf</p>
                   </a>
-              </li>
+                </li>
+                @endcan
               </ul>
             </li>
             @endcan

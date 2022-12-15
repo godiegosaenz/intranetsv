@@ -94,11 +94,8 @@
                         <p class="text-muted">{{$PersonEntity->email}}</p>
                         <hr>
                         <strong><i class="far fa-file-alt mr-1"></i> Estado</strong>
-                        @if($PersonEntity->status == 1)
-                          <p class="text-muted">Activo</p>
-                        @else
-                          <p class="text-muted">Inactivo</p>
-                        @endif
+                        <p class="text-muted">{{$PersonEntity->status}}</p>
+
                   </div>
                   <div class="col-lg-6">
                     <strong><i class="fas fa-users mr-1"></i> Tipo de persona</strong>

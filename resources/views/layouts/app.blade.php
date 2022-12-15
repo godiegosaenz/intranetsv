@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Intranet SV</title>
+  <title>Sistema de gestion de turismo</title>
   <link rel="stylesheet" href="{{mix('css/app.css')}}">
 
   <!-- jQuery -->
@@ -28,10 +28,10 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
+    <strong>Copyright &copy; 2019-2023 <a href="https://sanvicente.gob.ec">Gobierno Autónmo Descentralizado Municipal de San Vicente</a>.</strong>
+    Todos los derechos reservados.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0
+      <b>Version</b> 1.0.0
     </div>
   </footer>
 

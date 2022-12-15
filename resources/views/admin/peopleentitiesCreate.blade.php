@@ -4,7 +4,6 @@
         <li class="breadcrumb-item"><a href="{{ route('peopleentities.index') }}">Personas/Empresas  {{Cookie::get('province_id')}}</a></li>
         <li class="breadcrumb-item active">Crear</li>
     </x-header>
-
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
@@ -56,7 +55,7 @@
                                             @else
                                             <label id="label_cc_ruc" for="cc_ruc">* Cédula</label>
                                             @endif
-                                            <input type="number" class="form-control  @error('cc_ruc')is-invalid @enderror" name="cc_ruc" id="cc_ruc" placeholder="" value="{{ old('cc_ruc',$PersonEntityData->cc_ruc) }}" >
+                                            <input type="number" class="form-control  @error('cc_ruc')is-invalid @enderror" name="cc_ruc" id="cc_ruc" placeholder="" value="{{ old('cc_ruc',$PersonEntity->cc_ruc) }}" >
                                             @error('cc_ruc')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -71,7 +70,7 @@
                                             <div id="formgroupname" class="form-group">
                                         @endif
                                             <label id="labelNombres" for="name">* Nombres</label>
-                                            <input type="text" class="form-control @error('name')is-invalid @enderror" name="name" id="name" placeholder="" value="{{ old('name',$PersonEntityData->name) }}" >
+                                            <input type="text" class="form-control @error('name')is-invalid @enderror" name="name" id="name" placeholder="" value="{{ old('name',$PersonEntity->name) }}" >
                                             @error('name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -86,7 +85,7 @@
                                             <div id="formgrouptradename" class="form-group" style="display: none">
                                         @endif
                                             <label for="tradename">* Nombre Comercial</label>
-                                            <input type="text" class="form-control @error('tradename')is-invalid @enderror" name="tradename" id="tradename" placeholder="" value="{{ old('tradename',$PersonEntityData->tradename) }}" >
+                                            <input type="text" class="form-control @error('tradename')is-invalid @enderror" name="tradename" id="tradename" placeholder="" value="{{ old('tradename',$PersonEntity->tradename) }}" >
                                             @error('tradename')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -100,8 +99,8 @@
                                         @else
                                             <div id="formgrouplastname" class="form-group">
                                         @endif
-                                            <label for="last_name">* Apellido Paterno</label>
-                                            <input type="text" class="form-control @error('last_name')is-invalid @enderror" name="last_name" id="last_name" placeholder="" value="{{ old('last_name',$PersonEntityData->last_name) }}" >
+                                            <label for="last_name">* Apellidos</label>
+                                            <input type="text" class="form-control @error('last_name')is-invalid @enderror" name="last_name" id="last_name" placeholder="" value="{{ old('last_name',$PersonEntity->last_name) }}" >
                                             @error('last_name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -116,29 +115,14 @@
                                             <div id="formgroupbussinesname" class="form-group" style="display: none">
                                         @endif
                                             <label for="bussines_name">* Razon Social</label>
-                                            <input type="text" class="form-control @error('bussines_name')is-invalid @enderror" name="bussines_name" id="bussines_name" placeholder="" value="{{ old('bussines_name',$PersonEntityData->bussines_name) }}" >
+                                            <input type="text" class="form-control @error('bussines_name')is-invalid @enderror" name="bussines_name" id="bussines_name" placeholder="" value="{{ old('bussines_name',$PersonEntity->bussines_name) }}" >
                                             @error('bussines_name')
-                                            <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        @if ($errors->any())
-                                            @if(old('maternal_last_name') != null)
-                                                <div id="formgroupmaternallastname" class="form-group">
-                                            @else
-                                                <div id="formgroupmaternallastname" class="form-group" style="display: none">
-                                            @endif
-                                        @else
-                                            <div id="formgroupmaternallastname" class="form-group">
-                                        @endif
-                                            <label for="maternal_last_name">* Apellido Materno</label>
-                                            <input type="text" class="form-control @error('maternal_last_name')is-invalid @enderror" name="maternal_last_name" id="maternal_last_name" placeholder="" value="{{ old('maternal_last_name',$PersonEntityData->maternal_last_name) }}" >
-                                            @error('maternal_last_name')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label>Dirección</label>
-                                            <textarea name="address" id="address" class="form-control" rows="3" placeholder="Enter ...">{{ old('address',$PersonEntityData->address) }}</textarea>
+                                            <textarea name="address" id="address" class="form-control" rows="3" placeholder="Enter ...">{{ old('address',$PersonEntity->address) }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -155,7 +139,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="email">*Correo Electronico</label>
-                                            <input type="email" class="form-control @error('email')is-invalid @enderror" name="email" id="email" placeholder="" value="{{ old('email',$PersonEntityData->email) }}" >
+                                            <input type="email" class="form-control @error('email')is-invalid @enderror" name="email" id="email" placeholder="" value="{{ old('email',$PersonEntity->email) }}" >
                                             @error('email')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -173,7 +157,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="number_phone1">*Telefono</label>
-                                            <input type="text" class="form-control @error('number_phone1')is-invalid @enderror" name="number_phone1" id="number_phone1" placeholder="" value="{{ old('number_phone1',$PersonEntityData->number_phone1) }}" >
+                                            <input type="text" class="form-control @error('number_phone1')is-invalid @enderror" name="number_phone1" id="number_phone1" placeholder="" value="{{ old('number_phone1',$PersonEntity->number_phone1) }}" >
                                             @error('number_phone1')
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -215,7 +199,6 @@
     var formgrouptradename = document.getElementById('formgrouptradename');
     var formgrouplastname = document.getElementById('formgrouplastname');
     var formgroupbussinesname = document.getElementById('formgroupbussinesname');
-    var formgroupmaternallastname = document.getElementById('formgroupmaternallastname');
     var loading = document.getElementById('loading');
     let token = "{{csrf_token()}}";
 
@@ -237,7 +220,6 @@
         //limpiar campos
         document.getElementById('name').value = "";
         document.getElementById('last_name').value = "";
-        document.getElementById('maternal_last_name').value = "";
         document.getElementById('bussines_name').value = "";
         document.getElementById('tradename').value = "";
 
@@ -248,7 +230,6 @@
             formgrouplastname.style.display = '';
             formgroupbussinesname.style.display = 'none';
 
-            formgroupmaternallastname.style.display = '';
             document.getElementById('label_date_birth').innerHTML = "*Fecha de nacimiento";
 
         }else if(selectedOption.value == 2){
@@ -256,7 +237,6 @@
             formgroupname.style.display = 'none';
             formgrouplastname.style.display = 'none';
             formgroupbussinesname.style.display = '';
-            formgroupmaternallastname.style.display = 'none';
             document.getElementById('label_date_birth').innerHTML = "*Fecha de inicio de actividades";
         }
         loading.style.display = 'none';
@@ -323,13 +303,6 @@
                     minlength: 2,
                     maxlength: 150
                 },
-                maternal_last_name: {
-                    required: function(element) {
-                        return $("#type").val() == 1;
-                    },
-                    minlength: 2,
-                    maxlength: 150
-                },
                 date_birth: {
                     required: true,
                     dateISO: true
@@ -360,11 +333,6 @@
                     maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
                 },
                 last_name: {
-                    required: "El campo Apellido Paterno es requerido.",
-                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
-                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
-                },
-                maternal_last_name: {
                     required: "El campo Apellido Paterno es requerido.",
                     minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
                     maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),

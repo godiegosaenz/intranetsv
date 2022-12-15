@@ -17,7 +17,7 @@ class PersonEntity extends Model
         'type_document',
         'name',
         'last_name',
-        'maternal_last_name',
+        //'maternal_last_name',
         'is_person',
         'is_required_accounts',
         'has_disability',
@@ -49,9 +49,6 @@ class PersonEntity extends Model
         return $this->hasOne(CulturalManager::class,'people_entities_id');
     }
 
-    public function getLastNameFullAttribute(){
-        return $this->last_name.' '.$this->maternal_last_name;
-    }
 
     public function getAgePersonAttribute(){
         return Carbon::parse($this->date_birth)->age;

@@ -30,8 +30,7 @@
                             <tr>
                               <th>Cedula/Ruc</th>
                               <th>Nombres</th>
-                              <th>Apellido 1</th>
-                              <th>Apellido 2</th>
+                              <th>Apellidos</th>
                               <th>Estado</th>
                               <th>Correo</th>
                               <th>Acciones</th>
@@ -43,8 +42,7 @@
                             <tr>
                               <th>Cedula/Ruc</th>
                               <th>Nombres</th>
-                              <th>Apellido 1</th>
-                              <th>Apellido 2</th>
+                              <th>Apellidos</th>
                               <th>Estado</th>
                               <th>Correo</th>
                               <th>Acciones</th>
@@ -117,7 +115,6 @@
                 {data: 'cc_ruc'},
                 {data: 'name'},
                 {data: 'last_name'},
-                {data: 'maternal_last_name'},
                 {data: 'status'},
                 {data: 'email'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},

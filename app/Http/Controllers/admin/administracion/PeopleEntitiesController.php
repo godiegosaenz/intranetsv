@@ -36,27 +36,7 @@ class PeopleEntitiesController extends Controller
     public function create(PersonEntity $PersonEntity)
     {
         $this->authorize('create', $PersonEntity);
-        $CountryData = Country::all();
-        $ProvinceData = new Province();
-        $CantonData = new Canton();
-        $ParishData = new Parish();
-        if(Cookie::get('country_id') !== null){
-            $ProvinceData = Province::where('country_id',Cookie::get('country_id'))->get();
-        }
-        $PersonEntityData = new PersonEntity();
-
-        if(Cookie::get('province_id') !== null){
-            $CantonData = Canton::where('province_id',Cookie::get('province_id'))->get();
-        }
-        if(Cookie::get('canton_id') !== null){
-            $ParishData = Parish::where('canton_id',Cookie::get('canton_id'))->get();
-        }
-
-        Cookie::queue('country_id', '');
-        Cookie::queue('province_id', '');
-        Cookie::queue('canton_id', '');
-        Cookie::queue('parish_id', '');
-        return view('admin.peopleentitiesCreate', compact('PersonEntityData','CountryData','ProvinceData','CantonData','ParishData'));
+        return view('admin.peopleentitiesCreate', compact('PersonEntity'));
     }
 
     /**

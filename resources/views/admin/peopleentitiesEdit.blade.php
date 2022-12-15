@@ -122,21 +122,6 @@
                                             <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        @if ($errors->any())
-                                            @if(old('maternal_last_name') != null)
-                                                <div id="formgroupmaternallastname" class="form-group">
-                                            @else
-                                                <div id="formgroupmaternallastname" class="form-group" style="display: none">
-                                            @endif
-                                        @else
-                                            <div id="formgroupmaternallastname" class="form-group">
-                                        @endif
-                                            <label for="maternal_last_name">* Apellido Materno</label>
-                                            <input type="text" class="form-control @error('maternal_last_name')is-invalid @enderror" name="maternal_last_name" id="maternal_last_name" placeholder="" value="{{ old('maternal_last_name',$PersonEntity->maternal_last_name) }}" >
-                                            @error('maternal_last_name')
-                                            <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
                                         <div class="form-group">
                                             <label>Dirección</label>
                                             <textarea name="address" id="address" class="form-control" rows="3" placeholder="Enter ...">{{ old('address',$PersonEntity->address) }}</textarea>
@@ -229,7 +214,6 @@
     var formgrouptradename = document.getElementById('formgrouptradename');
     var formgrouplastname = document.getElementById('formgrouplastname');
     var formgroupbussinesname = document.getElementById('formgroupbussinesname');
-    var formgroupmaternallastname = document.getElementById('formgroupmaternallastname');
     var loading = document.getElementById('loading');
     let token = "{{csrf_token()}}";
     selectTypeDocument.addEventListener('change', function() {
@@ -250,7 +234,6 @@
         //limpiar campos
         document.getElementById('name').value = "";
         document.getElementById('last_name').value = "";
-        document.getElementById('maternal_last_name').value = "";
         document.getElementById('bussines_name').value = "";
         document.getElementById('tradename').value = "";
 
@@ -261,7 +244,6 @@
             formgrouplastname.style.display = '';
             formgroupbussinesname.style.display = 'none';
 
-            formgroupmaternallastname.style.display = '';
             document.getElementById('label_date_birth').innerHTML = "*Fecha de nacimiento";
 
         }else if(selectedOption.value == 2){
@@ -269,7 +251,6 @@
             formgroupname.style.display = 'none';
             formgrouplastname.style.display = 'none';
             formgroupbussinesname.style.display = '';
-            formgroupmaternallastname.style.display = 'none';
             document.getElementById('label_date_birth').innerHTML = "*Fecha de inicio de actividades";
         }
         loading.style.display = 'none';
@@ -336,13 +317,6 @@
                     minlength: 2,
                     maxlength: 150
                 },
-                maternal_last_name: {
-                    required: function(element) {
-                        return $("#type").val() == 1;
-                    },
-                    minlength: 2,
-                    maxlength: 150
-                },
                 date_birth: {
                     required: true,
                     dateISO: true
@@ -373,11 +347,6 @@
                     maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
                 },
                 last_name: {
-                    required: "El campo Apellido Paterno es requerido.",
-                    minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
-                    maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),
-                },
-                maternal_last_name: {
                     required: "El campo Apellido Paterno es requerido.",
                     minlength: jQuery.validator.format("¡Se requieren al menos {0} caracteres!"),
                     maxlength: jQuery.validator.format("Por favor ingrese no más de {0} caracteres"),

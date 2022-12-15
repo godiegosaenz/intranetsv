@@ -31,7 +31,7 @@ class StorePersonEntityRequest extends FormRequest
             //'cc_ruc' => 'bail|required|numeric|digits:10|unique:App\Models\PersonEntity,cc_ruc',
             'name' => 'bail|required|max:250',
             'last_name' => 'bail|required|max:250',
-            'maternal_last_name' => 'bail|required|max:250',
+            //'maternal_last_name' => 'bail|required|max:250',  se unifico el campo apellido
             'status' => 'bail|required',
             'date_birth' => 'bail|required',
             'type' => 'bail|required',
@@ -72,7 +72,7 @@ class StorePersonEntityRequest extends FormRequest
             'cc_ruc' => 'Cedula',
             'name' => 'Nombres',
             'last_name' => 'Apellido paterno',
-            'maternal_last_name' => 'Apellido Materno',
+            //'maternal_last_name' => 'Apellido Materno', se unifico el campo apellido
             'status' => 'Estado',
             //'is_person' => 'Es persona',
             'date_birth' => 'Fecha de nacimiento',
@@ -102,9 +102,6 @@ class StorePersonEntityRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        Cookie::queue('country_id', $this->country_id);
-        Cookie::queue('province_id', $this->province_id);
-        Cookie::queue('canton_id', $this->canton_id);
-        Cookie::queue('parish_id', $this->parish_id);
+
     }
 }
