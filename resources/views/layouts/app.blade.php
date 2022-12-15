@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Sistema de gestion de turismo</title>
-  <link rel="stylesheet" href="{{mix('css/app.css')}}">
+  <link rel="stylesheet" href="{{asse(mix('css/app.css'))}}">
 
   <!-- jQuery -->
-   <script src="{{mix('js/app.js')}}"></script>
+   <script src="{{asset(mix('js/app.js'))}}"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-navbar-fixed">
 <div class="wrapper">
