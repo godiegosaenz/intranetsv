@@ -11,7 +11,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Intranet </b>GADMSV</a>
+    <a href="www.sanvicente.gob.ec"><b>Sistema de gestion de turismo y cultura </b>GADMSV</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
