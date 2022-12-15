@@ -34,6 +34,7 @@ class CreatePeopleEntitiesTable extends Migration
             $table->char('number_phone1',10);
             $table->char('number_phone2',10)->nullable();
             $table->string('email')->nullable();
+            $table->timestamps();
         });
     }
 

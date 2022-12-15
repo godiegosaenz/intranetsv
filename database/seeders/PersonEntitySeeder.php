@@ -19,7 +19,6 @@ class PersonEntitySeeder extends Seeder
             'type_document' => '1',
             'name' => 'DIEGO ANDRES',
             'last_name' => 'BERMUDEZ SAENZ',
-            'maternal_last_name' => '',
             'is_person' => true,
             'is_required_accounts' => false,
             'has_disability' => false,
@@ -34,10 +33,6 @@ class PersonEntitySeeder extends Seeder
             'number_phone1' => '0939120904',
             'number_phone2' => null,
             'email' => 'dbermudez1349@hotmail.com',
-            'country_id' => 1,
-            'province_id' => 13,
-            'canton_id' => 109,
-            'parish_id' => 308,
         ]);
 
         PersonEntity::create([
@@ -45,7 +40,6 @@ class PersonEntitySeeder extends Seeder
             'type_document' => '1',
             'name' => 'ANGELICA YADIRA',
             'last_name' => 'ANDRADE NAVARRETE',
-            'maternal_last_name' => '',
             'is_person' => true,
             'is_required_accounts' => false,
             'has_disability' => false,
@@ -59,10 +53,6 @@ class PersonEntitySeeder extends Seeder
             'number_phone1' => '0000000000',
             'number_phone2' => null,
             'email' => 'ayandrade@sanvicente.gob.ec',
-            'country_id' => 1,
-            'province_id' => 13,
-            'canton_id' => 109,
-            'parish_id' => 308,
         ]);
 
         PersonEntity::create([
@@ -70,7 +60,6 @@ class PersonEntitySeeder extends Seeder
             'type_document' => '1',
             'name' => 'WILDER BENJAMIN',
             'last_name' => 'SOLIS ALCIVAR',
-            'maternal_last_name' => '',
             'is_person' => true,
             'is_required_accounts' => false,
             'has_disability' => false,
@@ -84,10 +73,6 @@ class PersonEntitySeeder extends Seeder
             'number_phone1' => '0000000000',
             'number_phone2' => null,
             'email' => 'wbsolis@sanvicente.gob.ec',
-            'country_id' => 1,
-            'province_id' => 13,
-            'canton_id' => 109,
-            'parish_id' => 308,
         ]);
     }
 }
