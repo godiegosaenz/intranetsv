@@ -122,7 +122,7 @@
     Launch demo modal
   </button>
   <!-- /.content -->
-  <div class="modal fade" id="modal-establecimientos">
+  <div class="modal fade" id="modal-establecimientos" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -218,8 +218,10 @@
         //loading_modal.style.display = '';
 
     });
+    $('#modal-establecimientos').on('hidden.bs.modal', function(e){ $('#modal-establecimientos').data('bs.modal', null); });
     btnpago.addEventListener('click', function(e) {
         //document.getElementById('numbermodal').value = 1;
+        $('#modal-establecimientos').modal('hide');
         $('#modalpago').modal('show');
         //loading_modal.style.display = '';
 
