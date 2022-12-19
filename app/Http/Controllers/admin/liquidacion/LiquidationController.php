@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin\liquidacion;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\models\Liquidation;
+use App\Models\Interes;
+use Illuminate\Database\Eloquent\Collection;
 
 class LiquidationController extends Controller
 {
@@ -25,8 +27,28 @@ class LiquidationController extends Controller
      */
     public function getLiquidation(Request $request){
         //$Liquidation = Liquidation::find($request->establishment_id_2);
-        $Liquidation = Liquidation::where('id',$request->establishment_id_2 )->get();
-        return view('liquidation.liquidation',compact('Liquidation'));
+        $Liquidation = Liquidation::with(['establishment'])->where('establishment_id',$request->establishment_id_2 )->get();
+        $DatosLiquidacion = $Liquidation->map(function ($liq) {
+            $valorinteres = Interes::all();
+            $data[$liq->id]['id'] = $liq->id;
+            $data[$liq->id]['liquidation_number'] = $liq->liquidation_number;
+            $data[$liq->id]['liquidation_code'] = $liq->liquidation_code;
+            $data[$liq->id]['total_payment'] = $liq->total_payment;
+            $data[$liq->id]['status'] = $liq->status;
+            $data[$liq->id]['year'] = $liq->year;
+            $data[$liq->id]['propietario'] = $liq->establishment->people_entities_owner->name;
+            $data[$liq->id]['establisment_name'] = $liq->establishment->name;
+            $data[$liq->id]['descuento'] = round(0,2);
+            $data[$liq->id]['recargo'] = round(0,2);
+            foreach($valorinteres as $vi){
+                if($vi->year == $data[$liq->id]['year']){
+                    $data[$liq->id]['interes'] = round(($liq->total_payment * $vi->percentage)/100, 2);
+                }
+            }
+            $data[$liq->id]['total'] = round($liq->total_payment + $data[$liq->id]['interes'],2);
+            return $data;
+        });
+        return response()->json(['estado' => 'ok','Liquidation'=>$DatosLiquidacion]);
     }
 
     /**

@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="alert alert-info alert-dismissible">
+                                        <div id="alertYearEmision" class="alert alert-info alert-dismissible">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                             <h5><i class="icon fas fa-info"></i> ¡Alerta!</h5>
                                             Antes de realizar la emision debe estar registrado el sueldo basico unicado del año a emitir.
@@ -90,6 +90,15 @@
                                                 <button id="btnstep3" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
                                                 <button id="btnSiguiente" class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="alertLUAF" class="alert alert-info alert-dismissible" style="display:none;">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <h5><i class="icon fas fa-info"></i> ¡Alerta!</h5>
+
                                         </div>
                                     </div>
                                 </div>
@@ -123,6 +132,15 @@
                                     </div>
                                 </div>
                                 <br>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="alertRubros" class="alert alert-info alert-dismissible" style="display:none;">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <h5><i class="icon fas fa-info"></i> ¡Alerta!</h5>
+
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <label>Seleccione Rubros a emitir</label>
@@ -231,11 +249,45 @@
         let loading = document.getElementById('loading');
         var formEmision = document.getElementById('formEmision');
         formEmision.addEventListener('submit', function(e) {
-            e.preventDefault()
+            e.preventDefault();
             var loading = document.getElementById('loading');
-            var year_emision = document.getElementById('year_emision').value;
+            let formData = new FormData(this);
+            var year_emision = document.getElementById('year_emision');
+            var alertYearEmision = document.getElementById('alertYearEmision');
+            var alertLUAF = document.getElementById('alertLUAF');
+            var alertRubros = document.getElementById('alertRubros');
+            var year_luaf = document.getElementById('year_luaf');
             var checkLuaf = []
             var checkboxes = document.getElementsByName("checkLuaf[]");
+            if(year_emision.value == null || year_emision.value == ''){
+                toastr.error('Debe ingresar el año de emisión');
+                year_emision.setAttribute('class','form-control is-invalid');
+                alertYearEmision.setAttribute('style','');
+                alertYearEmision.setAttribute('class','alert alert-danger');
+                alertYearEmision.innerHTML = '¡Advertencia!. debe colocar el año de emisión';
+                return false;
+            }else{
+                removerAlerts();
+            }
+
+            if(year_luaf.value == null || year_luaf.value == ''){
+                toastr.error('Debe seleccionar una tabla de LUAF');
+                year_luaf.setAttribute('class','form-control is-invalid');
+                alertLUAF.setAttribute('style','');
+                alertLUAF.setAttribute('class','alert alert-danger');
+                alertLUAF.innerHTML = '¡Advertencia!. Debe seleccionar una tabla de Licencia Unica Anual de Funcionamiento';
+                return false;
+            }else{
+                removerAlerts();
+            }
+            if(formData.getAll("checkrubro[]").length == 0)
+            {
+                toastr.error('Debe seleccionar al menos un rubro');
+                alertRubros.setAttribute('style','');
+                alertRubros.setAttribute('class','alert alert-danger');
+                alertRubros.innerHTML = '¡Advertencia!. Debe seleccionar al menos un rubro';
+                return false;
+            }
             for (var i = 0; i < checkboxes.length; i++) {
                 if(checkboxes[i].checked){
                     checkLuaf.push(checkboxes[i].value)
@@ -251,19 +303,22 @@
 
             }
             loading.style.display = '';
-            let formData = new FormData(this);
+
             formData.append('_token',token);
-            formData.append('year_emision',year_emision);
-            formData.append('checkLuaf',checkLuaf);
+            //formData.append('year_emision',year_emision.value);
+            //formData.append('checkLuaf',checkLuaf);
             formData.append('checkrubro',checkrubro);
-            axios.post('/admin/emision',formData).then(function(res) {
+            axios.post(this.getAttribute('action'),formData).then(function(res) {
                 if(res.status==200) {
-                    if(res.data.success == true){
+                    if(res.data.success == 'guardado'){
                         console.log("guardando ..");
                         //requirementstable.ajax.reload();
                         toastr.success('Archivo cargado con exito');
                         loading.style.display = 'none';
 
+                    }else if(res.data.success == 'error'){
+                        toastr.error(res.data.message);
+                        console.log('error al consultar al servidor');
                     }else{
                         toastr.error('Error al comunicarse con el servidor, contacte al administrador de Sistemas');
                         console.log('error al consultar al servidor');
@@ -288,6 +343,14 @@
                     loading.style.display = 'none';
             });
         });
+
+        function removerAlerts(){
+            alertLUAF.setAttribute('style','display:none;');
+            alertRubros.setAttribute('style','display:none;');
+            alertYearEmision.setAttribute('style','display:none;');
+            year_emision.setAttribute('class','form-control');
+            year_luaf.setAttribute('class','form-control');
+        }
         $(function(){
             let luaftable = $('#luaf-table').DataTable({
                 "lengthMenu": [ 5, 10],

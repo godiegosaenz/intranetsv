@@ -490,38 +490,11 @@ class EstablishmentController extends Controller
         $Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements','establishments_categories','Countries','provinces','cantons','parishes','establishments_categories','rooms_hotels','establishment_services'])->get();
         //$Establishments = Establishments::all();
         return Datatables($Establishments)
-                ->editColumn('status', function ($Establishments) {
-                    if($Establishments->status == 1){
-                        return '<span class="badge bg-success">Abierto</span>';
-                    }else{
-                        return '<span class="badge bg-danger">Cerrado</span>';
-                    }
+                ->addColumn('ruc', function ($Establishments) {
+                    return $Establishments->people_entities_establishment->cc_ruc;
                 })
-                /*->editColumn('has_requeriment', function ($Establishments) {
-                    if($Establishments->has_requeriment == true){
-                        return '<span class="badge bg-success">Completos</span>';
-                    }else{
-                        return '<span class="badge bg-danger">Pendientes</span>';
-                    }
-                })*/
-                ->addColumn('country', function ($Establishments) {
-                    return $Establishments->countries->name;
-                })
-                ->addColumn('province', function ($Establishments) {
-                    return $Establishments->provinces->name;
-                })
-                ->addColumn('canton', function ($Establishments) {
-                    return $Establishments->cantons->name;
-                })
-                ->addColumn('parish', function ($Establishments) {
-                    return $Establishments->parishes->name;
-                })
-                ->addColumn('EstablishmentTypeName', function ($Establishments) {
-                    return $Establishments->EstablishmentTypeName;
-                })
-                ->addColumn('LocalName', function ($Establishments) {
-                    return $Establishments->LocalName;
-                })
+
+
                 ->addColumn('tourist_activity', function ($Establishments) {
                     return $Establishments->tourist_activities->name;
                 })
@@ -534,7 +507,7 @@ class EstablishmentController extends Controller
                 ->addColumn('action', function ($Establishments) {
 
                     $buttons = '';
-                    $buttons .= '<a onclick="selectEstablishment('.$Establishments->id.')" class="btn btn-primary btn-sm">Seleccionar</a> ';
+                    $buttons .= '<a onclick="selectEstablishment('.$Establishments->id.',\''.$Establishments->name.'\')" class="btn btn-primary btn-sm">Seleccionar</a> ';
                     return $buttons;
                 })
                 ->rawColumns(['status','has_requeriment','action'])

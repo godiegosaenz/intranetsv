@@ -24,8 +24,11 @@ use App\Models\EstablishmentCategory;
 use App\Models\Requirement;
 use App\Models\Establishments;
 use App\Models\TouristActivity;
+use App\Models\Liquidation;
+use App\Models\Interes;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\admin\establecimientosturisticos\TravelHotelsDetailController;
+use Illuminate\Support\Collection;
 
 Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('guest');
 
@@ -117,10 +120,31 @@ Route::prefix('admin')->group(function (){
     Route::get('/luaf/documentation', [LuafTableController::class, 'documentation'])->name('luaf.documentation');
 
     Route::get('/countries', function(){
+        $Liquidation = Liquidation::with(['establishment'])->where('establishment_id',1)->get();
+        $resultado = $Liquidation->map(function ($liq) {
+            $valorinteres = App\Models\Interes::all();
+            $data[$liq->id]['id'] = $liq->id;
+            $data[$liq->id]['liquidation_number'] = $liq->liquidation_number;
+            $data[$liq->id]['liquidation_code'] = $liq->liquidation_code;
+            $data[$liq->id]['total_payment'] = $liq->total_payment;
+            $data[$liq->id]['status'] = $liq->status;
+            $data[$liq->id]['year'] = $liq->year;
+            $data[$liq->id]['propietario'] = $liq->establishment->people_entities_owner->name;
+            $data[$liq->id]['establisment_name'] = $liq->establishment->name;
+            foreach($valorinteres as $vi){
+                if($vi->year == $data[$liq->id]['year']){
+                    $data[$liq->id]['interes'] = round($liq->total_payment * $vi->percentage, 2);
+                }
+            }
+            $data[$liq->id]['total'] = round($liq->total_payment + $data[$liq->id]['interes'],2);
+            return $data;
+        });
+
+        return $resultado;
         //return EstablishmentCategory::find(2)->establishments_classifications()->orderBy('id')->get();
         //return Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative'])->get();
         //return TouristActivity::with(['requirements'])->get();
-        return Requirement::with(['tourist_activities'])->get();
+        //return Requirement::with(['tourist_activities'])->get();
         //return EstablishmentCategory::with(['establishments_classifications'])->find(1)->get();
         //return EstablishmentClassification::find(2)->establishments_categories;
 

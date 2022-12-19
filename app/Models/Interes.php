@@ -5,15 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Catalogue_SBU extends Model
+class Interes extends Model
 {
     use HasFactory;
 
-    protected $table = 'catalogue_sbu';
+    protected $table = 'interes';
 
     protected $fillable = [
         'id',
-        'year',
-        'value',
+        'percentage',
+        'initial_date',
+        'final_date',
+        'days',
+        'year'
     ];
 }

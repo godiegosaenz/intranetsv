@@ -57,8 +57,12 @@ class EmisionController extends Controller
                 $total_liquidacion = 0;
                 $total_tasa_administrativa = 0;
                 $sueldo_basico_unificado = 0;
+
                 //verifica si existe el sueldo basico para el año de emision
-                if(Catalogue_SBU::where('year',$year_emision)->count() == 1){
+                if(Catalogue_SBU::where('year',$year_emision)->count() == 0){
+                    return response()->json(['success' => 'error','message' => 'No se encuentra registrado un sueldo basico con el año de emisión']);
+                }
+
                     $SBU = Catalogue_SBU::where('year',$year_emision)->first();
                     $sueldo_basico_unificado = $SBU->value;
                     // 1 Recorremos todos los establecimientos
@@ -218,7 +222,6 @@ class EmisionController extends Controller
                         }
 
                     }
-                }
             //DB::commit();
         /*} catch (\Exception $e) {
             //DB::rollBack();
@@ -226,7 +229,7 @@ class EmisionController extends Controller
             return response()->json(['message' => 'Error']);
         }*/
         $respuesta = ["status" => "200",
-                        "success" => true,
+                        "success" => 'guardado',
                         ];
 
         return json_encode($respuesta);

@@ -33,8 +33,7 @@
                     <tr>
                       <th>Nombre de usuario</th>
                       <th>Nombres</th>
-                      <th>Apellido paterno</th>
-                      <th>Apellido materno</th>
+                      <th>Apellidos</th>
                       <th>Correo Electronico</th>
                       <th>Estado</th>
                       <th>Acciones</th>
@@ -104,7 +103,6 @@
                 {data: 'name'},
                 {data: 'person_entity.name'},
                 {data: 'person_entity.last_name'},
-                {data: 'person_entity.maternal_last_name'},
                 {data: 'email'},
                 {data: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
