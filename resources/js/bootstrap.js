@@ -33,7 +33,7 @@ try {
     window.Swal = swal = require('sweetalert2');
     window.toastr = toastr = require('toastr');
     window.bsCustomFileInput = bsCustomFileInput = require('bs-custom-file-input/dist/bs-custom-file-input');
-
+    window.bootstrap = bootstrap = require('bootstrap-show-modal');
     //require('bs-custom-file-input/dist/bs-custom-file-input');
     require('admin-lte/dist/js/demo');
 } catch (e) {

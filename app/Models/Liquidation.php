@@ -31,6 +31,6 @@ class Liquidation extends Model
 
     public function liquidations_rubros()
     {
-        return $this->belongsToMany(Rubro::class,'liquidation_rubros','rubro_id','liquidation_id')->withPivot('id','rubro_id','liquidation_id','value','status')->withTimestamps();
+        return $this->belongsToMany(Rubro::class,'liquidation_rubros','liquidation_id','rubro_id')->withPivot('id','rubro_id','liquidation_id','value','status')->withTimestamps();
     }
 }

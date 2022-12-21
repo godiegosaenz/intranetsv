@@ -493,8 +493,6 @@ class EstablishmentController extends Controller
                 ->addColumn('ruc', function ($Establishments) {
                     return $Establishments->people_entities_establishment->cc_ruc;
                 })
-
-
                 ->addColumn('tourist_activity', function ($Establishments) {
                     return $Establishments->tourist_activities->name;
                 })
@@ -507,7 +505,7 @@ class EstablishmentController extends Controller
                 ->addColumn('action', function ($Establishments) {
 
                     $buttons = '';
-                    $buttons .= '<a onclick="selectEstablishment('.$Establishments->id.',\''.$Establishments->name.'\')" class="btn btn-primary btn-sm">Seleccionar</a> ';
+                    $buttons .= '<a onclick="selectEstablishment('.$Establishments->id.',\''.$Establishments->name.'\','.$Establishments->people_entities_establishment->cc_ruc.',\''.$Establishments->people_entities_owner->name.'\')" class="btn btn-primary btn-sm">Seleccionar</a> ';
                     return $buttons;
                 })
                 ->rawColumns(['status','has_requeriment','action'])
