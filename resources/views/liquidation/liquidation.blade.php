@@ -31,7 +31,7 @@
                         <div class="col-lg-4">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                <button id="modalempresa" type="button" class="btn btn-primary">Buscar</button>
+                                <button id="modalempresa" type="button" class="btn btn-dark">Buscar</button>
                                 </div>
                                 <!-- /btn-group -->
                                 <input id="establishment_id" name="establishment_id" type="text" class="form-control @error('establishment_id_2')is-invalid @enderror" value="" disabled>
@@ -56,7 +56,7 @@
         <div class="col-lg-6">
             <div class="float-right">
                 <div class="form-group">
-                    <button id="btnpago" class="btn btn-primary btn-block" type="button"><i class="fa fa-plus-square"></i> Procesar pago</button>
+                    <button id="btnpago" class="btn btn-dark btn-block" type="button"><i class="fa fa-plus-square"></i> Procesar pago</button>
                 </div>
             </div>
         </div>
@@ -67,10 +67,10 @@
                 <div class="card-header p-0 border-bottom-0">
                   <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-step1-tab" data-toggle="pill" href="#custom-tabs-step1" role="tab" aria-controls="custom-tabs-step1" aria-selected="true">Informacion de establecimiento</a>
+                        <a class="nav-link active" id="custom-tabs-step1-tab" data-toggle="pill" href="#custom-tabs-step1" role="tab" aria-controls="custom-tabs-step1" aria-selected="true">Emisión</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Informacion turistica</a>
+                      <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Cuotas de convenio</a>
                     </li>
 
                   </ul>
@@ -80,7 +80,7 @@
                         <div class="tab-pane fade show active" id="custom-tabs-step1" role="tabpanel" aria-labelledby="custom-tabs-step1-tab">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <form id="formLiquidaciones" name="formLiquidaciones" method="post" action="{{route('liquidation.store')}}">
+                                    <form id="formLiquidaciones" name="formLiquidaciones" method="post" action="">
                                         <table id="liquidacion-table" class="table table-sm table-bordered table-hover">
                                             <thead>
                                                 <tr>
@@ -227,6 +227,15 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
+                            <div id="alertPago" class="alert alert-danger alert-dismissible" style="display: none;">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fas fa-ban"></i> ¡Importante!</h5>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
                             <table class="table table-bordered table-sm">
                                 <thead>
                                     <tr>
@@ -286,7 +295,6 @@
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="custom-content-below-tabContent">
-
                                         <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
                                             <div class="col-8 mt-3">
                                                 <div class="form-group row">
@@ -323,9 +331,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Procesar</button>
-                <button type="button" class="btn btn-secondary">Imprimir</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-window-close"></i> Cancelar</button>
+                <button id="btnProcesarPago" type="button" class="btn btn-primary"><i class="far fa-save"></i> Procesar</button>
+                <a id="btnImprimirComprobante" style="display: none;" class="btn btn-secondary"><i class="far fa-file-pdf"></i> Imprimir comprobante</a>
                 </div>
             </div>
         </div>
@@ -396,6 +404,7 @@
     let token = "{{csrf_token()}}";
     let loading = document.getElementById('loading');
     let btnpago = document.getElementById('btnpago');
+    let btnProcesarPago = document.getElementById('btnProcesarPago');
 
     function recargarTablaEstablecimiento(){
         establishmenttable.ajax.reload();
@@ -575,7 +584,7 @@
                                     tablehtmlLiquidation += array_Liquidation[clave2][key]['total'];
                                     tablehtmlLiquidation += '</td>';
                                     tablehtmlLiquidation += '<td>';
-                                    tablehtmlLiquidation += '<button type="button" class="btn btn-success btn-xs" onclick="mostrardetalleliquidacion('+array_Liquidation[clave2][key]['id']+')"><i class="fa fa-solid fa-eye"></i></button> <button class="btn btn-primary btn-xs"><i class="fa fa-solid fa-money-bill"></i></button>'
+                                    tablehtmlLiquidation += '<button type="button" class="btn btn-info btn-xs" onclick="mostrardetalleliquidacion('+array_Liquidation[clave2][key]['id']+')"><i class="fa fa-solid fa-eye"></i></button> <button class="btn btn-info btn-xs"><i class="fa fa-solid fa-money-bill"></i></button>'
                                     tablehtmlLiquidation += '</td>';
                                     tablehtmlLiquidation += '</tr>';
                                 }
@@ -613,6 +622,81 @@
                 //loading.style.display = 'none';
         });
     });
+    btnProcesarPago.addEventListener('click', function(e) {
+        var overlaymodalpago = document.getElementById('overlaymodalpago');
+        overlaymodalpago.removeAttribute('style');
+        if(verificarSeleccionCasillas() === false){
+            toastr.error('!Advertencia. No hay ninguna liquidacion seleccionada');
+            return false;
+        }
+        var inputValorCobrar = document.getElementById('inputValorCobrar');
+        var formLiquidaciones = document.getElementById('formLiquidaciones');
+        let formData = new FormData(formLiquidaciones);
+        formData.append('value',inputValorCobrar.value);
+        axios.post('{{route("pay.store")}}',formData).then(function(res) {
+            if(res.status==200) {
+                var alertPago = document.getElementById('alertPago');
+                var btnProcesarPago = document.getElementById('btnProcesarPago');
+
+                if(res.data.estado == 'ok'){
+                    var btnImprimirComprobante = document.getElementById('btnImprimirComprobante');
+                    var establishment_id_2 = document.getElementById('establishment_id_2');
+                    var establishment_id = document.getElementById('establishment_id');
+                    btnImprimirComprobante.removeAttribute('style');
+                    btnImprimirComprobante.setAttribute('href',res.data.enlace);
+                    toastr.success('¡Felicidades!. Se registro el pago, descarga el comprobante');
+                    alertPago.setAttribute('style','');
+                    alertPago.setAttribute('class','alert alert-success');
+                    alertPago.innerHTML = '¡Felicidades!. Se registro el pago, descarga el comprobante';
+                    var tbodyLiquidation = document.getElementById('tbodyLiquidation');
+                    tbodyLiquidation.innerHTML = '';
+                    establishment_id.value = '';
+                    establishment_id_2.value = '';
+                    //falta descargar el comprobante
+                    overlaymodalpago.setAttribute('style','display:none');
+                    btnProcesarPago.setAttribute('disabled','disabled');
+                }else{
+                    toastr.error('Atencion. Hubo un error al conectarse al servidor, reporta al administrador de sistemas');
+                    alertPago.setAttribute('style','');
+                    alertPago.setAttribute('class','alert alert-danger');
+                    alertPago.innerHTML = 'Importante!. Hubo un error de conexion al servidor, contacte al administrador de sistemas';
+                    overlaymodalpago.setAttribute('style','display:none');
+                    console.log('error al consultar al servidor');
+                }
+
+            }
+        }).catch(function(err) {
+            console.log(err);
+            overlaymodalpago.setAttribute('style','display:none');
+            if(err.response.status == 500){
+                console.log('error al consultar al servidor');
+            }
+
+            if(err.response.status == 419){
+                //toastr.error('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+                console.log('Es posible que tu session haya caducado, vuelve a iniciar sesion');
+            }
+            if(err.response.status == 422){
+                //toastr.error('Revise la validacion del archivo');
+
+            }
+            loading.style.display = 'none';
+
+        }).then(function() {
+                //loading.style.display = 'none';
+        });
+        //overlaymodalpago.setAttribute('style','display:none');
+    });
+    $('#modalpago').on('hidden.bs.modal', function (e) {
+        var alertPago = document.getElementById('alertPago');
+        var btnImprimirComprobante = document.getElementById('btnImprimirComprobante');
+        alertPago.setAttribute('style','display:none');
+        btnImprimirComprobante.setAttribute('style','display:none');
+        document.getElementById('inputValorCobrar').value = '';
+        document.getElementById('inputCambio').value = '';
+        document.getElementById('inputValorRecibido').value = '';
+
+    })
     function mostrardetalleliquidacion(id){
         $('#modalDetalle').modal('show');
         var overlaymodaldetalle = document.getElementById('overlaymodaldetalle');

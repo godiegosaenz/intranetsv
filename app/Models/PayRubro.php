@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LiquidationSequence extends Model
+class PayRubro extends Model
 {
     use HasFactory;
 
-    protected $table = 'liquidation_sequences';
+    protected $table = 'pay_rubros';
 
     protected $fillable = [
         'id',
-        'sequence',
-        'year',
-        'type_liquidation_id'
+        'rubro_id',
+        'pay_id',
+        'value'
     ];
 }

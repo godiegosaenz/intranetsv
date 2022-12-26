@@ -167,14 +167,6 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                @can('recaudar')
-                <li class="nav-item">
-                  <a href="{{ route('liquidation.index') }}" class="nav-link {{ (url()->current() == route('liquidation.index')) ? 'active' : '' }}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Recaudacion</p>
-                  </a>
-                </li>
-                @endcan
                 @can('emitir')
                 <li class="nav-item">
                   <a href="{{ route('emision.index') }}" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
@@ -200,6 +192,40 @@
               </ul>
             </li>
             @endcan
+
+            <li class="nav-item {{ url()->current() == route('liquidation.index') || url()->current() == route('pay.index') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link {{ (url()->current() == route('emision.index')) ? 'active' : '' }}">
+                <i class="fas fa-cash-register"></i>
+                <p>
+                  Recaudacion
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                @can('recaudar')
+                <li class="nav-item">
+                  <a href="{{ route('liquidation.index') }}" class="nav-link {{ (url()->current() == route('liquidation.index')) ? 'active' : '' }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Pago de Luaf</p>
+                  </a>
+                </li>
+                @endcan
+                <li class="nav-item">
+                  <a href="{{ route('pay.index') }}" class="nav-link {{ (url()->current() == route('pay.index')) ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Comprobantes cobrados</p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="fal fa-file-pdf"></i>
+                    <p>Reportes diarios</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

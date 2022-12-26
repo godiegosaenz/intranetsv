@@ -19,16 +19,11 @@ use App\Http\Controllers\admin\establecimientosturisticos\EstablishmentRequireme
 use App\Http\Controllers\admin\establecimientosturisticos\EstablismentServicesController;
 use App\Http\Controllers\admin\liquidacion\EmisionController;
 use App\Http\Controllers\admin\liquidacion\LiquidationController;
+use App\Http\Controllers\admin\liquidacion\PayController;
 use App\Http\Controllers\admin\luaf\LuafTableController;
-use App\Models\EstablishmentCategory;
-use App\Models\Requirement;
-use App\Models\Establishments;
-use App\Models\TouristActivity;
-use App\Models\Liquidation;
-use App\Models\Interes;
-use Illuminate\Support\Facades\DB;
+
 use App\Http\Controllers\admin\establecimientosturisticos\TravelHotelsDetailController;
-use Illuminate\Support\Collection;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('guest');
 
@@ -118,12 +113,15 @@ Route::prefix('admin')->group(function (){
     Route::post('/liquidation/procesar', [LiquidationController::class, 'store'])->name('liquidation.store');
     Route::post('/liquidation/detalle', [LiquidationController::class, 'getLiquidationdetalle'])->name('liquidation.detalle');
 
+    Route::post('/pay', [PayController::class, 'store'])->name('pay.store');
+    Route::get('/pay/voucher/{id}', [PayController::class, 'voucher'])->name('pay.voucher');
+    Route::get('/pay', [PayController::class, 'index'])->name('pay.index');
+
     Route::get('/luaf', [LuafTableController::class, 'index'])->name('luaf.index')->middleware('auth');
     Route::post('/luaf', [LuafTableController::class, 'store'])->name('luaf.store');
     Route::get('/luaf/documentation', [LuafTableController::class, 'documentation'])->name('luaf.documentation');
 
     Route::get('/countries', function(){
-        return $liq = Liquidation::with(['liquidations_rubros'])->where('id',1)->get();
 
     });
 });
