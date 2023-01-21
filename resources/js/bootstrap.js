@@ -17,6 +17,7 @@ try {
     require('admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4');
     require('admin-lte/plugins/datatables-buttons/js/dataTables.buttons');
     require('admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4');
+    require('admin-lte/plugins/datatables-scroller/js/scroller.bootstrap4');
     require('admin-lte/plugins/jszip/jszip');
     require('admin-lte/plugins/pdfmake/pdfmake');
     require('admin-lte/plugins/pdfmake/vfs_fonts');
@@ -33,7 +34,6 @@ try {
     window.Swal = swal = require('sweetalert2');
     window.toastr = toastr = require('toastr');
     window.bsCustomFileInput = bsCustomFileInput = require('bs-custom-file-input/dist/bs-custom-file-input');
-    window.bootstrap = bootstrap = require('bootstrap-show-modal');
     //require('bs-custom-file-input/dist/bs-custom-file-input');
     require('admin-lte/dist/js/demo');
 } catch (e) {

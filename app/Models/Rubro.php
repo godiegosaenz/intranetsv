@@ -21,4 +21,8 @@ class Rubro extends Model
     {
         return $this->belongsToMany(Liquidation::class,'liquidation_rubros','rubro_id','liquidation_id')->withPivot('id','rubro_id','liquidation_id','value','status')->withTimestamps();
     }
+
+    public function rubros_pays(){
+        return $this->belongsToMany(Pay::class,'pay_rubros','rubro_id','pay_id')->withPivot('id','rubro_id','pay_id','value')->withTimestamps();
+    }
 }

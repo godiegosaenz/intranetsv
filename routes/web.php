@@ -23,6 +23,7 @@ use App\Http\Controllers\admin\liquidacion\PayController;
 use App\Http\Controllers\admin\luaf\LuafTableController;
 
 use App\Http\Controllers\admin\establecimientosturisticos\TravelHotelsDetailController;
+use App\Models\Pay;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('guest');
@@ -63,7 +64,7 @@ Route::prefix('admin')->group(function (){
     Route::post('/peopleentities/datatables', [PeopleEntitiesController::class, 'datatables'])->name('peopleentities.datatables');
     Route::post('/peopleentities', [PeopleEntitiesController::class, 'store'])->name('peopleentities.store');
     Route::put('/peopleentities/{PersonEntity}', [PeopleEntitiesController::class, 'update'])->name('peopleentities.update');
-    Route::post('/peopleentities/{id}/get', [PeopleEntitiesController::class, 'getPersonEntity'])->name('peopleentities.get');
+    Route::post('/peopleentities/get', [PeopleEntitiesController::class, 'getPersonEntity'])->name('peopleentities.get');
     Route::post('/peopleentities/datatablesPersonas', [PeopleEntitiesController::class, 'datatablesPersonas'])->name('peopleentities.datatablesPersonas');
 
     Route::post('/provinces/{id}', [ProvincesController::class, 'show'])->name('provinces.show')->middleware('auth');
@@ -87,6 +88,7 @@ Route::prefix('admin')->group(function (){
     Route::put('/establishment/updateTab2/{id?}', [EstablishmentController::class, 'updateTab2'])->name('establishments.updateTab2');
     Route::post('/establishments/datatablesPersonas', [EstablishmentController::class, 'datatablesPersonas'])->name('establishments.datatablesPersonas');
     Route::post('/establishments/datatables', [EstablishmentController::class, 'datatables'])->name('establishments.datatables');
+    Route::post('/establishments/datatablescerrados', [EstablishmentController::class, 'datatablescerrados'])->name('establishments.datatablescerrados');
     Route::post('/establishments/datatablesEstablishmentLiquidation', [EstablishmentController::class, 'datatablesEstablishmentLiquidation'])->name('establishments.datatablesEstablishmentLiquidation');
 
     Route::post('/travelhotelsdetail/{id?}', [TravelHotelsDetailController::class, 'store'])->name('travelhotelsdetail.store');
@@ -116,13 +118,17 @@ Route::prefix('admin')->group(function (){
     Route::post('/pay', [PayController::class, 'store'])->name('pay.store');
     Route::get('/pay/voucher/{id}', [PayController::class, 'voucher'])->name('pay.voucher');
     Route::get('/pay', [PayController::class, 'index'])->name('pay.index');
+    Route::post('/pay/datatables', [PayController::class, 'datatables'])->name('pay.datatables');
+    Route::post('/pay/details', [PayController::class, 'getPaymentDetail'])->name('detail.pago');
+    Route::post('/pay/cancel', [PayController::class, 'cancel'])->name('cancel.pago');
 
     Route::get('/luaf', [LuafTableController::class, 'index'])->name('luaf.index')->middleware('auth');
     Route::post('/luaf', [LuafTableController::class, 'store'])->name('luaf.store');
     Route::get('/luaf/documentation', [LuafTableController::class, 'documentation'])->name('luaf.documentation');
 
     Route::get('/countries', function(){
-
+        $Pay = Pay::with(['liquidation'])->where('id',27)->get();
+        return Pay::find(27)->liquidation;
     });
 });
 

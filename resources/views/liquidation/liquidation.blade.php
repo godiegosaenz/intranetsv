@@ -205,8 +205,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -300,19 +299,19 @@
                                                 <div class="form-group row">
                                                     <label for="inputValorRecibido" class="col-sm-4 col-form-label">* Valor recibido: </label>
                                                     <div class="col-sm-8">
-                                                    <input type="email" class="form-control" id="inputValorRecibido" name="inputValorRecibido" placeholder="0.00">
+                                                    <input type="number" class="form-control" id="inputValorRecibido" name="inputValorRecibido" placeholder="0.00" onkeyup="calcularCambio()">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="inputValorCobrar" class="col-sm-4 col-form-label">* Valor a cobrar: </label>
                                                     <div class="col-sm-8">
-                                                    <input type="email" class="form-control" id="inputValorCobrar" name="inputValorCobrar" placeholder="0.00">
+                                                    <input type="number" class="form-control" id="inputValorCobrar" name="inputValorCobrar" placeholder="0.00">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="inputCambio" class="col-sm-4 col-form-label">* Cambio: </label>
                                                     <div class="col-sm-8">
-                                                    <input type="email" class="form-control" id="inputCambio" name="inputCambio" placeholder="0.00">
+                                                    <input type="number" class="form-control" id="inputCambio" name="inputCambio" placeholder="0.00">
                                                     </div>
                                                 </div>
                                             </div>
@@ -456,6 +455,7 @@
                     }
                     let htotal2 = document.getElementById('htotal2');
                     htotal2.innerHTML = 'Valor a Cancelar ' + totalapagar;
+                    document.getElementById('inputValorCobrar').value = totalapagar;
                 }else{
                     console.log('error al consultar al servidor');
                 }
@@ -630,6 +630,14 @@
             return false;
         }
         var inputValorCobrar = document.getElementById('inputValorCobrar');
+        if(inputValorCobrar.value == '' || inputValorCobrar == null){
+            alertPago.setAttribute('style','');
+            alertPago.setAttribute('class','alert alert-warning');
+            alertPago.innerHTML = '¡Advertencia!. Debe llenar el campo valor cobrar';
+            toastr.warning('¡Advertencia!. Debe llenar el campo valor cobrar');
+            overlaymodalpago.setAttribute('style','display:none');
+            return false;
+        }
         var formLiquidaciones = document.getElementById('formLiquidaciones');
         let formData = new FormData(formLiquidaciones);
         formData.append('value',inputValorCobrar.value);
@@ -640,6 +648,7 @@
 
                 if(res.data.estado == 'ok'){
                     var btnImprimirComprobante = document.getElementById('btnImprimirComprobante');
+                    var htotal = document.getElementById('htotal');
                     var establishment_id_2 = document.getElementById('establishment_id_2');
                     var establishment_id = document.getElementById('establishment_id');
                     btnImprimirComprobante.removeAttribute('style');
@@ -652,9 +661,15 @@
                     tbodyLiquidation.innerHTML = '';
                     establishment_id.value = '';
                     establishment_id_2.value = '';
+                    htotal.innerHTML = 'Total a pagar 0.00';
                     //falta descargar el comprobante
                     overlaymodalpago.setAttribute('style','display:none');
                     btnProcesarPago.setAttribute('disabled','disabled');
+                }else if(res.data.estado == 'validacion'){
+                    alertPago.setAttribute('style','');
+                    alertPago.setAttribute('class','alert alert-warning');
+                    alertPago.innerHTML = '¡Advertencia!. Debe llenar el campo valor cobrar';
+                    overlaymodalpago.setAttribute('style','display:none');
                 }else{
                     toastr.error('Atencion. Hubo un error al conectarse al servidor, reporta al administrador de sistemas');
                     alertPago.setAttribute('style','');
@@ -778,6 +793,18 @@
         }).then(function() {
                 //loading.style.display = 'none';
         });
+    }
+    function calcularCambio(){
+        if (event.keyCode === 13) {
+            var overlaymodalpago = document.getElementById('overlaymodalpago');
+            overlaymodalpago.removeAttribute('style');
+            var inputValorRecibido = document.getElementById('inputValorRecibido');
+            var inputValorCobrar = document.getElementById('inputValorCobrar');
+            var inputCambio = document.getElementById('inputCambio');
+            resultado = parseFloat(inputValorRecibido.value - inputValorCobrar.value);
+            inputCambio.value = resultado.toFixed(2);
+            overlaymodalpago.setAttribute('style','display:none');
+        }
     }
     $(function () {
         var Toast = Swal.mixin({

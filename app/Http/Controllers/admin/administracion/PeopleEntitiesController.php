@@ -179,8 +179,8 @@ class PeopleEntitiesController extends Controller
 
     }
 
-    public function getPersonEntity($id) {
-        $PersonEntityData = PersonEntity::where('id', $id)->first();
+    public function getPersonEntity(Request $r) {
+        $PersonEntityData = PersonEntity::where('id', $r->id)->first();
         return $PersonEntityData;
     }
 
@@ -192,12 +192,8 @@ class PeopleEntitiesController extends Controller
 
             //$PersonEntityData = Arr::add($PersonEntityDataTemp,'formRequestPeople', '1');
             return Datatables($PersonEntityData)
-                    ->addColumn('type_person', function ($PersonEntityData) {
-                        if($PersonEntityData->type == 1){
-                            return 'Natural';
-                        }else{
-                            return 'Juridica';
-                        }
+                    ->editColumn('type', function ($PersonEntityData) {
+                        return $PersonEntityData->TypePerson;
                     })
                     ->addColumn('name_tradename', function ($PersonEntityData) {
                         if($PersonEntityData->type == 1){
@@ -214,7 +210,7 @@ class PeopleEntitiesController extends Controller
                         }
                     })
                     ->addColumn('action', function ($PersonEntityData) {
-                        $buttons = '<a onclick="selectedPersonEntity('.$PersonEntityData->id.')" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i></a>';
+                        $buttons = '<a onclick="selectedPersonEntity('.$PersonEntityData->id.',0)" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i></a>';
                         return $buttons;
                     })
                     ->rawColumns(['type_person','name_tradename','last_name_bussines_name','action'])

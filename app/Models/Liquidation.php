@@ -25,6 +25,13 @@ class Liquidation extends Model
         'is_coercive',
     ];
 
+    //estado de liquidacion
+    //1 => pagado
+    //2 => por pagar
+    //3 => dado de baja
+    //4 => convenio
+    //5 => coactiva
+
     public function establishment(){
         return $this->belongsTo(Establishments::class,'establishment_id');
     }
@@ -32,5 +39,9 @@ class Liquidation extends Model
     public function liquidations_rubros()
     {
         return $this->belongsToMany(Rubro::class,'liquidation_rubros','liquidation_id','rubro_id')->withPivot('id','rubro_id','liquidation_id','value','status')->withTimestamps();
+    }
+
+    public function pay(){
+        return $this->hasMany(Pay::class);
     }
 }

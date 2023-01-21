@@ -165,7 +165,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="status2">Estado</label>
-                                                        <input type="text" class="form-control" id="status2" value="{{ old('status',isset($Establishments->people_entities_establishment->status) ? $Establishments->people_entities_establishment->status : '') }}" disabled>
+                                                        <input type="text" class="form-control" id="status2" value="{{ old('status2',isset($Establishments->people_entities_establishment->status) ? $Establishments->people_entities_establishment->status : '') }}" disabled>
 
                                                     </div>
                                                     <div class="form-group">
@@ -183,13 +183,16 @@
                                                     <hr>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <label for="cc_ruc"> Propietario </label>
+                                                    <label for="cc_ruc">* Propietario </label>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                         <button id="modalpropietario" type="button" class="btn btn-primary">Buscar</button>
                                                         </div>
                                                         <!-- /btn-group -->
                                                         <input id="owner_id" name="owner_id" type="text" class="form-control @error('owner_id_2')is-invalid @enderror" value="{{ old('owner_id',isset($Establishments->people_entities_owner->cc_ruc) ? $Establishments->people_entities_owner->cc_ruc : '') }}" disabled>
+                                                        @error('owner_id_2')
+                                                        <span class="error invalid-feedback">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                     <input id="owner_id_2" name="owner_id_2" type="hidden" class="form-control" value="{{ old('owner_id_2',isset($Establishments->owner_id) ? $Establishments->owner_id : '') }}">
                                                     <div class="form-group">
@@ -202,7 +205,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <label for="cc_ruc"> Representante legal *</label>
+                                                    <label for="cc_ruc">* Representante legal</label>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                         <button id="modalrepresentante" type="button" class="btn btn-primary">Buscar</button>
@@ -297,7 +300,6 @@
                                                         <span class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
                                                     </div>
-                                                    {{$Establishments->LocalName}}
                                                     <div class="form-group">
                                                         <label>Lugar de funcionamiento *</label>
                                                         <select id="local" name="local" class="custom-select @error('local') is-invalid @enderror">
@@ -486,7 +488,7 @@
                                                             @endisset
                                                         </select>
                                                     </div>
-
+                                                    {{$ProvinceData}}
                                                     <div class="form-group">
                                                         <label>*Provincia</label>
                                                         <select id="province_id" name="province_id" class="custom-select @error('province_id') is-invalid @enderror">
@@ -498,6 +500,16 @@
                                                                     @else
                                                                         <option value="{{ $p->id }}" {{ $Establishments->province_id == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
                                                                     @endif
+                                                                @endforeach
+                                                            @else
+                                                                @foreach ($ProvinceData as $p)
+                                                                    @isset($p->id)
+                                                                        @if(old('province_id') !== null)
+                                                                            <option value="{{ $p->id }}" {{ old('province_id') == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
+                                                                        @else
+                                                                            <option value="{{ $p->id }}" {{ $Establishments->province_id == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
+                                                                        @endif
+                                                                    @endisset
                                                                 @endforeach
                                                             @endif
                                                         </select>
@@ -517,6 +529,16 @@
                                                                         <option value="{{ $c->id }}" {{ $Establishments->canton_id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
                                                                     @endif
                                                                 @endforeach
+                                                            @else
+                                                                @foreach ($CantonData as $c)
+                                                                    @isset($c->id)
+                                                                        @if(old('canton_id') !== null)
+                                                                            <option value="{{ $c->id }}" {{ old('canton_id') == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                                                                        @else
+                                                                            <option value="{{ $c->id }}" {{ $Establishments->canton_id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                                                                        @endif
+                                                                    @endisset
+                                                                @endforeach
                                                             @endif
                                                         </select>
                                                         @error('canton_id')
@@ -526,7 +548,7 @@
                                                     <div class="form-group">
                                                         <label>*Parroquia</label>
                                                         <select id="parish_id" name="parish_id" class="custom-select @error('parish_id') is-invalid @enderror" >
-                                                            <option value="">Seleccione canton</option>
+                                                            <option value="">Seleccione parroquia</option>
                                                             @if($Establishments->register == 1)
                                                                 @foreach ($ParishData as $pa)
                                                                     @if(old('parish_id') !== null)
@@ -534,6 +556,16 @@
                                                                     @else
                                                                         <option value="{{ $pa->id }}" {{ $Establishments->parish_id == $pa->id ? 'selected' : '' }}>{{ $pa->name }}</option>
                                                                     @endif
+                                                                @endforeach
+                                                            @else
+                                                                @foreach ($ParishData as $pa)
+                                                                    @isset($pa->id)
+                                                                        @if(old('parish_id') !== null)
+                                                                            <option value="{{ $pa->id }}" {{ old('parish_id') == $pa->id ? 'selected' : '' }}>{{ $pa->name }}</option>
+                                                                        @else
+                                                                            <option value="{{ $pa->id }}" {{ $Establishments->parish_id == $pa->id ? 'selected' : '' }}>{{ $pa->name }}</option>
+                                                                        @endif
+                                                                    @endisset
                                                                 @endforeach
                                                             @endif
                                                         </select>
@@ -586,7 +618,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="float-right">
                                                         <button id="btnstep2" class="btn btn-secondary" type="button" onclick="stepprevious()"><i class="fa fa-arrow-left"></i> Anterior </button>
-
+                                                        <button id="btnstepnext4" disabled class="btn btn-secondary" type="button" onclick="stepnext()"><i class="fa fa-arrow-right"></i> Siguiente </button>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12">
@@ -1524,7 +1556,9 @@
                     </div>
                 </div>
             </div>
-
+            <div id="loading_modal" class="overlay dark" style="display: none">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
           </div>
           <!-- /.modal-content -->
         </div>
@@ -1678,7 +1712,7 @@
             },
             "columns": [
                 {data: 'cc_ruc'},
-                {data: 'type_person'},
+                {data: 'type'},
                 {data: 'name_tradename'},
                 {data: 'last_name_bussines_name'},
                 {data: 'status'},
@@ -1700,9 +1734,10 @@
             }).then(function(res) {
                 console.log(res);
                 if(res.status==200) {
-                    tableentities.clear().draw();
+                    //tableentities.clear().draw();
                     let d = res.data;
-                    tableentities.rows.add(d.data).draw();
+                    tableentities.ajax.reload();
+                    //tableentities.rows.add(d.data).draw();
                     loading_modal.style.display = 'none';
                 }
             }).catch(function(err) {
@@ -1791,28 +1826,29 @@
             });
         }
         @endif
-        function selectedPersonEntity(id){
-            let modal = document.getElementById("numbermodal").value;
-            axios.post('/admin/peopleentities/'+id+'/get', {
-            data: {
-            _token: token
+        function selectedPersonEntity(id,modal){
+            let modal2;
+            if(modal == 0){
+                 modal2 = document.getElementById("numbermodal").value;
+            }else{
+                modal2 = modal;
             }
-            }).then(function(res) {
+            axios.post('{{route("peopleentities.get")}}', {id:id,_token: token}).then(function(res) {
                 if(res.status==200) {
                     console.log("cargando personas..."+modal);
                     //let modal = document.getElementById("numbermodal");
-                    if(modal == 1){
-                        console.log(modal);
+                    if(modal2 == 1){
                         establishment_id.value = res.data.cc_ruc;
                         name2.value = res.data.name;
                         email2.value = res.data.email;
                         number_phone1.value = res.data.number_phone1;
-                        last_name.value = res.data.last_name+' '+res.data.maternal_last_name;
+                        last_name.value = res.data.last_name;
                         status.value = res.data.status;
                         address.value = res.data.address;
 
                         establishment_id_2.value = res.data.id;
-                    }else if(modal == 2){
+                        console.log(res.data.id);
+                    }else if(modal2 == 2){
                         name_p.value = res.data.name;
                         last_name_p.value = res.data.last_name;
                         owner_id.value = res.data.cc_ruc;
@@ -2059,7 +2095,40 @@
             });
             @if ($errors->any())
                 toastr.error('Revise los campos que son obligatorios');
-                selectedPersonEntity($('input[name="establishment_id_2"]').val());
+                @if($errors->has('establishment_id_2'))
+                let estab = $('input[name="establishment_id_2"]').val();
+                if(estab > 0){
+                    selectedPersonEntity(estab,1);
+                }
+                @else
+                let estab = $('input[name="establishment_id_2"]').val();
+                if(estab > 0){
+                    selectedPersonEntity(estab,1);
+                }
+                @endif
+                @if($errors->has('owner_id_2'))
+                let estab2 = $('input[name="owner_id_2"]').val();
+                if(estab2 > 0){
+                    selectedPersonEntity(estab2,2);
+                }
+                @else
+                let estab2 = $('input[name="owner_id_2"]').val();
+                if(estab2 > 0){
+                    selectedPersonEntity(estab2,2);
+                }
+                @endif
+                @if($errors->has('legal_representative_id_2'))
+                let estab3 = $('input[name="legal_representative_id_2"]').val();
+                if(estab3 > 0){
+                    selectedPersonEntity(estab3,3);
+                }
+                @else
+                let estab3 = $('input[name="legal_representative_id_2"]').val();
+                if(estab3 > 0){
+                    selectedPersonEntity(estab3,3);
+                }
+                @endif
+
             @endif
             @error('people_entities_id')
                 toastr.error('{{$message}}');
