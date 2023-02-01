@@ -488,7 +488,7 @@
                                                             @endisset
                                                         </select>
                                                     </div>
-                                                    {{$ProvinceData}}
+
                                                     <div class="form-group">
                                                         <label>*Provincia</label>
                                                         <select id="province_id" name="province_id" class="custom-select @error('province_id') is-invalid @enderror">

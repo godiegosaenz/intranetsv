@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-header title="Recaudación">
-        <li class="breadcrumb-item active">Emision de titulos</li>
+        <li class="breadcrumb-item active">Recaudacion</li>
     </x-header>
      <!-- Main content -->
   <div class="content">

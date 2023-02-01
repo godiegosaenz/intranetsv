@@ -488,8 +488,14 @@ class EstablishmentController extends Controller
                 ->addColumn('action', function ($Establishments) {
 
                     $buttons = '';
-                    $buttons .= '<a href="'.route('establishments.show',$Establishments).'" class="btn btn-success btn-sm"><i class="far fa-eye"></i> Ver</a> ';
-                    $buttons .= '<a href="'.route('establishments.edit',$Establishments).'" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i> Editar</a>';
+                    $buttons .= '<div class="btn-group">
+                                    <a href="'.route('establishments.show',$Establishments).'" class="btn btn-success">
+                                    <i class="far fa-eye"></i>
+                                    </a>
+                                    <a href="'.route('establishments.edit',$Establishments).'" class="btn btn-primary">
+                                    <i class="fas fa-pen"></i>
+                                    </a>
+                                </div>';
                     return $buttons;
                 })
                 ->rawColumns(['status','has_requeriment','action'])
@@ -497,14 +503,16 @@ class EstablishmentController extends Controller
     }
 
     public function datatablescerrados(){
-        $Establishments = Establishments::with(['people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements','establishments_categories','Countries','provinces','cantons','parishes','rooms_hotels','establishment_services'])->where('status',1)->get();
+        $Establishments = Establishments::with(['people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements','establishments_categories','Countries','provinces','cantons','parishes','rooms_hotels','establishment_services'])->whereIn('status',[2,3])->get();
         //$Establishments = Establishments::all();
         return Datatables($Establishments)
                 ->editColumn('status', function ($Establishments) {
                     if($Establishments->status == 1){
                         return '<span class="badge bg-success">Abierto</span>';
-                    }else{
+                    }else if($Establishments->status == 2){
                         return '<span class="badge bg-danger">Cerrado</span>';
+                    }else{
+                        return '<span class="badge bg-warning">Incompleto</span>';
                     }
                 })
                 /*->editColumn('has_requeriment', function ($Establishments) {
@@ -514,6 +522,48 @@ class EstablishmentController extends Controller
                         return '<span class="badge bg-danger">Pendientes</span>';
                     }
                 })*/
+                ->addColumn('country', function ($Establishments) {
+                    return $Establishments->countries->name;
+                })
+                ->addColumn('province', function ($Establishments) {
+                    return $Establishments->provinces->name;
+                })
+                ->addColumn('canton', function ($Establishments) {
+                    return $Establishments->cantons->name;
+                })
+                ->addColumn('parish', function ($Establishments) {
+                    return $Establishments->parishes->name;
+                })
+                ->addColumn('action', function ($Establishments) {
+
+                    $buttons = '';
+                    $buttons .= '<div class="btn-group">
+                                    <a href="'.route('establishments.edit',$Establishments).'" class="btn btn-primary">
+                                    <i class="fas fa-pen"></i>
+                                    </a>
+                                </div>';
+                    //$buttons .= '<a href="'.route('establishments.show',$Establishments).'" class="btn btn-success btn-sm"><i class="far fa-eye"></i> Ver</a> ';
+                    //$buttons .= '<a href="'.route('establishments.edit',$Establishments).'" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i> Editar</a>';
+                    return $buttons;
+                })
+                ->rawColumns(['status','has_requeriment','action'])
+                ->make(true);
+    }
+
+    public function datatablesEstablishmentLiquidation(){
+        $Establishments = Establishments::with(['tourist_activities','establishments_classifications','people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements','establishments_categories','Countries','provinces','cantons','parishes','rooms_hotels','establishment_services'])->where('status',1)->get();
+        //$Establishments = Establishments::all();
+        return Datatables($Establishments)
+                ->addColumn('ruc', function ($Establishments) {
+                    return $Establishments->people_entities_establishment->cc_ruc;
+                })
+                ->editColumn('has_requeriment', function ($Establishments) {
+                    if($Establishments->has_requeriment == true){
+                        return '<span class="badge bg-success">Completos</span>';
+                    }else{
+                        return '<span class="badge bg-danger">Pendientes</span>';
+                    }
+                })
                 ->addColumn('country', function ($Establishments) {
                     return $Establishments->countries->name;
                 })
@@ -540,24 +590,6 @@ class EstablishmentController extends Controller
                 })
                 ->addColumn('category', function ($Establishments) {
                     return $Establishments->establishments_categories->name;
-                })
-                ->addColumn('action', function ($Establishments) {
-
-                    $buttons = '';
-                    $buttons .= '<a href="'.route('establishments.show',$Establishments).'" class="btn btn-success btn-sm"><i class="far fa-eye"></i> Ver</a> ';
-                    $buttons .= '<a href="'.route('establishments.edit',$Establishments).'" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i> Editar</a>';
-                    return $buttons;
-                })
-                ->rawColumns(['status','has_requeriment','action'])
-                ->make(true);
-    }
-
-    public function datatablesEstablishmentLiquidation(){
-        $Establishments = Establishments::with(['people_entities_establishment','people_entities_owner','people_entities_legal_representative','requirements','establishments_categories','Countries','provinces','cantons','parishes','rooms_hotels','establishment_services'])->whereIn('status',[2,3])->get();
-        //$Establishments = Establishments::all();
-        return Datatables($Establishments)
-                ->addColumn('ruc', function ($Establishments) {
-                    return $Establishments->people_entities_establishment->cc_ruc;
                 })
                 ->addColumn('action', function ($Establishments) {
 

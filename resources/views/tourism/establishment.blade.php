@@ -28,55 +28,48 @@
                   <div class="tab-content" id="custom-tabs-one-tabContent">
                     <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
                         @csrf
-                        <div class="table-responsive">
-                            <table id="establishment-table" class="table table-sm table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>estado</th>
-                                    <th>Tipo de actividad</th>
-                                    <th>Clasificacion</th>
-                                    <th>Categoria</th>
-                                    <th>Inicio de actividad</th>
-                                    <th>Tipo de establecimiento</th>
-                                    <th>Tipo de Local</th>
-                                    <th>País </th>
-                                    <th>Provincia </th>
-                                    <th>Canton </th>
-                                    <th>Parroquia </th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
-                        <div class="table-responsive">
-                            <table id="establishment-table-cerrado" class="table table-sm table-bordered table-hover">
+                        <table id="establishment-table" class="table table-sm table-bordered table-hover" cellpacing="0">
                             <thead>
                             <tr>
+                                <th>Acciones</th>
                                 <th>Nombre</th>
                                 <th>estado</th>
-                                <th>Inicio de actividad</th>
-                                <th>Tipo de establecimiento</th>
+                                <th>Tipo de actividad</th>
+                                <th>Clasificacion</th>
+                                <th>Categoria</th>
                                 <th>Tipo de Local</th>
                                 <th>País </th>
                                 <th>Provincia </th>
                                 <th>Canton </th>
                                 <th>Parroquia </th>
-                                <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
 
                             </tbody>
 
-                            </table>
-                        </div>
+                        </table>
+
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                        <table id="establishment-table-cerrado" class="table table-sm table-bordered table-hover" cellpacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>Acciones</th>
+                            <th>Nombre</th>
+                            <th>estado</th>
+                            <th>País </th>
+                            <th>Provincia </th>
+                            <th>Canton </th>
+                            <th>Parroquia </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+
+                        </table>
+
                     </div>
 
                   </div>
@@ -98,10 +91,9 @@
             "language" : {
                 "url": '{{ url("/js/spanish.json") }}',
             },
-            "scroller": true,
-            "scrollX": true,
-            "autoWidth": true,
-            "order": [], //Initial no order
+
+            "responsive": true,
+            "autoWidth": false,
             "processing" : true,
             "serverSide": true,
             "ajax": {
@@ -111,20 +103,18 @@
                     d._token = $("input[name=_token]").val();
                 }
             },
-            "columns": [
-                {data: 'name', 'width': '150px', 'targets': 0},
-                {data: 'status'},
-                {data: 'tourist_activity', 'width': '120px', 'targets': 2},
-                {data: 'classification' , 'width': '120px', 'targets': 3},
-                {data: 'category', 'width': '120px', 'targets': 4},
-                {data: 'start_date', 'width': '100px', 'targets': 5},
-                {data: 'EstablishmentTypeName'},
-                {data: 'LocalName'},
-                {data: 'country', 'width': '100px', 'targets': 8},
-                {data: 'province', 'width': '100px', 'targets': 9},
-                {data: 'canton', 'width': '100px', 'targets': 10},
-                {data: 'parish', 'width': '200px', 'targets': 11},
-                {data: 'action', 'width': '150px', 'targets': 12 , name: 'action', orderable: false, searchable: false},
+            "columnDefs": [
+                {data: 'action','targets': 0, "visible": true, 'width': '200px'},
+                {data: 'name','width': '1000px', 'targets': 1},
+                {data: 'status','targets': 2},
+                {data: 'tourist_activity','width': '500px', 'targets': 3},
+                {data: 'classification','width': '120px', 'targets': 4},
+                {data: 'category','width': '120px', 'targets': 5},
+                {data: 'LocalName','width': '100px', 'targets': 6},
+                {data: 'country','width': '100px', 'targets': 7},
+                {data: 'province','width': '100px', 'targets': 8},
+                {data: 'canton','width': '100px', 'targets': 9},
+                {data: 'parish','width': '100px', 'targets': 10},
 
             ]
         });
@@ -133,10 +123,8 @@
             "language" : {
                 "url": '{{ url("/js/spanish.json") }}',
             },
-            "scrollX": true,
-            "deferRender": true,
-            "scroller": true,
-            "autoWidth": true,
+            "responsive": true,
+            //"scroller": true,
             "order": [], //Initial no order
             "processing" : true,
             "serverSide": true,
@@ -148,21 +136,20 @@
                 }
             },
             "columns": [
-                {data: 'name', 'width': '150px', 'targets': 0},
-                {data: 'status'},
-                {data: 'start_date', 'width': '100px', 'targets': 5},
-                {data: 'EstablishmentTypeName'},
-                {data: 'LocalName'},
-                {data: 'country', 'width': '100px', 'targets': 8},
-                {data: 'province', 'width': '100px', 'targets': 9},
-                {data: 'canton', 'width': '100px', 'targets': 10},
-                {data: 'parish', 'width': '200px', 'targets': 11},
-                {data: 'action', 'width': '150px', 'targets': 12 , name: 'action', orderable: false, searchable: false},
+                {data: 'action', 'width': '150px', 'targets': 0 , name: 'action', orderable: false, searchable: false},
+                {data: 'name', 'width': '150px', 'targets': 1},
+                {data: 'status', 'targets': 2},
+                {data: 'country', 'width': '100px', 'targets': 3},
+                {data: 'province', 'width': '100px', 'targets': 4},
+                {data: 'canton', 'width': '100px', 'targets': 5},
+                {data: 'parish', 'width': '200px', 'targets': 6},
 
             ]
         });
         $('a[data-toggle="pill"]').on('shown.bs.tab', function(e){
-            establishmenttablecerrado.scroller.measure();
+            $($.fn.dataTable.tables(true)).DataTable()
+                .columns.adjust()
+                .responsive.recalc();
         });
     });
     </script>
