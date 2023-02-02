@@ -45,8 +45,9 @@ class CantonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show(Request $request)
     {
+        $id = $request->province_id;
         $cookie_canton = $request->cookie('canton_id');
         $CantonData = Canton::where('province_id',$id)->get();
         $CantonOption = '<option value="">Seleccione Canton</option>';

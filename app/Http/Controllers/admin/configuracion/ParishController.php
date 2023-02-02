@@ -45,8 +45,9 @@ class ParishController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show(Request $request)
     {
+        $id = $request->canton_id;
         $cookie_parish = $request->cookie('parish_id');
         $ParishData = Parish::where('canton_id',$id)->get();
         $ParishOption = '<option value="">Seleccione Parroquia</option>';

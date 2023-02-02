@@ -1776,10 +1776,9 @@
             loadCategories(selectedOption.value);
         });
         function loadClassifications(tourist_activity_id){
-            axios.post('/admin/establishmentclassification/'+tourist_activity_id, {
-            data: {
+            axios.post('{{ route("establishmentclassification.get") }}', {
             _token: token,
-            }
+            tourist_activity_id:tourist_activity_id
             }).then(function(res) {
                 if(res.status==200) {
                     console.log("cargando clasificaciones");
@@ -1801,10 +1800,9 @@
             });
         }
         function loadCategories(classification_id){
-            axios.post('/admin/establishmentcategory/'+classification_id, {
-            data: {
-            _token: token
-            }
+            axios.post('{{ route("establishmentcategory.show") }}', {
+            _token: token,
+            classification_id:classification_id
             }).then(function(res) {
                 if(res.status==200) {
                     console.log("cargando categorias");
@@ -1908,10 +1906,9 @@
             loadParish(selectedOption2.value)
         });
         function loadPronvices(country_id){
-            axios.post('/admin/provinces/'+country_id, {
-            data: {
+            axios.post('{{ route("provinces.show")}}', {
+            country_id:country_id,
             _token: token
-            }
             }).then(function(res) {
                 if(res.status==200) {
                     console.log("cargando pronvias");
@@ -1926,10 +1923,9 @@
             });
         }
         function loadCantos(province_id){
-            axios.post('/admin/cantons/'+province_id, {
-            data: {
-            _token: token
-            }
+            axios.post('{{ route("cantons.show")}}', {
+            _token: token,
+            province_id:province_id
             }).then(function(res2) {
                 if(res2.status==200) {
                     console.log("cargando cantones");
@@ -1944,10 +1940,9 @@
             });
         }
         function loadParish(canton_id){
-            axios.post('/admin/parishes/'+canton_id, {
-            data: {
-            _token: token
-            }
+            axios.post('{{ route("parishes.show")}}', {
+            _token: token,
+            canton_id:canton_id
             }).then(function(res2) {
                 if(res2.status==200) {
                     console.log("cargando cantones");
@@ -2001,7 +1996,6 @@
                         },
                         registry_number: {
                             required: true,
-                            number: true
                         },
                         organization_type: {
                             required: true,

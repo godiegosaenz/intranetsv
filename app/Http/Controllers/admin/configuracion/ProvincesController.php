@@ -46,8 +46,9 @@ class ProvincesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $r)
     {
+        $id = $r->input('country_id');
         $cookie_province = Cookie::get('province_id');//Cookie::get('province_id');
         $ProvinceData = Province::where('country_id',$id)->get();
         $ProvinceOption = '<option value="">Seleccione Provincia</option>';

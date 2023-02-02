@@ -45,8 +45,9 @@ class EstablishmentClassificationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show(Request $request)
     {
+        $id = $request->tourist_activity_id;
         $cookie_Classification = $request->cookie('establishment_classification_id');
         $EstablishmentClassificationData = EstablishmentClassification::where('tourist_activity_id',$id)->get();
         $EstablishmentClassificationDataOption = '<option value="">Seleccione Clasificacion</option>';

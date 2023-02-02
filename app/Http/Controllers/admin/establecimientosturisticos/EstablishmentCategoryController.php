@@ -47,8 +47,9 @@ class EstablishmentCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show(Request $request)
     {
+        $id = $$request->classification_id;
         //se obtiene las categorias que tienen el id classificacion, se valida en la tabla classificationcategory
         $EstablishmentCategoryDataOption = '<option value="">Seleccione Categoria</option>';
         $classificationcategory = ClassificationCategory::select('category_id')->where('classification_id',$id)->get()->toArray();

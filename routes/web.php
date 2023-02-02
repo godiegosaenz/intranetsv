@@ -67,9 +67,9 @@ Route::prefix('admin')->group(function (){
     Route::post('/peopleentities/get', [PeopleEntitiesController::class, 'getPersonEntity'])->name('peopleentities.get');
     Route::post('/peopleentities/datatablesPersonas', [PeopleEntitiesController::class, 'datatablesPersonas'])->name('peopleentities.datatablesPersonas');
 
-    Route::post('/provinces/{id}', [ProvincesController::class, 'show'])->name('provinces.show')->middleware('auth');
-    Route::post('/cantons/{id}', [CantonController::class, 'show'])->name('cantons.show')->middleware('auth');
-    Route::post('/parishes/{id}', [ParishController::class, 'show'])->name('parishes.show')->middleware('auth');
+    Route::post('/provinces', [ProvincesController::class, 'show'])->name('provinces.show')->middleware('auth');
+    Route::post('/cantons', [CantonController::class, 'show'])->name('cantons.show')->middleware('auth');
+    Route::post('/parishes/{id?}', [ParishController::class, 'show'])->name('parishes.show')->middleware('auth');
 
     Route::get('/culturalmanagers', [CulturalManagerController::class, 'index'])->name('culturalmanagers.index')->middleware('auth');
     Route::get('/culturalmanagers/create/{id?}', [CulturalManagerController::class, 'create'])->name('culturalmanagers.create')->middleware('auth');
@@ -97,8 +97,8 @@ Route::prefix('admin')->group(function (){
     Route::post('/establishmentservices/{id?}', [EstablismentServicesController::class, 'store'])->name('establishmentservices.store');
     Route::delete('/establishmentservices/{id?}', [EstablismentServicesController::class, 'destroy'])->name('establishmentservices.destroy');
 
-    Route::post('/establishmentclassification/{id}', [EstablishmentClassificationController::class, 'show'])->name('establishmentclassification.show')->middleware('auth');
-    Route::post('/establishmentcategory/{id}', [EstablishmentCategoryController::class, 'show'])->name('establishmentcategory.show')->middleware('auth');
+    Route::post('/establishmentclassification', [EstablishmentClassificationController::class, 'show'])->name('establishmentclassification.get')->middleware('auth');
+    Route::post('/establishmentcategory', [EstablishmentCategoryController::class, 'show'])->name('establishmentcategory.show')->middleware('auth');
 
     Route::post('/establishmentrequirement', [EstablishmentRequirementController::class, 'store'])->name('establishmentrequirement.store');
     Route::post('/establishmentrequirement/datatables/{id?}', [EstablishmentRequirementController::class, 'datatables'])->name('establishmentrequirement.datatables');
