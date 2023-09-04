@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\admin\Auth\LoginController;
+use App\Http\Controllers\admin\auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\admin\configuracion\UserController;
 use App\Http\Controllers\admin\configuracion\RolesController;
