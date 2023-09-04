@@ -127,8 +127,8 @@ Route::prefix('admin')->group(function (){
     Route::get('/luaf/documentation', [LuafTableController::class, 'documentation'])->name('luaf.documentation');
 
     Route::get('/countries', function(){
-        $Pay = Pay::with(['liquidation'])->where('id',27)->get();
-        return Pay::find(27)->liquidation;
+        //$Pay = Pay::with(['liquidation'])->where('id',27)->get();
+        return 'funciona';
     });
 });
 
