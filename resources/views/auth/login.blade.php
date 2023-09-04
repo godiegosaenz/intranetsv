@@ -16,7 +16,7 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Ingresa tus credenciales para iniciar sesión</p>
+      <p class="login-box-msg">Ingresa tus credenciales para iniciar sesión v1</p>
       <form action="{{route('login')}}" method="post">
         @csrf
         <div class="form-group">
