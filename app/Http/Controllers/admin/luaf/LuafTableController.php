@@ -4,12 +4,12 @@ namespace App\Http\Controllers\admin\luaf;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\models\TouristActivity;
-use App\models\LuafTable;
+use App\Models\TouristActivity;
+use App\Models\LuafTable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cookie;
-use App\models\EstablishmentClassification;
-use App\models\EstablishmentCategory;
+use App\Models\EstablishmentClassification;
+use App\Models\EstablishmentCategory;
 use App\Models\ClassificationCategory;
 
 class LuafTableController extends Controller

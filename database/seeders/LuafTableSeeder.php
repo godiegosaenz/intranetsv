@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\models\LuafTable;
+use App\Models\LuafTable;
 
 class LuafTableSeeder extends Seeder
 {

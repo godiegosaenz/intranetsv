@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin\liquidacion;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\models\Liquidation;
+use App\Models\Liquidation;
 use App\Models\Interes;
 use Illuminate\Database\Eloquent\Collection;
 

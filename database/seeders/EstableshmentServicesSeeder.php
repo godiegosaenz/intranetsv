@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\models\EstableshmentServices;
+use App\Models\EstableshmentServices;
 
 class EstableshmentServicesSeeder extends Seeder
 {

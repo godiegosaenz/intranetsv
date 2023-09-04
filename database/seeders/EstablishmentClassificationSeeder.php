@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\models\EstablishmentClassification;
+use App\Models\EstablishmentClassification;
 
 class EstablishmentClassificationSeeder extends Seeder
 {

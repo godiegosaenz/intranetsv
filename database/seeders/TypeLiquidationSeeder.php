@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\models\TypeLiquidation;
+use App\Models\TypeLiquidation;
 
 class TypeLiquidationSeeder extends Seeder
 {

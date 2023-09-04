@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\models\Catalogue_SBU;
+use App\Models\Catalogue_SBU;
 
 class CatalogueSBUSeeder extends Seeder
 {

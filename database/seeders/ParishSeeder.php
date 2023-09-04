@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\models\Parish;
+use App\Models\Parish;
 
 class ParishSeeder extends Seeder
 {
