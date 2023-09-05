@@ -294,7 +294,7 @@
             "processing" : true,
             "serverSide": true,
             "ajax": {
-                "url" : "{{ route('culturalmanagers.datatablesPersonas') }}",
+                "url" : "{{ route('users.datatables') }}",
                 "type": "post",
                 "data": function (d){
                     d._token = $("input[name=_token]").val();

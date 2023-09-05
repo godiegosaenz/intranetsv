@@ -4,9 +4,9 @@ namespace App\Http\Controllers\admin\establecimientosturisticos;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\models\TravelHotelDetail;
+use App\Models\TravelHotelDetail;
 use Illuminate\Support\Facades\Validator;
-use App\models\Establishments;
+use App\Models\Establishments;
 
 class TravelHotelsDetailController extends Controller
 {
