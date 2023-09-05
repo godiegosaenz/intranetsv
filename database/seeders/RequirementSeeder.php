@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\models\Requirement;
+use App\Models\Requirement;
 
 class RequirementSeeder extends Seeder
 {
