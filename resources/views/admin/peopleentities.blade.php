@@ -83,7 +83,7 @@
                   </div>
                   <!-- /.tab-content -->
                 </div><!-- /.card-body -->
-              </div>
+            </div>
               <!-- ./card -->
         </div>
       </div>

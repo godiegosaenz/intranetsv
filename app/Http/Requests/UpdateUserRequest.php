@@ -62,4 +62,9 @@ class UpdateUserRequest extends FormRequest
             'status' => filled($this->status),
         ]);*/
     }
+
+    protected function passedValidation()
+    {
+        $this->replace(['password' => bcrypt($this->input('password')) ]);
+    }
 }

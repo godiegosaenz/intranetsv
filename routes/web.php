@@ -66,6 +66,7 @@ Route::prefix('admin')->group(function (){
     Route::put('/peopleentities/{PersonEntity}', [PeopleEntitiesController::class, 'update'])->name('peopleentities.update');
     Route::post('/peopleentities/get', [PeopleEntitiesController::class, 'getPersonEntity'])->name('peopleentities.get');
     Route::post('/peopleentities/datatablesPersonas', [PeopleEntitiesController::class, 'datatablesPersonas'])->name('peopleentities.datatablesPersonas');
+    Route::post('/peopleentities/datatablesPersonUser', [PeopleEntitiesController::class, 'datatables_people_user'])->name('peopleentities.datatablesPersonUser');
 
     Route::post('/provinces', [ProvincesController::class, 'show'])->name('provinces.show')->middleware('auth');
     Route::post('/cantons', [CantonController::class, 'show'])->name('cantons.show')->middleware('auth');

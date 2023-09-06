@@ -63,6 +63,9 @@
                                             <input type="email" class="form-control" id="email" value="{{ old('email2',$PersonEntityData->email) }}" disabled>
 
                                         </div>
+
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="status2">Estado</label>
                                             <input type="text" class="form-control" id="status2" value="{{ old('status2',$PersonEntityData->status) }}" disabled>
@@ -74,28 +77,6 @@
 
                                         </div>
 
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="country_id">Pais</label>
-                                            <input type="text" class="form-control" id="country_id" value="{{ isset($PersonEntityData->countries->name) ? $PersonEntityData->countries->name : '' }}" disabled>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="province_id">Provincia</label>
-                                            <input type="text" class="form-control" id="province_id" value="{{ isset($PersonEntityData->provinces->name) ? $PersonEntityData->provinces->name : ''}}" disabled>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="canton_id">Canton</label>
-                                            <input type="text" class="form-control" id="canton_id" value="{{ isset($PersonEntityData->provinces->name) ? $PersonEntityData->cantons->name : '' }}" disabled>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="parish_id">Parroquia</label>
-                                            <input type="text" class="form-control" id="parish_id" value="{{ isset($PersonEntityData->provinces->name) ? $PersonEntityData->parishes->name : '' }}" disabled>
-
-                                        </div>
                                         <div class="form-group">
                                             <label for="address">Direccion</label>
                                             <input type="email" class="form-control" id="address" value="{{ old('address',$PersonEntityData->address) }}" disabled>
@@ -183,8 +164,7 @@
                     <tr>
                       <th>Cedula/Ruc</th>
                       <th>Nombres</th>
-                      <th>Apellido 1</th>
-                      <th>Apellido 2</th>
+                      <th>Apellidos</th>
                       <th>Estado</th>
                       <th>Correo</th>
                       <th>Acciones</th>
@@ -196,8 +176,7 @@
                     <tr>
                       <th>Cedula/Ruc</th>
                       <th>Nombres</th>
-                      <th>Apellido 1</th>
-                      <th>Apellido 2</th>
+                      <th>Apellidos</th>
                       <th>Estado</th>
                       <th>Correo</th>
                       <th>Acciones</th>
@@ -227,24 +206,14 @@
         let status = document.getElementById('status2');
         let address = document.getElementById('address');
         let number_phone1 = document.getElementById('number_phone1');
-        let country_id = document.getElementById('country_id');
-        let province_id = document.getElementById('province_id');
-        let canton_id = document.getElementById('canton_id');
-        let parish_id = document.getElementById('parish_id');
         let people_entities_id = document.getElementById('people_entities_id');
 
 
         let token = "{{csrf_token()}}";
 
         function selectedPersonEntity(id){
-            axios.post('/admin/peopleentities/'+id+'/get', {
-            data: {
-            _token: token
-            }
-            }).then(function(res) {
+            axios.post('{{route("peopleentities.get")}}', {id:id,_token: token}).then(function(res) {
                 if(res.status==200) {
-                    console.log("cargando pronvias");
-                    console.log(res.data);
                     cc_ruc.value = res.data.cc_ruc;
                     name2.value = res.data.name;
                     email.value = res.data.email;
@@ -252,10 +221,6 @@
                     last_name.value = res.data.last_name+' '+res.data.maternal_last_name;
                     status.value = res.data.status;
                     address.value = res.data.address;
-                    country_id.value = res.data.countries.name;
-                    province_id.value = res.data.provinces.name;
-                    canton_id.value = res.data.cantons.name;
-                    parish_id.value = res.data.parishes.name;
                     people_entities_id.value = res.data.id;
                     $('#modal-lg').modal('hide');
                     loading.style.display = 'none';
@@ -294,7 +259,7 @@
             "processing" : true,
             "serverSide": true,
             "ajax": {
-                "url" : "{{ route('users.datatables') }}",
+                "url" : "{{ route('peopleentities.datatablesPersonUser') }}",
                 "type": "post",
                 "data": function (d){
                     d._token = $("input[name=_token]").val();
@@ -304,7 +269,6 @@
                 {data: 'cc_ruc'},
                 {data: 'name'},
                 {data: 'last_name'},
-                {data: 'maternal_last_name'},
                 {data: 'status'},
                 {data: 'email'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},

@@ -218,4 +218,19 @@ class PeopleEntitiesController extends Controller
         }
 
     }
+
+    public function datatables_people_user(Request $request){
+        if ($request->ajax()) {
+            //$peopleEntitiesdata = PersonEntity::find(auth()->user()->id);
+            $PersonEntityData = PersonEntity::where('status',1)->get();
+            //$PersonEntityData = Arr::add($PersonEntityDataTemp,'formRequestPeople', '1');
+            return Datatables($PersonEntityData)
+                    ->addColumn('action', function ($PersonEntityData) {
+                        $buttons = '<a onclick="selectedPersonEntity('.$PersonEntityData->id.')" class="btn btn-dark btn-sm"><i class="fa fa-trash-alt"></i>seleccionar</a>';
+                        return $buttons;
+                    })
+                    ->make(true);
+        }
+
+    }
 }

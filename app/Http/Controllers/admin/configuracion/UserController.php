@@ -50,10 +50,14 @@ class UserController extends Controller
     }
 
     public function store(SaveUserRequest $request){
-        //$registerUser = Arr::add($request->validated(),'password',bcrypt($request->dni.$request->lastname));
-        $usercreate = User::create($request->validated());
-        //UserWasCreated::dispatch($usercreate,$usercreate->password);
-        return redirect()->route('users.edit', ['user' => $usercreate])->with('status', 'El usuario '.$request->name.' se ha registrado satisfactoriamente');
+        $User = new User;
+        $User->name = $request->name;
+        $User->email = $request->email;
+        $User->status = $request->status;
+        $User->password = bcrypt($request->password);
+        $User->people_entities_id = $request->people_entities_id;
+        $User->save();
+        return redirect()->route('users.edit', ['user' => $User])->with('status', 'El usuario '.$request->name.' se ha registrado satisfactoriamente');
     }
 
     public function show(User $user){
@@ -92,6 +96,7 @@ class UserController extends Controller
 
     public function update(User $user,UpdateUserRequest $request){
         $user->update($request->validated());
+
         $tabusuario = cookie('tabusuario', '1');
         //Cache::put('tabusuario', 1);
         return back()->with('status',  'El usuario '.$request->name.' se ha actualizado satisfactoriamente')->cookie($tabusuario);
@@ -114,6 +119,18 @@ class UserController extends Controller
             //}
 
             return Datatables($users)
+                    ->addColumn('cc_ruc', function ($users) {
+                        $cc_ruc = $users->person_entity->cc_ruc;
+                        return $cc_ruc;
+                    })
+                    ->addColumn('name_person', function ($users) {
+                        $name = $users->person_entity->name;
+                        return $name;
+                    })
+                    ->addColumn('lastname_person', function ($users) {
+                        $name = $users->person_entity->last_name;
+                        return $name;
+                    })
                     ->addColumn('action', function ($users) {
                         $buttons = '<a href="'.route('users.show',['user' => $users]).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a> ';
                         $buttons .= '<a href="'.route('users.edit',['user' => $users]).'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a> ';
