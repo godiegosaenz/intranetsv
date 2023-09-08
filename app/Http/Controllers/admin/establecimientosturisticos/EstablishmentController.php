@@ -49,7 +49,7 @@ class EstablishmentController extends Controller
         $this->authorize('create', $Establishments);
         $PersonEntityData = new PersonEntity();
         $Establishments = new Establishments();
-        $touristActivity = TouristActivity::all();
+        //$touristActivity = TouristActivity::all();
         $establishmentClassification = new EstablishmentClassification();
         $establishmentCategory = new EstablishmentCategory();
         $register = 'no';
