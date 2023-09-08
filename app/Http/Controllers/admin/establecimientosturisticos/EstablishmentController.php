@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin\establecimientosturisticos;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Models\PersonEntity;
 use App\Http\Requests\StoreEstablishmentRequest;
