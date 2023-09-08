@@ -47,9 +47,10 @@ class EstablishmentController extends Controller
     public function create(Request $request,Establishments $Establishments,$id = null)
     {
         $this->authorize('create', $Establishments);
+
         $PersonEntityData = new PersonEntity();
         $Establishments = new Establishments();
-        //$touristActivity = TouristActivity::all();
+        return $touristActivity = TouristActivity::all();
         $establishmentClassification = new EstablishmentClassification();
         $establishmentCategory = new EstablishmentCategory();
         $register = 'no';
