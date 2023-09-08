@@ -224,7 +224,6 @@
                     <tfoot>
                     <tr>
                         <th>Cedula/Ruc</th>
-                        <th>Tipo de persona</th>
                         <th>Nombres / Nombre comercial</th>
                         <th>Apellidos / Razon Social</th>
                         <th>Estado</th>
@@ -272,11 +271,7 @@
 
         function selectedPersonEntity(id){
             loading.style.display = '';
-            axios.post('/admin/peopleentities/'+id+'/get', {
-            data: {
-            _token: token
-            }
-            }).then(function(res) {
+            axios.post('{{route("peopleentities.get")}}', {id:id,_token: token}).then(function(res) {
                 if(res.status==200) {
                     console.log("cargando pronvias");
                     console.log(res.data);
@@ -336,11 +331,7 @@
             loadParish(selectedOption2.value)
         });
         function loadPronvices(country_id){
-            axios.post('/admin/provinces/'+country_id, {
-            data: {
-            _token: token
-            }
-            }).then(function(res) {
+            axios.post('{{route("provinces.show")}}', {country_id:country_id,_token: token}).then(function(res) {
                 if(res.status==200) {
                     console.log("cargando pronvias");
                     console.log(res.data);
@@ -354,11 +345,7 @@
             });
         }
         function loadCantos(province_id){
-            axios.post('/admin/cantons/'+province_id, {
-            data: {
-            _token: token
-            }
-            }).then(function(res2) {
+            axios.post('{{route("cantons.show")}}', {province_id:province_id,_token: token}).then(function(res2) {
                 if(res2.status==200) {
                     console.log("cargando cantones");
                     console.log(res2.data);
@@ -372,11 +359,7 @@
             });
         }
         function loadParish(canton_id){
-            axios.post('/admin/parishes/'+canton_id, {
-            data: {
-            _token: token
-            }
-            }).then(function(res2) {
+            axios.post('{{route("parishes.show")}}', {canton_id:canton_id,_token: token}).then(function(res2) {
                 if(res2.status==200) {
                     console.log("cargando cantones");
                     console.log(res2.data);
@@ -427,7 +410,6 @@
             },
             "columns": [
                 {data: 'cc_ruc'},
-                {data: 'type_person'},
                 {data: 'name_tradename'},
                 {data: 'last_name_bussines_name'},
                 {data: 'status'},

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin\establecimientosturisticos;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\models\PersonEntity;
+use App\Models\PersonEntity;
 use App\Http\Requests\StoreEstablishmentRequest;
 use App\Http\Requests\UpdateEstablishmentRequest;
 use App\Models\TouristActivity;
