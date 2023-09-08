@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TouristActivity extends Model
 {
     use HasFactory;
+    use HasFactory;
 
     protected $table = 'tourist_activities';
 
@@ -23,5 +24,4 @@ class TouristActivity extends Model
     {
         return $this->belongsToMany(Requirement::class,'tourist_activity_requirements','tourist_activity_id','requirement_id');
     }
-
 }
