@@ -14,12 +14,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            PermissionsSeeder::class,
-            RolesSeeder::class,
             CountrySeeder::class,
             ProvinceSeeder::class,
             CantonSeeder::class,
             ParishSeeder::class,
+            PermissionsSeeder::class,
+            RolesSeeder::class,
             PersonEntitySeeder::class,
             UserSeeder::class,
             TypeActivitySeeder::class,
@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             TypeLiquidationSeeder::class,
             RubroSeeder::class,
             LuafTableSeeder::class,
+
         ]);
     }
 }
